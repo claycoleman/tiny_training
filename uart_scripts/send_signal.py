@@ -64,9 +64,10 @@ def main():
         print("1: Set ground truth to class 1")
         print("q: Quit")
         
-        # Start the reading thread
-        read_thread = threading.Thread(target=read_serial, args=(ser,), daemon=True)
-        read_thread.start()
+        # TODO: add back in reading thread if not using listen.py
+        # # Start the reading thread
+        # read_thread = threading.Thread(target=read_serial, args=(ser,), daemon=True)
+        # read_thread.start()
 
         while True:
             key = get_key()

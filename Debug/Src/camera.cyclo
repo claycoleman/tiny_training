@@ -8,9 +8,9 @@
 ../Src/camera.cpp:115:10:uint32_t getbufSize()	1
 ../Src/camera.cpp:117:9:uint8_t getbufChar(int)	1
 ../Src/camera.cpp:119:5:int DecodeandProcessRGB565(int, int, uint16_t*)	14
-../Src/camera.cpp:180:5:int DecodeandProcessAndRGB(int, int, int8_t*, uint16_t*, int)	19
-../Src/camera.cpp:289:5:int DecodeandProcess(int, int, uint8_t*)	10
-../Src/camera.cpp:374:5:int StartCapture()	1
-../Src/camera.cpp:397:9:uint8_t read_fifo_burst()	9
-../Src/camera.cpp:356:5:int PerformCapture()	2
-../Src/camera.cpp:386:5:int ReadCapture()	2
+../Src/camera.cpp:180:5:int DecodeandProcessAndRGB(int, int, int8_t*, uint16_t*, int)	17
+../Src/camera.cpp:279:5:int DecodeandProcess(int, int, uint8_t*)	10
+../Src/camera.cpp:364:5:int StartCapture()	1
+../Src/camera.cpp:387:9:uint8_t read_fifo_burst()	9
+../Src/camera.cpp:346:5:int PerformCapture()	2
+../Src/camera.cpp:376:5:int ReadCapture()	2

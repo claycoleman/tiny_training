@@ -1,3 +1,17 @@
+# running the uart scripts
+
+first install dependencies:
+
+```bash
+pip install pyserial
+```
+
+there are two scripts:
+
+- `listen.py`: listens for incoming UART data that comes from calls to `printLog` in the microcontroller code. this functionally allows you to have a console for debugging from the microcontroller.
+- `send_signal.py`: listens for your input and sends it to the microcontroller over UART. you can use this to send commands to the microcontroller.
+
+
 # TinyEngine: Codebase of Demo Tutorial for Training (Visual Wake Words)
 
 This is the official demo tutorial for deploying a visual wake words (VWW) training model on STM32F746G-DISCO discovery boards by exploiting **TinyEngine**.
@@ -96,7 +110,7 @@ bash import_arm_training.sh
 
 - Import the `TinyEngine_vww_training_tutorial` codebase into your STM32CubeIDE by: \[File\] -> \[Import…\] -> \[General\] -> \[Existing Projects into Workspace\] (Import the entire `TinyEngine_vww_training_tutorial` folder).
 
-<img src="../../assets/figures/0_import_project_0.png" alt="0_import_project_0" width="46%"/>  <img src="../../assets/figures/1_import_project_training_1.png" alt="1_import_project_training_1" width="51%"/>
+<img src="../../assets/figures/0_import_project_0.png" alt="0_import_project_0" width="46%"/> <img src="../../assets/figures/1_import_project_training_1.png" alt="1_import_project_training_1" width="51%"/>
 
 - After the import, `TinyEngine_vww_training_tutorial` should be shown in Project Explorer of your STM32CubeIDE as the example figure below:
 
@@ -126,11 +140,11 @@ bash import_arm_training.sh
 
 - Click \[Project\] -> \[Build Project\] to build/compile the program and generate the binary executable files.
 
-- Set the run/debug configurations by \[Run\] -> \[Run Configurations…\] -> \[STM32 Cortex-M C/C++  Application\] -> \[TinyEngine_vww_training_tutorial Debug\] -> \[C/C++ Application\] -> \[Browse…\]:
+- Set the run/debug configurations by \[Run\] -> \[Run Configurations…\] -> \[STM32 Cortex-M C/C++ Application\] -> \[TinyEngine_vww_training_tutorial Debug\] -> \[C/C++ Application\] -> \[Browse…\]:
 
   - Point to the correct elf file (file path: `Debug/TinyEngine_vww_training_tutorial.elf`) to correctly run the program, as shown in the figure below:
 
-<img src="../../assets/figures/8_run_configurations_training_0.png" alt="8_run_configurations_training_0" width="47%"/>  <img src="../../assets/figures/9_run_configurations_training_1.png" alt="9_run_configurations_training_1" width="51%"/>
+<img src="../../assets/figures/8_run_configurations_training_0.png" alt="8_run_configurations_training_0" width="47%"/> <img src="../../assets/figures/9_run_configurations_training_1.png" alt="9_run_configurations_training_1" width="51%"/>
 
 4. Setup your STM32F746G-DISCO discovery board to connect the Arducam to the board and also establish the USB connection with the board.
 
@@ -173,6 +187,7 @@ bash import_arm_training.sh
    ```
                       (Inference)                                                  (Training)
    ```
+
 - The rules of controlling the inference/training modes are as follows: (The rules are defined in `main.cpp`)
 
   - Send "4" to the UART input for the MCU: Inference mode
