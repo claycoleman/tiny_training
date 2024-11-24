@@ -205,17 +205,7 @@ int DecodeandProcessAndRGB(int image_width, int image_height,
        i++)
     image_data[i] = -128;
 
-
-  while (1) {
-	  auto read_result = JpegDec.read();
-	  char buf[20];
-	  sprintf(buf, "Read result: %d\r\n", read_result);
-	  printLog(buf);
-
-    if (read_result == 0) {
-      break;
-    }
-
+  while (JpegDec.read()) {
     if (JpegDec.MCUy < skip_start_y_mcus) {
       continue;
     }
@@ -282,6 +272,8 @@ int DecodeandProcessAndRGB(int image_width, int image_height,
       }
     }
   }
+  // key line to fix broken code
+  return 0;
 }
 
 int DecodeandProcess(int image_width, int image_height, uint8_t *image_data) {
@@ -394,9 +386,14 @@ int ReadCapture() {
 
 uint8_t read_fifo_burst() {
   uint32_t length = read_fifo_length();
+  char logbuf[150];
+  memset(logbuf, 0, sizeof(logbuf));  // Clear buffer
+  snprintf(logbuf, sizeof(logbuf), "Starting FIFO read, length: %lu\r\n", length);
+  printLog(logbuf);
+
   if (length >= MAX_FIFO_SIZE) {
-    char logbuf[150];
-    sprintf(logbuf, "Error: FIFO length too large: %lu\r\n", length);
+    memset(logbuf, 0, sizeof(logbuf));
+    snprintf(logbuf, sizeof(logbuf), "Error: FIFO length too large: %lu\r\n", length);
     printLog(logbuf);
     return 0;
   }
@@ -421,8 +418,8 @@ uint8_t read_fifo_burst() {
   ARDUCAM_CS_HIGH;
 
   is_header = false;
-  char logbuf[150];
-  sprintf(logbuf, "Successfully read %lu bytes\r\n", imgLength);
+  memset(logbuf, 0, sizeof(logbuf));
+  snprintf(logbuf, sizeof(logbuf), "Successfully processed %lu bytes\r\n", imgLength);
   printLog(logbuf);
   return 1;
 }
