@@ -1,0 +1,10 @@
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:23:20:mac_1row_10col_fp_IOHW_forint8w	0	static
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:38:20:mac_4row_4col_fp_IOHW_forint8w	4	static
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:875:20:assign_sum_to_pointwise_output_4row8col	4	static
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:911:20:assign_sum_to_pointwise_output_1row8col	0	static
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:969:20:assign_sum_to_pointwise_output_4row4col	4	static
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:989:20:assign_sum_to_pointwise_output_1row4col	0	static
+../Src/TinyEngine/src/kernels/fp_backward_op/pointwise_conv_fp.c:26:22:pointwise_conv_fp_1row10col_10inputdepth_IOHW_int8weight	144	static
+../Src/TinyEngine/src/kernels/fp_backward_op/pointwise_conv_fp.c:117:22:pointwise_conv_fp_4row4col_IOHW_int8weight	240	static
+../Src/TinyEngine/src/kernels/fp_backward_op/pointwise_conv_fp.c:239:22:pointwise_conv_fp_4row4col_IOHW_int8weight_partialCH_8innercol	256	static
+../Src/TinyEngine/src/kernels/fp_backward_op/pointwise_conv_fp.c:429:22:pointwise_conv_fp_4row4col_IOHW_int8weight_partialCH_4innercol	200	static

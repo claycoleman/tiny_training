@@ -1,0 +1,5 @@
+../Src/TinyEngine/codegen/Source/genModel.c:17:14:getInput	1
+../Src/TinyEngine/codegen/Source/genModel.c:20:14:getOutput	1
+../Src/TinyEngine/codegen/Source/genModel.c:26:6:invoke	85
+../Src/TinyEngine/codegen/Source/genModel.c:23:6:end2endinference	1
+../Src/TinyEngine/codegen/Source/genModel.c:563:6:invoke_inf	1

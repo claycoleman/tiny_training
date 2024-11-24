@@ -1,0 +1,2 @@
+../Src/TinyEngine/src/kernels/int_forward_op/upsample_byte.c:22:19:upsample_byte	5
+../Src/TinyEngine/src/kernels/int_forward_op/upsample_byte.c:50:19:upsample_byte_bilinear	1
