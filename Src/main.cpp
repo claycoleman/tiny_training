@@ -79,17 +79,10 @@ void invoke_new_weights_givenimg(signed char *out_int8) {
 uint16_t *RGBbuf;
 #define ENABLE_TRAIN
 int main(void) {
-  static int reset_count = 0;
-  char logbuf[150];
-  sprintf(logbuf, "System initialization #%d starting\r\n", ++reset_count);
-  printLog(logbuf);
-
   char buf[150];
   char showbuf[150];
 
-  printLog("About to initialize CPU cache\r\n");
   CPU_CACHE_Enable();
-  printLog("CPU cache initialized\r\n");
   HAL_Init();
 
   SystemClock_Config();
@@ -105,21 +98,15 @@ int main(void) {
   uint32_t start, end, starti, endi;
   StartCapture();
   signed char *input = getInput();
-
-  printLog("About to enter main loop\r\n");
   
   RGBbuf = (uint16_t *)&input[128 * 128 * 4];
   int t_mode = 0;
   bool changing_t_mode = false;
   while (1) {
-    printLog("Top of main loop\r\n");
-
     starti = HAL_GetTick();
     ReadCapture();
     StartCapture();
-    printLog("ReadCapture and StartCapture done\r\n");
     DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
-    printLog("DecodeandProcessAndRGB done\r\n");
     for (int i = 0; i < 128 * 8 * 3; i++) {
       input[120 * 128 * 3 + i] = -128;
     }
@@ -137,9 +124,7 @@ int main(void) {
       }
     }
 
-    printLog("About to loadRGB565LCD\r\n");
     loadRGB565LCD(10, 10, RES_W, RES_W, RGBbuf, 2);
-    printLog("loadRGB565LCD done\r\n");
     endi = HAL_GetTick();
 
     uint8_t button0 = BSP_PB_GetState(BUTTON_KEY) == GPIO_PIN_SET;
@@ -153,11 +138,12 @@ int main(void) {
       changing_t_mode = t_mode != 1;
       t_mode = 1;
       printLog("Switching to training mode\r\n");
-    }
-    if (s[0] == '4') {
+    } else if (s[0] == '4') {
       changing_t_mode = t_mode != 0;
       t_mode = 0;
       printLog("Switching to inference mode\r\n");
+    } else {
+      changing_t_mode = false;
     }
     
     if (t_mode) {
@@ -168,7 +154,6 @@ int main(void) {
         sprintf(showbuf, " Training ");
         displaystring(showbuf, 273, 10);
       }
-      printLog("Training mode\r\n");
       if ((button2 || button1 || s[0] == '1' || s[0] == '2')) {
         int label = 0;
         if (button2 || s[0] == '1') {
@@ -178,6 +163,11 @@ int main(void) {
           sprintf(showbuf, "Train cls 0");
           label = 0;
         }
+
+        // log with string interpolation
+        char logbuf[150];
+        sprintf(logbuf, "Training: Train cls %d\r\n", label);
+        printLog(logbuf);
 
         start = HAL_GetTick();
         invoke_new_weights_givenimg(out_int);
@@ -200,12 +190,9 @@ int main(void) {
         detectResponse(answer_right, 0, t_mode, p, label);
 
         // about to read next frame
-        printLog("About to read next frame\r\n");
         ReadCapture();
         StartCapture();
-        printLog("Training: ReadCapture and StartCapture done\r\n");
         DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
-        printLog("Training: DecodeandProcessAndRGB done\r\n");
         displaystring(showbuf, 273, 10);
         start = HAL_GetTick();
         train(label);
