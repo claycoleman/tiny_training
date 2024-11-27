@@ -51,7 +51,7 @@ static inline void printLog(const char *s) {
 	HAL_UART_Transmit(&UART, (uint8_t*) s, strlen(s), 10);
 }
 
-static inline void recieveChar(char *s) {
+static inline void receiveChar(char *s) {
 	static int is_initialized = 0;
 	if (!is_initialized) {
 		UART.Instance = USART1;

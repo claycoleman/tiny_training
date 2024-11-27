@@ -133,12 +133,18 @@ int main(void) {
 
     char s[1];
     s[0] = 'c';
-    recieveChar(s);
-    if (s[0] == '3') {
+    /**
+     * t => training mode
+     * i => inference mode
+     * 
+     * class number => train that class
+     */
+    receiveChar(s);
+    if (s[0] == 't') {
       changing_t_mode = t_mode != 1;
       t_mode = 1;
       printLog("Switching to training mode\r\n");
-    } else if (s[0] == '4') {
+    } else if (s[0] == 'i') {
       changing_t_mode = t_mode != 0;
       t_mode = 0;
       printLog("Switching to inference mode\r\n");
@@ -154,14 +160,26 @@ int main(void) {
         sprintf(showbuf, " Training ");
         displaystring(showbuf, 273, 10);
       }
-      if ((button2 || button1 || s[0] == '1' || s[0] == '2')) {
+      bool is_valid_class_number = s[0] >= '0' && s[0] <= '0' + OUTPUT_CH - 1;
+      if (is_valid_class_number || button1 || button2) {
         int label = 0;
-        if (button2 || s[0] == '1') {
-          sprintf(showbuf, "Train cls 1");
+        
+        if (is_valid_class_number) {
+          label = s[0] - '0';
+          // assert label is now between 0 and OUTPUT_CH - 1
+          if (label < 0 || label >= OUTPUT_CH) {
+            char logbuf[150];
+            sprintf(logbuf, "Invalid class number %d\r\n", label);
+            printLog(logbuf);
+            continue;
+          }
+          sprintf(showbuf, "Train cls %d", label);
+        } else if (button2) {
           label = 1;
-        } else {
-          sprintf(showbuf, "Train cls 0");
+          sprintf(showbuf, "Train cls 1");
+        } else if (button1) {
           label = 0;
+          sprintf(showbuf, "Train cls 0");
         }
 
         // log with string interpolation
