@@ -27,6 +27,7 @@
 #include "testing_data/images.h"
 extern "C" {
 #include "genNN.h"
+#include "OUTPUT_CH.h"
 #include "tinyengine_function.h"
 }
 #define SHOWIMG
@@ -41,7 +42,6 @@ static void MX_GPIO_Init(void);
 #define IMAGE_H 80
 #define IMAGE_W 80
 #define INPUT_CH 160
-#define OUTPUT_CH 2
 #define IMAGES 6
 
 void SystemClock_Config(void);

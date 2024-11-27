@@ -1,16 +1,16 @@
 # pip install pyserial to use this script
 import re
-from typing import Optional
-import serial
-import serial.tools.list_ports
-import time
 import sys
 import termios
+import time
 import tty
-import threading
+from typing import Match, Optional
+
+import serial
+import serial.tools.list_ports
 
 
-def get_key():
+def get_key() -> str:
     """Get a single keypress from stdin without requiring Enter."""
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
@@ -22,7 +22,7 @@ def get_key():
     return ch
 
 
-def find_stm32_port():
+def find_stm32_port() -> Optional[str]:
     ports = serial.tools.list_ports.comports()
     for port in ports:
         if "usbmodem" in port.device.lower():
@@ -30,12 +30,12 @@ def find_stm32_port():
     return None
 
 
-def read_serial(ser):
+def read_serial(ser: serial.Serial) -> None:
     """Function to continuously read from serial port"""
     while True:
         if ser.in_waiting:
             try:
-                line = ser.readline().decode("utf-8").strip()
+                line: str = ser.readline().decode("utf-8").strip()
                 if line:
                     print(f"Received: {line}")
             except UnicodeDecodeError:
@@ -45,21 +45,29 @@ def read_serial(ser):
         time.sleep(0.01)  # Sleep to prevent CPU hogging
 
 
-def main():
-    # read ../Src/main.cpp to find the OUTPUT_CH
-    # formatted like this: #define OUTPUT_CH 2
-    OUTPUT_CH: Optional[int] = None
-    # TODO if we're in the uart_scripts folder, append ..
-    with open("Src/main.cpp", "r") as file:
+def main() -> None:
+    # Try to open the file directly first, then try with parent directory if that fails
+    file_path = "Src/TinyEngine/include/OUTPUT_CH.h"
+    try:
+        file = open(file_path, "r")
+    except FileNotFoundError:
+        # If file not found, try with parent directory
+        file_path = "../" + file_path
+        file = open(file_path, "r")
+
+    output_channel: Optional[int] = None
+    with file:
         for line in file:
             if "OUTPUT_CH" in line:
-                OUTPUT_CH = re.search(r"\d+", line).group()
+                match: Optional[Match[str]] = re.search(r"\d+", line)
+                if match:
+                    output_channel = int(match.group())
                 break
 
-    if OUTPUT_CH is None:
-        print("Failed to find OUTPUT_CH in ../Src/main.cpp")
+    if output_channel is None:
+        print("Failed to find OUTPUT_CH in OUTPUT_CH.h")
         return
-    print(f"Found OUTPUT_CH {OUTPUT_CH}")
+    print(f"Found OUTPUT_CH {output_channel}")
 
     port = find_stm32_port()
     if not port:
@@ -67,6 +75,7 @@ def main():
         return
     print(f"Found port: {port}")
 
+    ser: Optional[serial.Serial] = None
     try:
         ser = serial.Serial(
             port=port,
@@ -80,20 +89,14 @@ def main():
         print("Connected to", port)
         print("\nCommands:")
         print("i: Inference mode")
+        print("v: Validation mode")
         print("t: Training mode")
-        for i in range(OUTPUT_CH):
+        for i in range(output_channel):
             print(f"{i}: Set ground truth to class {i}")
         print("q: Quit")
 
-        # TODO: add back in reading thread if not using listen.py
-        # # Start the reading thread
-        # read_thread = threading.Thread(target=read_serial, args=(ser,), daemon=True)
-        # read_thread.start()
-
-        valid_classes = [
-            str(i) for i in range(OUTPUT_CH)
-        ]  # ['0', '1'] for OUTPUT_CH = 2
-        valid_commands = valid_classes + ["t", "i"]
+        valid_classes = [str(i) for i in range(output_channel)]
+        valid_commands = valid_classes + ["t", "v", "i"]
 
         while True:
             key = get_key()
@@ -112,7 +115,7 @@ def main():
     except KeyboardInterrupt:
         print("\nExiting...")
     finally:
-        if "ser" in locals() and ser.is_open:
+        if ser is not None and ser.is_open:
             ser.close()
             print("\nSerial connection closed")
 

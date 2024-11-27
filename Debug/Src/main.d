@@ -49,6 +49,7 @@ Src/main.o: ../Src/main.cpp ../Inc/main.h \
  ../Src/testing_data/golden_data.h ../Src/testing_data/images.h \
  /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/genNN.h \
  /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/yoloOutput.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/OUTPUT_CH.h \
  /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h \
  /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h \
  /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h \
@@ -106,6 +107,7 @@ Src/main.o: ../Src/main.cpp ../Inc/main.h \
 ../Src/testing_data/images.h:
 /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/genNN.h:
 /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/yoloOutput.h:
+/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/OUTPUT_CH.h:
 /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h:
 /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h:
 /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h:
