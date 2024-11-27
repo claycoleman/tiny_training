@@ -100,8 +100,9 @@ int main(void) {
   signed char *input = getInput();
   
   RGBbuf = (uint16_t *)&input[128 * 128 * 4];
-  int t_mode = 0;
-  bool changing_t_mode = false;
+  bool training_mode = false;
+  bool validation_mode = false;
+  bool just_started_training_mode = false;
   while (1) {
     starti = HAL_GetTick();
     ReadCapture();
@@ -141,25 +142,28 @@ int main(void) {
      */
     receiveChar(s);
     if (s[0] == 't') {
-      changing_t_mode = t_mode != 1;
-      t_mode = 1;
+      just_started_training_mode = training_mode != 1;
+      training_mode = true;
       printLog("Switching to training mode\r\n");
     } else if (s[0] == 'i') {
-      changing_t_mode = t_mode != 0;
-      t_mode = 0;
+      training_mode = false;
+      validation_mode = false;
       printLog("Switching to inference mode\r\n");
-    } else {
-      changing_t_mode = false;
+    } else if (s[0] == 'v') {
+      training_mode = false;
+      validation_mode = true;
+      printLog("Switching to validation mode\r\n");
     }
     
-    if (t_mode) {
-      if (changing_t_mode) {
+    if (training_mode) {
+      if (just_started_training_mode) {
         // help user to know that training mode is now active.
         // we only print this once when switching to training mode
         // because we want to show the training messages when a class is being trained.
         sprintf(showbuf, " Training ");
         displaystring(showbuf, 273, 10);
       }
+      just_started_training_mode = false;
       bool is_valid_class_number = s[0] >= '0' && s[0] <= '0' + OUTPUT_CH - 1;
       if (is_valid_class_number || button1 || button2) {
         int label = 0;
@@ -205,7 +209,7 @@ int main(void) {
             answer_right = 0;
         }
         end = HAL_GetTick();
-        detectResponse(answer_right, 0, t_mode, p, label);
+        detectResponse(answer_right, 0, training_mode, p, label);
 
         // about to read next frame
         ReadCapture();
@@ -216,24 +220,33 @@ int main(void) {
         train(label);
         end = HAL_GetTick();
         sprintf(showbuf, "Train done ");
+        printLog("TRAINING DONE");
         displaystring(showbuf, 273, 10);
-        detectResponse(answer_right, end - start, t_mode, p, label);
+        detectResponse(answer_right, end - start, training_mode, p, label);
       } 
     } else {
 
       start = HAL_GetTick();
       invoke_new_weights_givenimg(out_int);
       // HARDCODED 2 channel output
-      int person = 0;
+      int predicted_class = 0;
       if (out_int[0] > out_int[1]) {
-        person = 1;
+        predicted_class = 1;
       } else {
-        person = 0;
+        predicted_class = 0;
       }
       end = HAL_GetTick();
-      sprintf(showbuf, " Inference ");
+      if (validation_mode) {
+        sprintf(showbuf, " Validation ");
+        // output validation mode class
+        char logbuf[150];
+        sprintf(logbuf, "INFERENCE COMPLETE: %d\r\n", predicted_class);
+        printLog(logbuf);
+      } else {
+        sprintf(showbuf, " Inference ");
+      }
       displaystring(showbuf, 273, 10);
-      detectResponse(person, end - starti, t_mode, 0, 0);
+      detectResponse(predicted_class, end - starti, training_mode, 0, 0);
     }
   }
 
