@@ -1,1 +1,0 @@
-../Src/TinyEngine/src/kernels/int_forward_op/convolve_1x1_s8_oddch.c:27:19:convolve_1x1_s8_oddch	80	static,ignoring_inline_asm

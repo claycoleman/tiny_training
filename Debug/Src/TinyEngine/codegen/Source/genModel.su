@@ -1,5 +1,0 @@
-../Src/TinyEngine/codegen/Source/genModel.c:17:14:getInput	0	static
-../Src/TinyEngine/codegen/Source/genModel.c:20:14:getOutput	0	static
-../Src/TinyEngine/codegen/Source/genModel.c:26:6:invoke	20936	static
-../Src/TinyEngine/codegen/Source/genModel.c:23:6:end2endinference	8	static
-../Src/TinyEngine/codegen/Source/genModel.c:563:6:invoke_inf	112	static

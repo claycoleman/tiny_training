@@ -1,4 +1,0 @@
-/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:424:20:transpose_depthwise_mac_kernel3_2row_fp_uniweight	4	static
-/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:451:20:transpose_depthwise_mac_kernel3_1row_fp_uniweight	0	static
-../Src/TinyEngine/src/kernels/fp_backward_op/transpose_depthwise_conv_fp_kernel3_stride1_inpad1_outpad0.c:28:22:transpose_depthwise_conv_fp_kernel3_stride1_inpad1_outpad0_IOHW_int8weight_partialCH	128	static
-../Src/TinyEngine/src/kernels/fp_backward_op/transpose_depthwise_conv_fp_kernel3_stride1_inpad1_outpad0.c:134:22:transpose_depthwise_conv_fp_kernel3_stride1_inpad1_outpad0_IOHW_int8weight	128	static

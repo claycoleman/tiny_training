@@ -1,2 +1,0 @@
-../Src/TinyEngine/src/kernels/int_forward_op/patchpadding_depthwise_kernel3x3_stride1_inplace_CHW.c:96:6:patch_depthwise_kernel3x3_stride1_inplace_kernel_CHW	13
-../Src/TinyEngine/src/kernels/int_forward_op/patchpadding_depthwise_kernel3x3_stride1_inplace_CHW.c:29:19:patchpadding_depthwise_kernel3x3_stride1_inplace_CHW	9

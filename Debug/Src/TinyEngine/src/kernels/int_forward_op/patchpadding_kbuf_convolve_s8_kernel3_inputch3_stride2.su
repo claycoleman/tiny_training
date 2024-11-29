@@ -1,1 +1,0 @@
-../Src/TinyEngine/src/kernels/int_forward_op/patchpadding_kbuf_convolve_s8_kernel3_inputch3_stride2.c:26:19:patchpadding_kbuf_convolve_s8_kernel3_inputch3_stride2	128	static,ignoring_inline_asm

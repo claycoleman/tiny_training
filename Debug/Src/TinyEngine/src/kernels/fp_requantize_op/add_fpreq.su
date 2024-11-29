@@ -1,3 +1,0 @@
-../Src/TinyEngine/src/kernels/fp_requantize_op/add_fpreq.c:23:19:add_fpreq	48	static
-../Src/TinyEngine/src/kernels/fp_requantize_op/add_fpreq.c:38:19:add_fpreq_mask	56	static
-../Src/TinyEngine/src/kernels/fp_requantize_op/add_fpreq.c:60:19:add_fpreq_bitmask	56	static

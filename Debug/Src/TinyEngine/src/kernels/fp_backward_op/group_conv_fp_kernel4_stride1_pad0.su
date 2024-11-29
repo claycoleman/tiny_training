@@ -1,5 +1,0 @@
-/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:72:20:group_mac_kernel4_4row_fp_uniweight_reuse_output_input	16	static
-/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:760:20:assign_sum_to_group_output_4row16col	96	static
-/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:833:20:assign_sum_to_group_output_4row8col	48	static
-../Src/TinyEngine/src/kernels/fp_backward_op/group_conv_fp_kernel4_stride1_pad0.c:25:22:group_conv_fp_kernel4_stride1_pad0_in4x4_out1x1_uniweight_4row16col_inplace	592	static
-../Src/TinyEngine/src/kernels/fp_backward_op/group_conv_fp_kernel4_stride1_pad0.c:169:22:group_conv_fp_kernel4_stride1_pad0_in4x4_out1x1_uniweight_4row8col_inplace	336	static

@@ -1,2 +1,0 @@
-../Src/TinyEngine/codegen/Source/depthwise_kernel7x7_stride2_inplace_CHW_fpreq.c:78:6:depthwise_kernel7x7_stride2_inplace_kernel_CHW_fpreq	4
-../Src/TinyEngine/codegen/Source/depthwise_kernel7x7_stride2_inplace_CHW_fpreq.c:15:19:depthwise_kernel7x7_stride2_inplace_CHW_fpreq	7

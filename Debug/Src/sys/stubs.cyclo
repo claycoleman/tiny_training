@@ -1,7 +1,0 @@
-../Src/sys/stubs.c:25:5:_write	2
-../Src/sys/stubs.c:35:5:_read	2
-../Src/sys/stubs.c:45:5:_close	1
-../Src/sys/stubs.c:47:5:_fstat	1
-../Src/sys/stubs.c:49:5:_isatty	1
-../Src/sys/stubs.c:51:6:_lseek	1
-../Src/sys/stubs.c:53:6:_exit	1

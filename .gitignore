@@ -1,2 +1,5 @@
 # add python ignore files
 *.pyc
+Debug/*
+!Debug/makefile
+Debug_backup_*

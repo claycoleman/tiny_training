@@ -1,5 +1,0 @@
-../Src/TinyEngine/src/yoloOutput.c:25:21:sigmoid	8	static
-../Src/TinyEngine/src/yoloOutput.c:28:5:postprocess_single	112	static
-../Src/TinyEngine/src/yoloOutput.c:71:6:data_requantize	4	static
-../Src/TinyEngine/src/yoloOutput.c:80:5:nms_impl	12	static
-../Src/TinyEngine/src/yoloOutput.c:139:11:postprocessing	104	static

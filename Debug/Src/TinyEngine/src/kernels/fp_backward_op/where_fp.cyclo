@@ -1,4 +1,0 @@
-../Src/TinyEngine/src/kernels/fp_backward_op/where_fp.c:23:22:where	3
-../Src/TinyEngine/src/kernels/fp_backward_op/where_fp.c:35:22:where_zeros	4
-../Src/TinyEngine/src/kernels/fp_backward_op/where_fp.c:46:22:where_zeros_inplace	4
-../Src/TinyEngine/src/kernels/fp_backward_op/where_fp.c:57:22:where_zeros_inplace_bit	5

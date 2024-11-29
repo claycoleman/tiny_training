@@ -1,1 +1,0 @@
-../Src/TinyEngine/src/kernels/int_forward_op/convolve_1x1_s8_ch16.c:26:19:convolve_1x1_s8_ch16	80	static,ignoring_inline_asm

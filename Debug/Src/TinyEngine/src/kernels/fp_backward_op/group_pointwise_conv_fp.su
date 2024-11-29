@@ -1,2 +1,0 @@
-../Src/TinyEngine/src/kernels/fp_backward_op/group_pointwise_conv_fp.c:26:22:group_pointwise_conv_fp_in1x1_out1x1_1row10col_uniweight_int8input_inplace	224	static
-../Src/TinyEngine/src/kernels/fp_backward_op/group_pointwise_conv_fp.c:83:22:group_pointwise_conv_fp_in1x1_out1x1_1row10col_uniweight_inplace	224	static

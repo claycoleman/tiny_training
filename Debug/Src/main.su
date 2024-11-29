@@ -1,3 +1,0 @@
-../Src/main.cpp:53:6:void train(int)	0	static
-../Src/main.cpp:64:6:void invoke_new_weights_givenimg(signed char*)	8	static
-../Src/main.cpp:81:5:int main()	432	static,ignoring_inline_asm
