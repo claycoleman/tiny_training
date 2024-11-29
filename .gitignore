@@ -2,4 +2,6 @@
 *.pyc
 Debug/*
 !Debug/makefile
+!Debug/**/*.mk
+!Debug/objects.list
 Debug_backup_*
