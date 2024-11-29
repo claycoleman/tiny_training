@@ -79,49 +79,35 @@ void displaystring(char *buf, int x, int y) {
   BSP_LCD_DisplayStringAt(x, y, buf, LEFT_MODE);
 }
 
-#define USENEW
-int unper_cnt = 0;
-
-#ifdef USENEW
-void detectResponse(int person, float ms, int training_mode, int pred,
-                    int label) {
+void detectResponse(float ms, int training_mode, int pred, int label) {
   char buf[20];
-  if (person) {
-    unper_cnt = 0;
-    if (training_mode) {
+  if (training_mode) {
+    if (pred == label) {
       drawGreenBackground(270, 480, 40, 100);
       drawGreenBackground(270, 480, 125, 180);
       drawGreenBackground(270, 480, 205, 250);
-      BSP_LCD_SetTextColor(LCD_COLOR_RED);
-      sprintf(buf, " Prediction:");
-      BSP_LCD_DisplayStringAt(273, 80, buf, LEFT_MODE);
-      sprintf(buf, "  class %d  ", pred);
-      BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
-      sprintf(buf, "Ground True:");
-      BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
-      sprintf(buf, "  class %d   ", label);
-      BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
     } else {
+      drawRedBackground(270, 480, 40, 100);
+      drawRedBackground(270, 480, 125, 180);
+      drawRedBackground(270, 480, 205, 250);
+    }
+    BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    sprintf(buf, " Prediction:");
+    BSP_LCD_DisplayStringAt(273, 80, buf, LEFT_MODE);
+    sprintf(buf, "  class %d  ", pred);
+    BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
+    sprintf(buf, "Ground-Truth:");
+    BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
+    sprintf(buf, "  class %d   ", label);
+    BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
+  } else {
+    // strangely enough, the model is trained to output 0 for person and 1 for no person
+    if (pred == 0) {
       drawBlueBackground(270, 480, 40, 100);
       drawBlueBackground(270, 480, 125, 180);
       drawBlueBackground(270, 480, 205, 250);
       BSP_LCD_SetTextColor(LCD_COLOR_RED);
       BSP_LCD_DisplayStringAt(273, 100, "   Person   ", LEFT_MODE);
-    }
-  } else {
-    if (training_mode) {
-      drawRedBackground(270, 480, 40, 100);
-      drawRedBackground(270, 480, 125, 180);
-      drawRedBackground(270, 480, 205, 250);
-      BSP_LCD_SetTextColor(LCD_COLOR_RED);
-      sprintf(buf, " Prediction:");
-      BSP_LCD_DisplayStringAt(273, 80, buf, LEFT_MODE);
-      sprintf(buf, "  class %d   ", pred);
-      BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
-      sprintf(buf, "Ground-Truth");
-      BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
-      sprintf(buf, "  class %d   ", label);
-      BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
     } else {
       drawBlackBackground(270, 480, 40, 100);
       drawBlackBackground(270, 480, 125, 180);
@@ -129,46 +115,17 @@ void detectResponse(int person, float ms, int training_mode, int pred,
       BSP_LCD_SetTextColor(LCD_COLOR_RED);
       BSP_LCD_DisplayStringAt(273, 100, "  No Person ", LEFT_MODE);
     }
+
+    if (ms == 0)
+      return;
+    BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
+    volatile float rate = 1000 / ms;
+    volatile int decimal = (int)rate;
+    volatile int floating = (int)((rate - (float)decimal) * 1000);
+    sprintf(buf, "  fps:%d.%03d ", decimal, floating);
+    BSP_LCD_DisplayStringAt(273, 180, buf, LEFT_MODE);
   }
-
-  if (ms == 0)
-    return;
-  BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
-  volatile float rate = 1000 / ms;
-  volatile int decimal = (int)rate;
-  volatile int floating = (int)((rate - (float)decimal) * 1000);
-  sprintf(buf, "  fps:%d.%03d ", decimal, floating);
-  BSP_LCD_DisplayStringAt(273, 180, buf, LEFT_MODE);
 }
-
-#else
-void detectResponse(int person, float ms) {
-  if (person) {
-    unper_cnt = 0;
-    drawRedBackground(270, 480, 40, 100);
-    drawRedBackground(270, 480, 125, 180);
-    drawRedBackground(270, 480, 205, 250);
-    BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    BSP_LCD_DisplayStringAt(273, 100, "  No Person ", LEFT_MODE);
-  } else {
-    unper_cnt++;
-
-    drawGreenBackground(270, 480, 40, 100);
-    drawGreenBackground(270, 480, 125, 180);
-    drawGreenBackground(270, 480, 205, 250);
-    BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    BSP_LCD_DisplayStringAt(273, 100, "   Person   ", LEFT_MODE);
-  }
-
-  BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
-  char buf[20];
-  volatile float rate = 1000 / ms;
-  volatile int decimal = (int)rate;
-  volatile int floating = (int)((rate - (float)decimal) * 1000);
-  sprintf(buf, "  fps:%d.%03d ", decimal, floating);
-  BSP_LCD_DisplayStringAt(273, 180, buf, LEFT_MODE);
-}
-#endif
 
 void lcdsetup() {
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;

@@ -45,14 +45,14 @@ Src/main.o: ../Src/main.cpp ../Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
  ../Inc/camera.h ../Inc/lcd.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/profile.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/profile.h \
  ../Src/testing_data/golden_data.h ../Src/testing_data/images.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/genNN.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/yoloOutput.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/OUTPUT_CH.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/genNN.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/yoloOutput.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/OUTPUT_CH.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/tinyengine_function.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/fp_requantize_op.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/codegen/Include/genInclude.h \
  ../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h
 ../Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
@@ -102,13 +102,13 @@ Src/main.o: ../Src/main.cpp ../Inc/main.h \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
 ../Inc/camera.h:
 ../Inc/lcd.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/profile.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/profile.h:
 ../Src/testing_data/golden_data.h:
 ../Src/testing_data/images.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/genNN.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/yoloOutput.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/OUTPUT_CH.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/genNN.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/yoloOutput.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/OUTPUT_CH.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/tinyengine_function.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/fp_requantize_op.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/codegen/Include/genInclude.h:
 ../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:

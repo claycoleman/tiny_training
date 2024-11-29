@@ -193,23 +193,14 @@ int main(void) {
 
         start = HAL_GetTick();
         invoke_new_weights_givenimg(out_int);
-        int answer_right = 0;
-        int p;
+        int predicted_class;
         if (out_int[0] > out_int[1]) {
-          p = 0;
-          if (label == 1)
-            answer_right = 0;
-          else
-            answer_right = 1;
+          predicted_class = 0;
         } else {
-          p = 1;
-          if (label == 1)
-            answer_right = 1;
-          else
-            answer_right = 0;
+          predicted_class = 1;
         }
         end = HAL_GetTick();
-        detectResponse(answer_right, 0, training_mode, p, label);
+        detectResponse(0, training_mode, predicted_class, label);
 
         // about to read next frame
         ReadCapture();
@@ -222,18 +213,19 @@ int main(void) {
         sprintf(showbuf, "Train done ");
         printLog("TRAINING DONE");
         displaystring(showbuf, 273, 10);
-        detectResponse(answer_right, end - start, training_mode, p, label);
+        detectResponse(end - start, training_mode, predicted_class, label);
       } 
     } else {
-
+      // inference mode or validation mode
       start = HAL_GetTick();
       invoke_new_weights_givenimg(out_int);
       // HARDCODED 2 channel output
+      // strangely enough, the model is trained to output 0 for person and 1 for no person
       int predicted_class = 0;
       if (out_int[0] > out_int[1]) {
-        predicted_class = 1;
-      } else {
         predicted_class = 0;
+      } else {
+        predicted_class = 1;
       }
       end = HAL_GetTick();
       if (validation_mode) {
@@ -246,7 +238,7 @@ int main(void) {
         sprintf(showbuf, " Inference ");
       }
       displaystring(showbuf, 273, 10);
-      detectResponse(predicted_class, end - starti, training_mode, 0, 0);
+      detectResponse(end - starti, training_mode, predicted_class, predicted_class);
     }
   }
 

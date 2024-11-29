@@ -1,7 +1,7 @@
 Src/camera.o: ../Src/camera.cpp \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h \
- /Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/tinyengine_function.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/fp_requantize_op.h \
+ /Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/codegen/Include/genInclude.h \
  ../Inc/camera.h ../Inc/camera_i2c.h \
  ../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
@@ -52,9 +52,9 @@ Src/camera.o: ../Src/camera.cpp \
  ../Inc/camera_spi.h ../Inc/ov2640_regs.h ../Inc/JPEGDecoder.h \
  ../Inc/User_Config.h ../Inc/picojpeg.h \
  ../Src/TinyEngine/include/profile.h
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/tinyengine_function.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/fp_requantize_op.h:
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/codegen/Include/genInclude.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/tinyengine_function.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/fp_requantize_op.h:
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/codegen/Include/genInclude.h:
 ../Inc/camera.h:
 ../Inc/camera_i2c.h:
 ../Drivers/BSP/STM32746G-Discovery/stm32746g_discovery.h:

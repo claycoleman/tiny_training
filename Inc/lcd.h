@@ -26,13 +26,8 @@ void loadRGB565LCD(uint32_t x, uint32_t y, uint32_t width, uint32_t height,
 void loadgrayscale2LCD(uint8_t *src);
 void lcdsetup();
 
-#define USENEW
-#ifdef USENEW
-void detectResponse(int person, float ms, int training_mode, int pred,
+void detectResponse(float ms, int training_mode, int pred,
                     int label);
-#else
-void detectResponse(int person, float ms);
-#endif
 
 void displaystring(char *buf, int x, int y);
 

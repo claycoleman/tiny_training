@@ -11,13 +11,13 @@ import numpy as np
 import serial
 import serial.tools.list_ports
 
-
-def find_stm32_port():
-    ports = serial.tools.list_ports.comports()
-    for port in ports:
-        if "usbmodem" in port.device.lower():
-            return port.device
-    return None
+from uart_scripts.utils import (
+    clean_project,
+    build_project,
+    deploy_binary,
+    find_stm32_port,
+    create_serial_connection,
+)
 
 
 def load_datasets(base_path: str) -> Dict[str, List[str]]:
@@ -90,129 +90,13 @@ def update_output_ch_file(num_classes: int, file_path: str):
                 file.write(line)
 
 
-# Add STM32CubeIDE toolchain paths
-cube_ide_paths = [
-    "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.macos64_1.0.200.202406191456/tools/bin",
-    "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.make.macos64_2.1.100.202310310804/tools/bin",
-]
-
-
-def recompile_project():
-    """Recompile the project using STM32CubeIDE's build system"""
-    try:
-        # Set up environment variables
-        env = os.environ.copy()  # Start with current environment
-
-        # Prepend the STM32CubeIDE paths to existing PATH
-        env["PATH"] = ":".join(cube_ide_paths + [env.get("PATH", "")])
-
-        # Set working directory
-        build_dir = "./Debug"
-
-        # Run make command with environment
-        print("Building project...")
-        # TODO in build error, print out logs
-        subprocess.run(
-            ["make", "-j7", "all"],
-            cwd=build_dir,
-            env=env,
-            check=True,
-            capture_output=True,
-        )
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error during recompilation: {e}")
-        raise
-
-
-def clean_project():
-    """Clean the project build"""
-    try:
-        # Set up environment variables (same as recompile_project)
-        env = os.environ.copy()
-        env["PATH"] = ":".join(cube_ide_paths + [env.get("PATH", "")])
-
-        build_dir = "./Debug"
-
-        print("Cleaning project...")
-        # TODO in clean error, print out logs
-        subprocess.run(
-            ["make", "-j7", "clean"],
-            cwd=build_dir,
-            env=env,
-            check=True,
-            capture_output=True,
-        )
-
-    except subprocess.CalledProcessError as e:
-        print(f"Error during clean: {e}")
-        raise
-
-
-def is_macos():
-    return os.uname().sysname == "Darwin"
-
-
-def is_windows():
-    return os.name == "nt"
-
-
-def is_linux():
-    return os.uname().sysname == "Linux"
-
-
-def deploy_to_microcontroller():
-    """Deploy the compiled binary to the microcontroller"""
-    if is_macos():
-        path_to_programmer = "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.macos64_2.1.400.202404281720/tools/bin/STM32_Programmer_CLI"
-    elif is_windows():
-        # TODO make this work for windows
-        path_to_programmer = "STM32_Programmer_CLI"
-    else:
-        raise RuntimeError(f"Unsupported OS: {os.uname().sysname}")
-
-    # validate that the path to the programmer exists
-    if not os.path.exists(path_to_programmer):
-        raise RuntimeError(
-            f"STM cli can't be found at: {path_to_programmer}; "
-            "this likely needs to be tweaked to work for your system"
-        )
-
-    try:
-        binary_path = "./Debug/TTE_demo_mcunet.elf"
-        cmd = [
-            path_to_programmer,
-            "--connect",
-            "port=SWD",
-            "--write",
-            binary_path,
-            "--verify",
-            "-rst",
-        ]
-
-        print(f"Deploying binary: {binary_path}")
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
-        print("Deployment complete")
-    except subprocess.CalledProcessError as e:
-        print(f"Error during deployment: {e}")
-        print(f"Error output: {e.stdout}\n{e.stderr}")
-        raise
-
-
 class UARTHandler:
     def __init__(self):
         self.port = find_stm32_port()
         if not self.port:
             raise RuntimeError("No STM32 port found")
 
-        self.ser = serial.Serial(
-            port=self.port,
-            baudrate=115200,
-            bytesize=serial.EIGHTBITS,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            timeout=0.1,
-        )
+        self.ser = create_serial_connection(self.port)
         self.last_messages = []
         self.message_received = threading.Event()
 
@@ -315,13 +199,13 @@ def main():
     # In your main function, before starting UART communication:
     try:
         clean_project()  # Optional, if you want to clean first
-        recompile_project()
+        build_project()
     except Exception as e:
         print(f"Build failed: {e}")
         return
 
     # Deploy to the microcontroller
-    deploy_to_microcontroller()
+    deploy_binary()
 
     # Split data
     random.shuffle(all_data)

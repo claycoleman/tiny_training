@@ -1,51 +1,32 @@
 # pip install pyserial to use this script
 import re
 import sys
-import termios
 import time
-import tty
+import serial
 from typing import Match, Optional
 
-import serial
-import serial.tools.list_ports
-
-
-def get_key() -> str:
-    """Get a single keypress from stdin without requiring Enter."""
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    try:
-        tty.setraw(sys.stdin.fileno())
-        ch = sys.stdin.read(1)
-    finally:
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-    return ch
-
-
-def find_stm32_port() -> Optional[str]:
-    ports = serial.tools.list_ports.comports()
-    for port in ports:
-        if "usbmodem" in port.device.lower():
-            return port.device
-    return None
+from uart_scripts.utils import (
+    get_key,
+    find_stm32_port,
+    create_serial_connection,
+    read_serial_line,
+)
 
 
 def read_serial(ser: serial.Serial) -> None:
     """Function to continuously read from serial port"""
     while True:
-        if ser.in_waiting:
-            try:
-                line: str = ser.readline().decode("utf-8").strip()
-                if line:
-                    print(f"Received: {line}")
-            except UnicodeDecodeError:
-                print("Received some non-text data")
-            except:
-                break
+        line = read_serial_line(ser)
+        if line:
+            print(f"Received: {line}")
         time.sleep(0.01)  # Sleep to prevent CPU hogging
 
 
 def main() -> None:
+    # TODO instead of defining just OUTPUT_CH, we should define a list of output classes
+    # this allows us to be more clear about what each class index / label corresponds to
+    # and avoid confusion
+
     # Try to open the file directly first, then try with parent directory if that fails
     file_path = "Src/TinyEngine/include/OUTPUT_CH.h"
     try:
@@ -77,14 +58,7 @@ def main() -> None:
 
     ser: Optional[serial.Serial] = None
     try:
-        ser = serial.Serial(
-            port=port,
-            baudrate=115200,
-            bytesize=serial.EIGHTBITS,
-            parity=serial.PARITY_NONE,
-            stopbits=serial.STOPBITS_ONE,
-            timeout=0.1,
-        )
+        ser = create_serial_connection(port)
 
         print("Connected to", port)
         print("\nCommands:")

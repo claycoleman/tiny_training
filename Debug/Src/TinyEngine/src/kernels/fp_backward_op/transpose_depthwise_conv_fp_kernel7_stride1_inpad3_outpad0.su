@@ -1,4 +1,4 @@
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:574:20:transpose_depthwise_mac_kernel7_2row_fp_uniweight	4	static
-/Users/ccoleman/Developer/harvard/tinyml/tinyengine/tutorial/TinyEngine_vww_training_tutorial/Src/TinyEngine/include/nnfunctions_fp.h:689:20:transpose_depthwise_mac_kernel7_1row_fp_uniweight	0	static
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:574:20:transpose_depthwise_mac_kernel7_2row_fp_uniweight	4	static
+/Users/ccoleman/Developer/harvard/tinyml/tiny_training/Src/TinyEngine/include/nnfunctions_fp.h:689:20:transpose_depthwise_mac_kernel7_1row_fp_uniweight	0	static
 ../Src/TinyEngine/src/kernels/fp_backward_op/transpose_depthwise_conv_fp_kernel7_stride1_inpad3_outpad0.c:28:22:transpose_depthwise_conv_fp_kernel7_stride1_inpad3_outpad0_IOHW_int8weight_partialCH	288	static
 ../Src/TinyEngine/src/kernels/fp_backward_op/transpose_depthwise_conv_fp_kernel7_stride1_inpad3_outpad0.c:142:22:transpose_depthwise_conv_fp_kernel7_stride1_inpad3_outpad0_IOHW_int8weight	288	static
