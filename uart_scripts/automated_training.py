@@ -32,6 +32,9 @@ def load_datasets(base_path: str) -> Dict[str, List[str]]:
                 d.name for d in dataset_dir.iterdir() if d.is_dir()
             ]
 
+    if not datasets:
+        raise RuntimeError("No datasets found")
+
     return datasets
 
 
@@ -146,14 +149,53 @@ def clean_project():
         raise
 
 
+def is_macos():
+    return os.uname().sysname == "Darwin"
+
+
+def is_windows():
+    return os.name == "nt"
+
+
+def is_linux():
+    return os.uname().sysname == "Linux"
+
+
 def deploy_to_microcontroller():
     """Deploy the compiled binary to the microcontroller"""
-    try:
-        subprocess.run(
-            ["st-flash", "write", "path/to/your/binary", "0x8000000"], check=True
+    if is_macos():
+        path_to_programmer = "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.macos64_2.1.400.202404281720/tools/bin/STM32_Programmer_CLI"
+    elif is_windows():
+        # TODO make this work for windows
+        path_to_programmer = "STM32_Programmer_CLI"
+    else:
+        raise RuntimeError(f"Unsupported OS: {os.uname().sysname}")
+
+    # validate that the path to the programmer exists
+    if not os.path.exists(path_to_programmer):
+        raise RuntimeError(
+            f"STM cli can't be found at: {path_to_programmer}; "
+            "this likely needs to be tweaked to work for your system"
         )
+
+    try:
+        binary_path = "./Debug/TTE_demo_mcunet.elf"
+        cmd = [
+            path_to_programmer,
+            "--connect",
+            "port=SWD",
+            "--write",
+            binary_path,
+            "--verify",
+            "-rst",
+        ]
+
+        print(f"Deploying binary: {binary_path}")
+        subprocess.run(cmd, check=True, capture_output=True, text=True)
+        print("Deployment complete")
     except subprocess.CalledProcessError as e:
         print(f"Error during deployment: {e}")
+        print(f"Error output: {e.stdout}\n{e.stderr}")
         raise
 
 
