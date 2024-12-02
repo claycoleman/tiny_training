@@ -8,6 +8,9 @@ import os
 import subprocess
 from pathlib import Path
 
+# Define project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+DEBUG_DIR = PROJECT_ROOT / "Debug"
 
 def find_stm32_port() -> Optional[str]:
     """Find the STM32 board port.
@@ -111,6 +114,8 @@ def clean_project(build_dir: str = "./Debug") -> None:
     Args:
         build_dir (str): Directory containing the Makefile
     """
+    build_dir = str(DEBUG_DIR) if build_dir == "./Debug" else build_dir
+
     try:
         print("Cleaning project...")
         result = subprocess.run(
@@ -136,6 +141,12 @@ def build_project(build_dir: str = "./Debug") -> None:
     Args:
         build_dir (str): Directory containing the Makefile
     """
+    build_dir = str(DEBUG_DIR) if build_dir == "./Debug" else build_dir
+    
+    if not os.path.exists(build_dir):
+        print(f"Creating build directory: {build_dir}")
+        os.makedirs(build_dir)
+
     try:
         print("Building project...")
         result = subprocess.run(
@@ -178,6 +189,9 @@ def deploy_binary(binary_path: str = "./Debug/TTE_demo_mcunet.elf") -> None:
     Args:
         binary_path (str): Path to the binary file
     """
+    if binary_path == "./Debug/TTE_demo_mcunet.elf":
+        binary_path = str(DEBUG_DIR / "TTE_demo_mcunet.elf")
+
     try:
         programmer = get_programmer_path()
         cmd = [

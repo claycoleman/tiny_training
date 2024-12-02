@@ -11,7 +11,7 @@ import numpy as np
 import serial
 import serial.tools.list_ports
 
-from uart_scripts.utils import (
+from utils import (
     clean_project,
     build_project,
     deploy_binary,
@@ -19,6 +19,17 @@ from uart_scripts.utils import (
     create_serial_connection,
 )
 
+# Define project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+
+IDX_TO_CLASS = {
+    0: "backpack",
+    1: "desk",
+    2: "dining_table",
+    3: "keyboard",
+    4: "remote"
+}
+CLASS_TO_IDX = {v: k for k, v in IDX_TO_CLASS.items()}
 
 def load_datasets(base_path: str) -> Dict[str, List[str]]:
     """Load datasets from the datasets folder"""
@@ -171,7 +182,7 @@ class UARTHandler:
 
 def main():
     # Load available datasets
-    datasets = load_datasets("datasets")
+    datasets = load_datasets(str(PROJECT_ROOT / "datasets/ten_class_data"))
     print("Available datasets:")
     for idx, name in enumerate(datasets.keys()):
         print(f"{idx + 1}: {name}")
@@ -181,19 +192,17 @@ def main():
         raise ValueError("Invalid dataset number")
 
     dataset_name = list(datasets.keys())[dataset_idx]
-    dataset_path = f"datasets/{dataset_name}"
+    dataset_path = str(PROJECT_ROOT / "datasets/ten_class_data" / dataset_name)
 
     # Load all images and classes
     class_names = datasets[dataset_name]
-    class_to_idx = {name: idx for idx, name in enumerate(class_names)}
-
     all_data = []
     for class_name in class_names:
         images = load_class_images(dataset_path, class_name)
-        all_data.extend([(img, class_to_idx[class_name]) for img in images])
+        all_data.extend([(img, CLASS_TO_IDX[class_name]) for img in images])
 
     # Update OUTPUT_CH in the .h file
-    output_ch_file = "Src/TinyEngine/include/OUTPUT_CH.h"
+    output_ch_file = str(PROJECT_ROOT / "Src/TinyEngine/include/OUTPUT_CH.h")
     update_output_ch_file(len(class_names), output_ch_file)
 
     # In your main function, before starting UART communication:
