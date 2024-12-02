@@ -1,5 +1,5 @@
 import argparse
-from uart_scripts.utils import clean_project, build_project, deploy_binary
+from utils import clean_project, build_project, deploy_binary
 
 
 def main():
