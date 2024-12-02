@@ -5,3 +5,7 @@ Debug/*
 !Debug/**/*.mk
 !Debug/objects.list
 Debug_backup_*
+
+# Ignore raw dataset files
+datasets/raw_data/
+datasets/*.zip
