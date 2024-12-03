@@ -165,8 +165,9 @@ int main(void) {
     
     if (training_mode) {
       if (just_started_training_mode) {
-        sprintf(showbuf, " Training ");
+        sprintf(showbuf, "Train Ready");
         displaystring(showbuf, 273, 10);
+        displayTrainingReady();
       }
       just_started_training_mode = false;
       bool is_valid_class_number = s[0] >= '0' && s[0] <= '0' + OUTPUT_CH - 1;
@@ -205,7 +206,7 @@ int main(void) {
         }
 
         end = HAL_GetTick();
-        detectResponse(0, training_mode, predicted_class, true_class_from_user_input);
+        displayTrainingResponse(predicted_class, true_class_from_user_input);
 
         // about to read next frame
         ReadCapture();
@@ -219,7 +220,7 @@ int main(void) {
         // KEY COORDINATION LOG
         printLog("TRAINING DONE\r\n");
         displaystring(showbuf, 273, 10);
-        detectResponse(end - start, training_mode, predicted_class, true_class_from_user_input);
+        displayMs(end - start);
 
         // TODO: determine if this is the best way to do this
         ReadCapture();
@@ -249,7 +250,8 @@ int main(void) {
         sprintf(showbuf, " Inference ");
       }
       displaystring(showbuf, 273, 10);
-      detectResponse(end - starti, training_mode, predicted_class, predicted_class);
+      displayInferenceResponse(predicted_class);
+      displayMs(end - start);
     }
   }
 

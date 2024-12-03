@@ -26,8 +26,10 @@ void loadRGB565LCD(uint32_t x, uint32_t y, uint32_t width, uint32_t height,
 void loadgrayscale2LCD(uint8_t *src);
 void lcdsetup();
 
-void detectResponse(float ms, int training_mode, int pred,
-                    int label);
+void displayMs(float ms);
+void displayTrainingResponse(int pred, int label);
+void displayInferenceResponse(int pred);
+void displayTrainingReady();
 
 void displaystring(char *buf, int x, int y);
 

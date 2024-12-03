@@ -17,6 +17,7 @@
  * -------------------------------------------------------------------- */
 
 #include "lcd.h"
+#include <cstring>
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
 #include "stm32f7xx_hal.h"
@@ -80,61 +81,135 @@ void displaystring(char *buf, int x, int y) {
   BSP_LCD_DisplayStringAt(x, y, buf, LEFT_MODE);
 }
 
-void detectResponse(float ms, int training_mode, int pred, int label) {
-  char buf[20];
-  if (training_mode) {
-    if (pred == label) {
-      drawGreenBackground(270, 480, 40, 100);
-      drawGreenBackground(270, 480, 125, 180);
-      drawGreenBackground(270, 480, 205, 250);
-    } else {
-      drawRedBackground(270, 480, 40, 100);
-      drawRedBackground(270, 480, 125, 180);
-      drawRedBackground(270, 480, 205, 250);
-    }
-    BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    sprintf(buf, " Prediction:");
-    BSP_LCD_DisplayStringAt(273, 80, buf, LEFT_MODE);
-    sprintf(buf, "  class %d  ", pred);
-    BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
-    sprintf(buf, "Ground-Truth:");
-    BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
-    sprintf(buf, "  class %d   ", label);
-    BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
-  } else {
-    // strangely enough, the model is trained to output 0 for person and 1 for no person
-    const char *output_label = OUTPUT_LABELS[pred];
+void displayMultilineText(const char* strings[], int numLines, int x, int y, int lineSpacing = 20) {
+  // TODO this is inefficient, we should have our lines be 12 chars max each
+  static char padded_line[20];  // Make sure this is long enough for your max width
+  for (int i = 0; i < numLines; i++) {
+    // Fill with spaces to clear any previous text
+    sprintf(padded_line, "%-12s", strings[i]); 
+    BSP_LCD_DisplayStringAt(x, y + (i * lineSpacing), padded_line, LEFT_MODE);
+  }
+}
 
-    // // if (pred == 0) {
-    //   drawBlueBackground(270, 480, 40, 100);
-    //   drawBlueBackground(270, 480, 125, 180);
-    //   drawBlueBackground(270, 480, 205, 250);
-    //   BSP_LCD_SetTextColor(LCD_COLOR_RED);
-    //   BSP_LCD_DisplayStringAt(273, 100, output_label, LEFT_MODE);
-    // } else {
-      drawBlackBackground(270, 480, 40, 100);
-      drawBlackBackground(270, 480, 125, 180);
-      drawBlackBackground(270, 480, 205, 250);
-      BSP_LCD_SetTextColor(LCD_COLOR_RED);
-      // display the predicted label, the label index, and the confidence score
-      sprintf(buf, "%-13s", output_label);
-      BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
-      sprintf(buf, "  class %d  ", pred);
-      BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
-      // TODO: consider displaying the confidence score
-      // sprintf(buf, "  conf: %.2f", conf);
-      // BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
-    //}
 
-    if (ms == 0)
-      return;
+void displayMs(float ms) {
+  if (ms != 0) {
     BSP_LCD_SetTextColor(LCD_COLOR_BLUE);
     volatile float rate = 1000 / ms;
     volatile int decimal = (int)rate;
     volatile int floating = (int)((rate - (float)decimal) * 1000);
+    char buf[20];
     sprintf(buf, "  fps:%d.%03d ", decimal, floating);
-    BSP_LCD_DisplayStringAt(273, 180, buf, LEFT_MODE);
+    BSP_LCD_DisplayStringAt(273, 205, buf, LEFT_MODE);
   }
+}
+
+void displayTrainingResponse(int pred, int label) {
+  // we print at most 8 lines for training response
+  // Prediction or Ground Truth
+  // pred_label or true_label line 1
+  // pred_label or true_label line 2 (if it's longer than 12 characters)
+  // pred or label
+  const char* lines[8];
+  int numLines = 0;
+
+  // Prepare prediction lines
+  lines[numLines++] = "Prediction:";
+  
+  // Set backgrounds and color as before
+  if (pred == label) {
+    drawGreenBackground(270, 480, 40, 100);
+    drawGreenBackground(270, 480, 125, 180);
+    drawGreenBackground(270, 480, 205, 250);
+  } else {
+    drawRedBackground(270, 480, 40, 100);
+    drawRedBackground(270, 480, 125, 180);
+    drawRedBackground(270, 480, 205, 250);
+  }
+  BSP_LCD_SetTextColor(LCD_COLOR_RED);
+  
+  const char *pred_label = OUTPUT_LABELS[pred];
+  const char *true_label = OUTPUT_LABELS[label];
+  
+  if (strlen(pred_label) > 12) {
+    static char first_line[20];
+    strncpy(first_line, pred_label, 12);
+    first_line[12] = '\0';
+    lines[numLines++] = first_line;
+    
+    static char second_line[20];
+    sprintf(second_line, "%s", &pred_label[12]);
+    lines[numLines++] = second_line;
+  } else {
+    lines[numLines++] = pred_label;
+  }
+
+  static char pred_class_line[20];
+  sprintf(pred_class_line, "  class %d  ", pred);
+  lines[numLines++] = pred_class_line;
+  
+  // Prepare ground truth lines
+  lines[numLines++] = "True Label:";
+  if (strlen(true_label) > 12) {
+    static char first_line[20];
+    strncpy(first_line, true_label, 12);
+    first_line[12] = '\0';
+    lines[numLines++] = first_line;
+    
+    static char second_line[20];
+    sprintf(second_line, "%s", &true_label[12]);
+    lines[numLines++] = second_line;
+  } else {
+    lines[numLines++] = true_label;
+  }
+
+  static char true_class_line[20];
+  sprintf(true_class_line, "  class %d  ", label);
+  lines[numLines++] = true_class_line;
+  
+  displayMultilineText(lines, numLines, 273, 60);
+}
+
+void displayInferenceResponse(int pred) {
+  // we print at most 4 lines for inference response
+  // Prediction:
+  // pred_label line 1
+  // pred_label line 2 (if it's longer than 12 characters)
+  // class X
+  const char* lines[4];
+  int numLines = 0;
+  
+  const char *output_label = OUTPUT_LABELS[pred];
+  
+  drawBlackBackground(270, 480, 40, 100);
+  drawBlackBackground(270, 480, 125, 180);
+  drawBlackBackground(270, 480, 205, 250);
+  BSP_LCD_SetTextColor(LCD_COLOR_RED);
+  
+  lines[numLines++] = "Prediction:";
+  
+  if (strlen(output_label) > 12) {
+    static char first_line[20];
+    strncpy(first_line, output_label, 12);
+    first_line[12] = '\0';
+    lines[numLines++] = first_line;
+    
+    static char second_line[20];
+    sprintf(second_line, "%s", &output_label[12]);
+    lines[numLines++] = second_line;
+  } else {
+    lines[numLines++] = output_label;
+  }
+  
+  static char class_line[20];
+  sprintf(class_line, "  class %d  ", pred);
+  lines[numLines++] = class_line;
+  displayMultilineText(lines, numLines, 273, 80);
+}
+
+void displayTrainingReady() {
+  // wipe out all text below the training ready text
+  drawBlackBackground(270, 480, 40, 250);
 }
 
 void lcdsetup() {
