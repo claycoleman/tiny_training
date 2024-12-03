@@ -1,5 +1,6 @@
 import sys
 import termios
+import time
 import tty
 import serial
 import serial.tools.list_ports
@@ -109,11 +110,14 @@ def get_build_env() -> dict:
     return env
 
 
-def clean_project(build_dir: str = str(PROJECT_ROOT / "Debug")) -> None:
+def clean_project(
+    build_dir: str = str(PROJECT_ROOT / "Debug"), verbose: bool = False
+) -> None:
     """Clean the project build
 
     Args:
         build_dir (str): Directory containing the Makefile
+        verbose (bool): Whether to print the output of the command
     """
     try:
         print("Cleaning project...")
@@ -125,7 +129,7 @@ def clean_project(build_dir: str = str(PROJECT_ROOT / "Debug")) -> None:
             capture_output=True,
             text=True,
         )
-        if result.stdout:
+        if verbose:
             print(result.stdout)
     except subprocess.CalledProcessError as e:
         print(f"Error during clean: {e}")
@@ -134,11 +138,14 @@ def clean_project(build_dir: str = str(PROJECT_ROOT / "Debug")) -> None:
         raise
 
 
-def build_project(build_dir: str = str(PROJECT_ROOT / "Debug")) -> None:
+def build_project(
+    build_dir: str = str(PROJECT_ROOT / "Debug"), verbose: bool = False
+) -> None:
     """Build the project
 
     Args:
         build_dir (str): Directory containing the Makefile
+        verbose (bool): Whether to print the output of the command
     """
     try:
         print("Building project...")
@@ -150,7 +157,7 @@ def build_project(build_dir: str = str(PROJECT_ROOT / "Debug")) -> None:
             capture_output=True,
             text=True,
         )
-        if result.stdout:
+        if verbose:
             print(result.stdout)
     except subprocess.CalledProcessError as e:
         print(f"Error during build: {e}")
@@ -176,11 +183,15 @@ def get_programmer_path() -> str:
     return path
 
 
-def deploy_binary(binary_path: str = str(PROJECT_ROOT / "Debug" / "TTE_demo_mcunet.elf")) -> None:
+def deploy_binary(
+    binary_path: str = str(PROJECT_ROOT / "Debug" / "TTE_demo_mcunet.elf"),
+    verbose: bool = False,
+) -> None:
     """Deploy binary to the microcontroller
 
     Args:
         binary_path (str): Path to the binary file
+        verbose (bool): Whether to print the output of the command
     """
     try:
         programmer = get_programmer_path()
@@ -196,8 +207,10 @@ def deploy_binary(binary_path: str = str(PROJECT_ROOT / "Debug" / "TTE_demo_mcun
 
         print(f"Deploying binary: {binary_path}")
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
-        if result.stdout:
+        if verbose:
             print(result.stdout)
+        # sleep for 5 seconds to allow the device to boot
+        time.sleep(5)
         print("Deployment complete")
     except subprocess.CalledProcessError as e:
         print(f"Error during deployment: {e}")

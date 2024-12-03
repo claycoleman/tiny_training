@@ -22,14 +22,6 @@ from utils import (
 # Define project root directory
 PROJECT_ROOT = Path(__file__).parent.parent
 
-IDX_TO_CLASS = {
-    0: "backpack",
-    1: "desk",
-    2: "dining_table",
-    3: "keyboard",
-    4: "remote"
-}
-CLASS_TO_IDX = {v: k for k, v in IDX_TO_CLASS.items()}
 
 def load_datasets(base_path: str) -> Dict[str, List[str]]:
     """Load datasets from the datasets folder"""
@@ -102,6 +94,8 @@ def update_output_ch_file(num_classes: int, file_path: str):
 
 
 class UARTHandler:
+    DEBUG_RECEIVED_MESSAGES = False
+
     def __init__(self):
         self.port = find_stm32_port()
         if not self.port:
@@ -122,7 +116,8 @@ class UARTHandler:
                 try:
                     line = self.ser.readline().decode("utf-8").strip()
                     if line:
-                        print(f"Received: {line}")
+                        if self.DEBUG_RECEIVED_MESSAGES:
+                            print(f"Received: {line}")
                         self.last_messages.append(line)
                         self.message_received.set()
                 except Exception as e:
@@ -132,6 +127,9 @@ class UARTHandler:
     def send_command(self, cmd: str):
         self.ser.write(cmd.encode())
         print(f"Sent command: {cmd}")
+        # wait to receive "COMMAND RECEIVED: <cmd>"
+        if not self.wait_for_message(f"COMMAND RECEIVED: {cmd}"):
+            raise TimeoutError(f"Failed to receive command: {cmd}")
         # sleep 0.1s to allow for command to be processed
         time.sleep(0.1)
 
@@ -183,23 +181,38 @@ class UARTHandler:
 def main():
     # Load available datasets
     datasets = load_datasets(str(PROJECT_ROOT / "datasets/ten_class_data"))
+    if not datasets:
+        raise RuntimeError("No datasets found")
+
     print("Available datasets:")
     for idx, name in enumerate(datasets.keys()):
         print(f"{idx + 1}: {name}")
+    print()
 
-    dataset_idx = int(input("Select dataset number: ")) - 1
-    if dataset_idx < 0 or dataset_idx >= len(datasets):
-        raise ValueError("Invalid dataset number")
+    while True:
+        dataset_input = input("Select dataset number: ")
+        try:
+            dataset_idx = int(dataset_input) - 1
+        except ValueError:
+            print("Invalid input")
+            continue
+
+        if dataset_idx < 0 or dataset_idx >= len(datasets):
+            print("Invalid dataset number")
+            continue
+
+        break
 
     dataset_name = list(datasets.keys())[dataset_idx]
     dataset_path = str(PROJECT_ROOT / "datasets/ten_class_data" / dataset_name)
 
     # Load all images and classes
     class_names = datasets[dataset_name]
+    class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     all_data = []
     for class_name in class_names:
         images = load_class_images(dataset_path, class_name)
-        all_data.extend([(img, CLASS_TO_IDX[class_name]) for img in images])
+        all_data.extend([(img, class_to_idx[class_name]) for img in images])
 
     # Update OUTPUT_CH in the .h file
     output_ch_file = str(PROJECT_ROOT / "Src/TinyEngine/include/OUTPUT_CH.h")
@@ -245,7 +258,14 @@ def main():
 
                 # Send class number and wait for training completion
                 uart.send_command(str(class_num))
-                if not uart.wait_for_message("TRAINING DONE"):
+                received_training_done = uart.wait_for_message("TRAINING DONE")
+                # If this is a training command (a number), wait for training completion and ready signal
+                if received_training_done:
+                    ready_for_next = uart.wait_for_message("READY FOR NEXT TRAINING")
+                    if not ready_for_next:
+                        raise TimeoutError("Failed to receive ready signal")
+                else:
+                    # TODO: add a retry mechanism; if it fails 3 times, raise an error
                     print(f"Warning: No training confirmation for image {idx + 1}")
 
         # Validation phase

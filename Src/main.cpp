@@ -141,6 +141,10 @@ int main(void) {
      * class number => train that class
      */
     receiveChar(s);
+    char cmdLog[150];
+    // KEY COORDINATION LOG
+    sprintf(cmdLog, "COMMAND RECEIVED: %c\r\n", s[0]);
+    printLog(cmdLog);
     if (s[0] == 't') {
       just_started_training_mode = training_mode != 1;
       training_mode = true;
@@ -157,9 +161,6 @@ int main(void) {
     
     if (training_mode) {
       if (just_started_training_mode) {
-        // help user to know that training mode is now active.
-        // we only print this once when switching to training mode
-        // because we want to show the training messages when a class is being trained.
         sprintf(showbuf, " Training ");
         displaystring(showbuf, 273, 10);
       }
@@ -211,9 +212,17 @@ int main(void) {
         train(label);
         end = HAL_GetTick();
         sprintf(showbuf, "Train done ");
-        printLog("TRAINING DONE");
+        // KEY COORDINATION LOG
+        printLog("TRAINING DONE\r\n");
         displaystring(showbuf, 273, 10);
         detectResponse(end - start, training_mode, predicted_class, label);
+
+        // TODO: determine if this is the best way to do this
+        ReadCapture();
+        StartCapture();
+        DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
+        // KEY COORDINATION LOG
+        printLog("READY FOR NEXT TRAINING\r\n");
       } 
     } else {
       // inference mode or validation mode
@@ -232,6 +241,7 @@ int main(void) {
         sprintf(showbuf, " Validation ");
         // output validation mode class
         char logbuf[150];
+        // KEY COORDINATION LOG
         sprintf(logbuf, "INFERENCE COMPLETE: %d\r\n", predicted_class);
         printLog(logbuf);
       } else {
