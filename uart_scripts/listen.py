@@ -1,5 +1,10 @@
 # pip install pyserial
-from uart_scripts.utils import read_serial_line
+import sys
+from utils import (
+    create_serial_connection,
+    find_stm32_port,
+    read_serial_line,
+)
 import time
 import threading
 
@@ -12,6 +17,14 @@ def read_serial():
             print(f"Received: {line}")
         time.sleep(0.01)
 
+
+port = find_stm32_port()
+if not port:
+    print("STM32 board not found! Please check the connection.")
+    sys.exit(1)
+
+print(f"Found port: {port}")
+ser = create_serial_connection(port)
 
 try:
     # Start the reading thread

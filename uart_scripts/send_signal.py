@@ -1,16 +1,43 @@
-# pip install pyserial to use this script
 import re
-import sys
 import time
-import serial
-from typing import Match, Optional
+from typing import List, Optional
 
-from uart_scripts.utils import (
-    get_key,
-    find_stm32_port,
+# pip install pyserial to use this script
+import serial
+
+from utils import (
     create_serial_connection,
+    find_stm32_port,
+    get_key,
     read_serial_line,
 )
+
+
+def parse_output_ch_header(file_path: str) -> List[str]:
+    """Parse OUTPUT_CH.h to get the labels"""
+    try:
+        with open(file_path, "r") as f:
+            content = f.read()
+
+        # Find the array definition
+        array_match = re.search(
+            r"OUTPUT_LABELS\[\]\s*=\s*{([^}]+)}", content, re.DOTALL
+        )
+        if not array_match:
+            raise ValueError("Could not find OUTPUT_LABELS array in header file")
+
+        # Extract and clean up the labels
+        labels_text = array_match.group(1)
+        labels = [
+            label.strip().strip('"').strip("'")
+            for label in labels_text.split(",")
+            if label.strip()
+        ]
+
+        return labels
+    except Exception as e:
+        print(f"Error parsing OUTPUT_CH.h: {e}")
+        return []
 
 
 def read_serial(ser: serial.Serial) -> None:
@@ -23,32 +50,21 @@ def read_serial(ser: serial.Serial) -> None:
 
 
 def main() -> None:
-    # TODO instead of defining just OUTPUT_CH, we should define a list of output classes
-    # this allows us to be more clear about what each class index / label corresponds to
-    # and avoid confusion
-
-    # Try to open the file directly first, then try with parent directory if that fails
+    # Load labels from OUTPUT_CH.h
     file_path = "Src/TinyEngine/include/OUTPUT_CH.h"
     try:
-        file = open(file_path, "r")
+        labels = parse_output_ch_header(file_path)
     except FileNotFoundError:
         # If file not found, try with parent directory
         file_path = "../" + file_path
-        file = open(file_path, "r")
+        labels = parse_output_ch_header(file_path)
 
-    output_channel: Optional[int] = None
-    with file:
-        for line in file:
-            if "OUTPUT_CH" in line:
-                match: Optional[Match[str]] = re.search(r"\d+", line)
-                if match:
-                    output_channel = int(match.group())
-                break
-
-    if output_channel is None:
-        print("Failed to find OUTPUT_CH in OUTPUT_CH.h")
+    if not labels:
+        print("Failed to parse labels from OUTPUT_CH.h")
         return
-    print(f"Found OUTPUT_CH {output_channel}")
+
+    output_channel = len(labels)
+    print(f"Found {output_channel} labels: {', '.join(labels)}")
 
     port = find_stm32_port()
     if not port:
@@ -65,8 +81,8 @@ def main() -> None:
         print("i: Inference mode")
         print("v: Validation mode")
         print("t: Training mode")
-        for i in range(output_channel):
-            print(f"{i}: Set ground truth to class {i}")
+        for i, label in enumerate(labels):
+            print(f"{i}: Set ground truth to class {label} ({i})")
         print("q: Quit")
 
         valid_classes = [str(i) for i in range(output_channel)]
