@@ -226,9 +226,10 @@ def load_datasets(base_path: str) -> Dict[str, List[str]]:
     # List all directories in datasets folder
     for dataset_dir in base.iterdir():
         if dataset_dir.is_dir():
-            datasets[dataset_dir.name] = [
+            # Get class names from subdirectories, and sort them to ensure consistent order
+            datasets[dataset_dir.name] = sorted(
                 d.name for d in dataset_dir.iterdir() if d.is_dir()
-            ]
+            )
 
     if not datasets:
         raise RuntimeError("No datasets found")
