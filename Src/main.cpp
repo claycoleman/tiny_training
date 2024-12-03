@@ -34,6 +34,11 @@ extern "C" {
 
 #include "stm32746g_discovery.h"
 
+const char *output_labels[OUTPUT_CH] = {
+    "Yoni", "Laptop", "Couch", "Chair", "Book", 
+    "Lamp", "Flower", "Picture", "Ceiling", "Pitcher"
+};
+
 static void SystemClock_Config(void);
 static void Error_Handler(void);
 static void CPU_CACHE_Enable(void);
@@ -52,6 +57,7 @@ signed char out_int[OUTPUT_CH];
 float labels[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 void train(int cls) {
   char cbuf[20];
+  // Current model architecture has 10 output classes, and isn't dependent on OUTPUT_CH
   for (int i = 0; i < 10; i++) {
     if (i == cls) {
       labels[i] = 1.0f;
@@ -64,7 +70,7 @@ void train(int cls) {
 void invoke_new_weights_givenimg(signed char *out_int8) {
   invoke_inf();
   signed char *output = (signed char *)getOutput();
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < OUTPUT_CH; i++)
     out_int8[i] = output[i];
 }
 
@@ -194,12 +200,12 @@ int main(void) {
 
         start = HAL_GetTick();
         invoke_new_weights_givenimg(out_int);
-        int predicted_class;
-        if (out_int[0] > out_int[1]) {
-          predicted_class = 0;
-        } else {
-          predicted_class = 1;
+        int predicted_class = 0;
+        // Get max output class
+        for (int i = 0; i < OUTPUT_CH; i++) {
+          predicted_class = out_int[i] > out_int[predicted_class] ? i : predicted_class;
         }
+
         end = HAL_GetTick();
         detectResponse(0, training_mode, predicted_class, label);
 
@@ -228,14 +234,11 @@ int main(void) {
       // inference mode or validation mode
       start = HAL_GetTick();
       invoke_new_weights_givenimg(out_int);
-      // HARDCODED 2 channel output
-      // strangely enough, the model is trained to output 0 for person and 1 for no person
+      // Max predicted label
       int predicted_class = 0;
-      if (out_int[0] > out_int[1]) {
-        predicted_class = 0;
-      } else {
-        predicted_class = 1;
-      }
+      for (int i = 0; i < OUTPUT_CH; i++) {
+        predicted_class = out_int[i] > out_int[predicted_class] ? i : predicted_class;
+      }  
       end = HAL_GetTick();
       if (validation_mode) {
         sprintf(showbuf, " Validation ");

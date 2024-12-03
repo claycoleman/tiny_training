@@ -20,6 +20,7 @@
 #include "stm32746g_discovery.h"
 #include "stm32746g_discovery_lcd.h"
 #include "stm32f7xx_hal.h"
+#include "OUTPUT_CH.h"
 
 #define TRANS 128
 
@@ -102,19 +103,22 @@ void detectResponse(float ms, int training_mode, int pred, int label) {
     BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
   } else {
     // strangely enough, the model is trained to output 0 for person and 1 for no person
-    if (pred == 0) {
-      drawBlueBackground(270, 480, 40, 100);
-      drawBlueBackground(270, 480, 125, 180);
-      drawBlueBackground(270, 480, 205, 250);
-      BSP_LCD_SetTextColor(LCD_COLOR_RED);
-      BSP_LCD_DisplayStringAt(273, 100, "   Person   ", LEFT_MODE);
-    } else {
+    const char *output_label = output_labels[pred];
+
+    // // if (pred == 0) {
+    //   drawBlueBackground(270, 480, 40, 100);
+    //   drawBlueBackground(270, 480, 125, 180);
+    //   drawBlueBackground(270, 480, 205, 250);
+    //   BSP_LCD_SetTextColor(LCD_COLOR_RED);
+    //   BSP_LCD_DisplayStringAt(273, 100, output_label, LEFT_MODE);
+    // } else {
       drawBlackBackground(270, 480, 40, 100);
       drawBlackBackground(270, 480, 125, 180);
       drawBlackBackground(270, 480, 205, 250);
       BSP_LCD_SetTextColor(LCD_COLOR_RED);
-      BSP_LCD_DisplayStringAt(273, 100, "  No Person ", LEFT_MODE);
-    }
+      sprintf(buf, "%-13s", output_label);
+      BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
+    //}
 
     if (ms == 0)
       return;
