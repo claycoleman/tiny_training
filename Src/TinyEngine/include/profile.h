@@ -25,9 +25,6 @@
 
 static UART_HandleTypeDef UART;
 #define RUNS 1
-static int profile_i;
-static int start, end;
-static char buf[100];
 
 static inline void printLog(const char *s) {
 	static int is_initialized = 0;

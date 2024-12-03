@@ -80,8 +80,55 @@ void invoke_new_weights_givenimg(signed char *out_int8) {
 #define RES_W 128
 #define RES_H 120
 
+const int scale_factor = 1;
 uint16_t *RGBbuf;
 #define ENABLE_TRAIN
+
+void readCameraInputsIntoMemory(signed char *input, uint16_t *RGBbuf) {
+  ReadCapture();
+  StartCapture();
+  DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, scale_factor);
+}
+
+void displayCameraInputOnLCD(signed char *input, uint16_t *RGBbuf) {
+  // DecodeandProcessAndRGB will write colors to the RGBbuf if scale_factor == 1
+  // we manually write 565 colors to the RGBbuf if scale_factor != 1
+  if (scale_factor != 1) {
+    // THIS CODE IS UNTESTED SINCE SCALE FACTOR IS SET TO 1
+    // if we have more width than height, we need to zero out the extra width
+    if (RES_W > RES_H) {
+      for (int i = 0; i < RES_W * (RES_W - RES_H) * 3; i++) {
+        input[RES_H * RES_W * 3 + i] = -128;
+      }
+    } else if (RES_H > RES_W) {
+      for (int i = 0; i < RES_H * (RES_H - RES_W) * 3; i++) {
+        input[RES_W * RES_H * 3 + i] = -128;
+      }
+    }
+    // input is now a 128x128x3 array of signed chars
+    // convert our input to rgb565
+    for (int y = 0; y < RES_H; y++) {
+      for (int x = 0; x < RES_W; x++) {
+        // cast to int32_t to avoid overflow
+        uint8_t red = (int32_t)input[(RES_W * y + x) * 3] + 128;
+        uint8_t green = (int32_t)input[(RES_W * y + x) * 3 + 1] + 128;
+        uint8_t blue = (int32_t)input[(RES_W * y + x) * 3 + 2] + 128;
+
+        // converting rgb888 to rgb565
+        uint16_t b = (blue >> 3) & 0x1f;
+        uint16_t g = ((green >> 2) & 0x3f) << 5;
+        uint16_t r = ((red >> 3) & 0x1f) << 11;
+
+        RGBbuf[RES_W * y + x] = (uint16_t)(r | g | b);
+      }
+    }
+  }
+  // displays from (10, 10) to (10 + RES_W, 10 + RES_H).
+  loadRGB565LCD(10, 10, RES_W, RES_H, RGBbuf, 2);
+}
+
+const char DEFAULT_CMD_CHAR = 'c';
+
 int main(void) {
   char buf[150];
   char showbuf[150];
@@ -103,41 +150,23 @@ int main(void) {
   StartCapture();
   signed char *input = getInput();
   
+  // we have space allocated for the display buffer in input, but it's after
+  // the rgba 128x128 uint8 image.
   RGBbuf = (uint16_t *)&input[128 * 128 * 4];
   bool training_mode = false;
   bool validation_mode = false;
   bool just_started_training_mode = false;
   while (1) {
     starti = HAL_GetTick();
-    ReadCapture();
-    StartCapture();
-    DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
-    for (int i = 0; i < 128 * 8 * 3; i++) {
-      input[120 * 128 * 3 + i] = -128;
-    }
-    for (int i = 0; i < RES_W; i++) {
-      for (int j = 0; j < RES_W; j++) {
-        uint8_t red = (int32_t)input[(128 * i + j) * 3] + 128;
-        uint8_t green = (int32_t)input[(128 * i + j) * 3 + 1] + 128;
-        uint8_t blue = (int32_t)input[(128 * i + j) * 3 + 2] + 128;
-
-        uint16_t b = (blue >> 3) & 0x1f;
-        uint16_t g = ((green >> 2) & 0x3f) << 5;
-        uint16_t r = ((red >> 3) & 0x1f) << 11;
-
-        RGBbuf[j + RES_W * i] = (uint16_t)(r | g | b);
-      }
-    }
-
-    loadRGB565LCD(10, 10, RES_W, RES_W, RGBbuf, 2);
+    readCameraInputsIntoMemory(input, RGBbuf);
+    displayCameraInputOnLCD(input, RGBbuf);
     endi = HAL_GetTick();
 
     uint8_t button0 = BSP_PB_GetState(BUTTON_KEY) == GPIO_PIN_SET;
     uint8_t button1 = !HAL_GPIO_ReadPin(BUTTON1_GPIO_Port, BUTTON1_Pin);
     uint8_t button2 = !HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
 
-    char s[1];
-    s[0] = 'c';
+    char s[1] = {DEFAULT_CMD_CHAR};
     /**
      * t => training mode
      * i => inference mode
@@ -145,10 +174,12 @@ int main(void) {
      * class number => train that class
      */
     receiveChar(s);
-    char cmdLog[150];
-    // KEY COORDINATION LOG
-    sprintf(cmdLog, "COMMAND RECEIVED: %c\r\n", s[0]);
-    printLog(cmdLog);
+    if (s[0] != DEFAULT_CMD_CHAR) {
+      char cmdLog[150];
+      // KEY COORDINATION LOG
+      sprintf(cmdLog, "COMMAND RECEIVED: %c\r\n", s[0]);
+      printLog(cmdLog);
+    }
     if (s[0] == 't') {
       just_started_training_mode = training_mode != 1;
       training_mode = true;
@@ -197,7 +228,6 @@ int main(void) {
         sprintf(logbuf, "Training: Train cls %d\r\n", true_class_from_user_input);
         printLog(logbuf);
 
-        start = HAL_GetTick();
         invoke_new_weights_givenimg(out_int);
         int predicted_class = 0;
         // Get max output class
@@ -205,13 +235,11 @@ int main(void) {
           predicted_class = out_int[i] > out_int[predicted_class] ? i : predicted_class;
         }
 
-        end = HAL_GetTick();
         displayTrainingResponse(predicted_class, true_class_from_user_input);
 
         // about to read next frame
-        ReadCapture();
-        StartCapture();
-        DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
+        // we train on the latest possible image, one that might not be same as the one displayed...
+        readCameraInputsIntoMemory(input, RGBbuf);
         displaystring(showbuf, 273, 10);
         start = HAL_GetTick();
         train(true_class_from_user_input);
@@ -223,14 +251,13 @@ int main(void) {
         displayMs(end - start);
 
         // TODO: determine if this is the best way to do this
-        ReadCapture();
-        StartCapture();
-        DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
+        readCameraInputsIntoMemory(input, RGBbuf);
         // KEY COORDINATION LOG
         printLog("READY FOR NEXT TRAINING\r\n");
       } 
     } else {
       // inference mode or validation mode
+      // we run inference on the image loaded at the start of the loop
       start = HAL_GetTick();
       invoke_new_weights_givenimg(out_int);
       // Max predicted label
@@ -258,6 +285,7 @@ int main(void) {
   while (1) {
   }
 }
+
 void SystemClock_Config(void) {
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   RCC_OscInitTypeDef RCC_OscInitStruct;

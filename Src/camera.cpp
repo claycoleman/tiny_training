@@ -177,19 +177,37 @@ int DecodeandProcessRGB565(int image_width, int image_height,
   }
 }
 
+/**
+ * Reads from the camera and decodes the image from 565 to 888.
+ * The camera reads in RGB565 data, which is converted to RGB888 
+ * and stored in image_data.
+ * 
+ * If scale_factor is 1, we also store the 565 data in lcd_data.
+ */
 int DecodeandProcessAndRGB(int image_width, int image_height,
                            int8_t *image_data, uint16_t *lcd_data,
                            int scale_factor) {
 
   JpegDec.decodeArray(imgBuf, imgLength);
 
+  // we can't do anything if the image_width is not evenly divisible by the MCU width 
+  // or the image_height is not evenly divisible by the MCU height
+  // we also can't do anything if either dimension is larger than the MCU size times the MCU count
+  if (image_width % JpegDec.MCUWidth != 0 || image_height % JpegDec.MCUHeight != 0 ||
+      image_width > (JpegDec.MCUWidth * JpegDec.MCUSPerRow) || image_height > (JpegDec.MCUHeight * JpegDec.MCUSPerCol)) {
+    printLog("WARNING: Skipping reading image data due to MCU size mismatch\r\n");
+    return -1;
+  }
+
+  // source jpeg is (JpegDec.MCUWidth * JpegDec.MCUSPerRow) x (JpegDec.MCUHeight * JpegDec.MCUSPerCol) in dimensions
+  // these recently read out as (16 * 10) x (8 * 15), or 160 x 120
+  // this is why we read as 128 x 120
+
   const int keep_x_mcus = image_width / JpegDec.MCUWidth;
   const int keep_y_mcus = image_height / JpegDec.MCUHeight;
 
   const int skip_x_mcus = JpegDec.MCUSPerRow - keep_x_mcus;
-
   const int skip_start_x_mcus = skip_x_mcus / 2;
-
   const int skip_end_x_mcu_index = skip_start_x_mcus + keep_x_mcus;
 
   const int skip_y_mcus = JpegDec.MCUSPerCol - keep_y_mcus;
@@ -200,40 +218,39 @@ int DecodeandProcessAndRGB(int image_width, int image_height,
 
   uint16_t color;
 
+  // initialize the image data to -128 (black)
   for (int i = 0;
        i < (image_height / scale_factor) * (image_width / scale_factor) * 3;
        i++)
     image_data[i] = -128;
 
   while (JpegDec.read()) {
-    if (JpegDec.MCUy < skip_start_y_mcus) {
-      continue;
-    }
-
-    if (JpegDec.MCUx < skip_start_x_mcus ||
-        JpegDec.MCUx >= skip_end_x_mcu_index) {
-      continue;
-    }
-
-    if (JpegDec.MCUy >= skip_end_y_mcu_index) {
+    // since we're center cropping, we skip the edge MCUs
+    if (JpegDec.MCUy < skip_start_y_mcus || JpegDec.MCUy >= skip_end_y_mcu_index || JpegDec.MCUx < skip_start_x_mcus ||
+        JpegDec.MCUx >= skip_end_x_mcu_index)
+    {
       continue;
     }
 
     pImg = JpegDec.pImage;
 
+    // convert from MCU coordinates to pixel coordinates
     int relative_mcu_x = JpegDec.MCUx - skip_start_x_mcus;
     int relative_mcu_y = JpegDec.MCUy - skip_start_y_mcus;
 
     int x_origin = relative_mcu_x * JpegDec.MCUWidth;
     int y_origin = relative_mcu_y * JpegDec.MCUHeight;
 
+    // iterate over the MCU
     for (int mcu_row = 0; mcu_row < JpegDec.MCUHeight; mcu_row++) {
 
       int current_y = y_origin + mcu_row;
       for (int mcu_col = 0; mcu_col < JpegDec.MCUWidth; mcu_col++) {
 
+        // color is in rgb565 format
         color = *pImg++;
 
+        // convert from rgb565 to rgb888
         uint8_t r, g, b;
         r = ((color & 0xF800) >> 11) * 8;
         g = ((color & 0x07E0) >> 5) * 4;
@@ -242,27 +259,33 @@ int DecodeandProcessAndRGB(int image_width, int image_height,
         int current_x = x_origin + mcu_col;
 
         int index = (current_y * image_width) + current_x;
-        int a_index = index * 3;
 
-        if (current_y >= 120)
+        // stop reading beyond 120 pixels... not sure if the camera actually could read
+        // beyond that, but we don't read it.
+        // HARDCODED WIDTH AND HEIGHT, VERY BAD
+        if (current_y >= 120) {
+          printLog("WARNING: Skipping image data beyond 120 pixels\r\n");
+          // zero out any images in this region...
+          image_data[index * 3] = -128;
+          image_data[index * 3 + 1] = -128;
+          image_data[index * 3 + 2] = -128;
+          lcd_data[index] = 0;
           continue;
+        }
 
         lcd_data[index] = color;
         if (scale_factor == 1) {
           image_data[index * 3] = r - 128;
           image_data[index * 3 + 1] = g - 128;
           image_data[index * 3 + 2] = b - 128;
-          lcd_data[index] = color;
+          continue;
         }
-        if (scale_factor != 1 &&
-            (current_y % scale_factor != 0 || current_x % scale_factor != 0))
+        
+        if (current_y % scale_factor != 0 || current_x % scale_factor != 0 || image_width % scale_factor != 0)
+          // skip if not on a scale factor boundary
           continue;
 
-        if (image_width % scale_factor != 0)
-          continue;
-        int width = image_width;
-        if (width > 120)
-          width = 120;
+        // write the color into the proper location in the image data
         int Iindex = (current_y / scale_factor) * (image_width / scale_factor) +
                      current_x / scale_factor;
 
@@ -386,19 +409,11 @@ int ReadCapture() {
 
 uint8_t read_fifo_burst() {
   uint32_t length = read_fifo_length();
-  char logbuf[150];
-  memset(logbuf, 0, sizeof(logbuf));  // Clear buffer
-  snprintf(logbuf, sizeof(logbuf), "Starting FIFO read, length: %lu\r\n", length);
-  printLog(logbuf);
 
   if (length >= MAX_FIFO_SIZE) {
-    memset(logbuf, 0, sizeof(logbuf));
-    snprintf(logbuf, sizeof(logbuf), "Error: FIFO length too large: %lu\r\n", length);
-    printLog(logbuf);
     return 0;
   }
   if (length == 0) {
-    printLog("Error: FIFO length is 0\r\n");
     return 0;
   }
   ARDUCAM_CS_LOW;
@@ -418,8 +433,5 @@ uint8_t read_fifo_burst() {
   ARDUCAM_CS_HIGH;
 
   is_header = false;
-  memset(logbuf, 0, sizeof(logbuf));
-  snprintf(logbuf, sizeof(logbuf), "Successfully processed %lu bytes\r\n", imgLength);
-  printLog(logbuf);
   return 1;
 }
