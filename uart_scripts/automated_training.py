@@ -2,7 +2,7 @@ from pathlib import Path
 import random
 import threading
 import time
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -169,14 +169,22 @@ class UARTHandler:
 
 
 def prepare_dataset(
-    dataset_path: str, class_names: List[str]
+    dataset_path: str, 
+    class_names: List[str],
+    max_examples_per_class: Optional[int] = None,
+    random_seed: Optional[int] = None
 ) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
     """Prepare and split dataset into training and validation sets"""
+    if random_seed is not None:
+        random.seed(random_seed)
+        
     class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     all_data = []
 
     for class_name in class_names:
         images = load_class_images(dataset_path, class_name)
+        if max_examples_per_class:
+            images = images[:max_examples_per_class]
         all_data.extend([(img, class_to_idx[class_name]) for img in images])
         print(f"Loaded {len(images)} images for class '{class_name}'")
 
@@ -188,8 +196,13 @@ def prepare_dataset(
     return all_data[:train_size], all_data[train_size:]
 
 
-def main():
+def main(epochs: int = 3, max_examples_per_class: Optional[int] = None, random_seed: Optional[int] = None):
     try:
+        if random_seed is not None:
+            random.seed(random_seed)
+            np.random.seed(random_seed)  # Also set numpy's random seed
+            print(f"\nUsing random seed: {random_seed}")
+
         # Select dataset and get class names
         dataset_path, class_names = select_dataset()
 
@@ -203,8 +216,13 @@ def main():
         build_project()
         deploy_binary()
 
-        # Prepare dataset
-        train_data, val_data = prepare_dataset(dataset_path, class_names)
+        # Prepare dataset with max examples limit and random seed
+        train_data, val_data = prepare_dataset(
+            dataset_path, 
+            class_names, 
+            max_examples_per_class,
+            random_seed
+        )
         print(
             f"\nData split: {len(train_data)} training samples, {len(val_data)} validation samples"
         )
@@ -221,7 +239,6 @@ def main():
             input("Position camera and press Enter to start training...")
             time.sleep(0.5)  # Additional delay after alignment
 
-            epochs = 3  # Adjustable
             for epoch in range(epochs):
                 epoch_start = time.time()
                 print(f"\nEpoch {epoch + 1}/{epochs}")
@@ -307,4 +324,18 @@ def main():
 
 
 if __name__ == "__main__":
-    exit(main())
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Run automated training with customizable parameters')
+    parser.add_argument('--epochs', '-e', type=int, default=3, help='Number of training epochs')
+    parser.add_argument('--max-examples', '-m', type=int, default=None, 
+                       help='Maximum number of examples to use per class')
+    parser.add_argument('--seed', '-s', type=int, default=None,
+                       help='Random seed for reproducibility')
+    
+    args = parser.parse_args()
+    exit(main(
+        epochs=args.epochs,
+        max_examples_per_class=args.max_examples,
+        random_seed=args.seed
+    ))

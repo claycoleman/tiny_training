@@ -134,7 +134,7 @@ def clean_project(
     except subprocess.CalledProcessError as e:
         print(f"Error during clean: {e}")
         if e.output:
-            print(f"Build output:\n{e.output}")
+            print(f"Build output:\n{e.output} {e.stderr}")
         raise
 
 
@@ -162,7 +162,7 @@ def build_project(
     except subprocess.CalledProcessError as e:
         print(f"Error during build: {e}")
         if e.output:
-            print(f"Build output:\n{e.output}")
+            print(f"Build output:\n{e.output} {e.stderr}")
         raise
 
 
