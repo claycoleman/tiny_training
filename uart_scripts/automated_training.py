@@ -115,7 +115,7 @@ class UARTHandler:
         # Clear any old messages before sending new command
         self.last_messages = []
         self.message_received.clear()
-        
+
         self.ser.write(cmd.encode())
         print(f"Sent command: {cmd}")
         # wait to receive "COMMAND RECEIVED: <cmd>"
@@ -131,7 +131,7 @@ class UARTHandler:
             for msg in self.last_messages:
                 if expected_msg in msg:
                     return True
-            
+
             # Wait for new messages
             self.message_received.wait(timeout=0.1)
             self.message_received.clear()
@@ -169,15 +169,15 @@ class UARTHandler:
 
 
 def prepare_dataset(
-    dataset_path: str, 
+    dataset_path: str,
     class_names: List[str],
     max_examples_per_class: Optional[int] = None,
-    random_seed: Optional[int] = None
+    random_seed: Optional[int] = None,
 ) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
     """Prepare and split dataset into training and validation sets"""
     if random_seed is not None:
         random.seed(random_seed)
-        
+
     class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     all_data = []
 
@@ -196,7 +196,12 @@ def prepare_dataset(
     return all_data[:train_size], all_data[train_size:]
 
 
-def main(epochs: int = 3, max_examples_per_class: Optional[int] = None, random_seed: Optional[int] = None):
+def main(
+    epochs: int = 3,
+    max_examples_per_class: Optional[int] = None,
+    random_seed: Optional[int] = None,
+    clean=False,
+):
     try:
         if random_seed is not None:
             random.seed(random_seed)
@@ -212,16 +217,14 @@ def main(epochs: int = 3, max_examples_per_class: Optional[int] = None, random_s
         print(f"\nUpdated OUTPUT_CH.h with {len(class_names)} classes")
 
         # Build and deploy
-        clean_project()
+        if clean:
+            clean_project()
         build_project()
         deploy_binary()
 
         # Prepare dataset with max examples limit and random seed
         train_data, val_data = prepare_dataset(
-            dataset_path, 
-            class_names, 
-            max_examples_per_class,
-            random_seed
+            dataset_path, class_names, max_examples_per_class, random_seed
         )
         print(
             f"\nData split: {len(train_data)} training samples, {len(val_data)} validation samples"
@@ -246,29 +249,32 @@ def main(epochs: int = 3, max_examples_per_class: Optional[int] = None, random_s
                 failed_trainings = 0
 
                 for idx, (image_path, class_num) in enumerate(train_data):
+                    """
+                    For each image that we train on, here is the process:
+                    1. Display the image on the screen for 0.2s (hopefully long enough for the microcontroller camera to capture it)
+                    # this is the gap that we can't really control, since there is no feedback from the microcontroller for seeing if it has received the image
+                    2. Send the class number to the microcontroller (all send commands wait for "COMMAND RECEIVED" before returning as a success)
+                    3. Microcontroller processes the image and trains on it
+                    4. Wait for the microcontroller to finish training (wait for "TRAINING DONE")
+                    """
                     img_start = time.time()
                     print(
                         f"\nTraining image {idx + 1}/{len(train_data)} (Class: {class_num})"
                     )
                     display_image(image_path)
-                    time.sleep(0.1)  # Small delay to ensure display is complete
+                    time.sleep(0.2)  # Small delay to ensure display is complete
+
+                    # in theory, we need to wait to make sure the microcontroller has received the image
+                    # but since we display the image for 0.2s, we can assume it has received it
 
                     # Send class number and wait for training completion
                     uart.send_command(str(class_num))
-                    received_training_done = uart.wait_for_message("TRAINING DONE")
 
                     # If this is a training command (a number), wait for training completion and ready signal
-                    if received_training_done:
-                        ready_for_next = uart.wait_for_message(
-                            "READY FOR NEXT TRAINING"
-                        )
-                        if ready_for_next:
-                            correct_trainings += 1
-                            img_time = time.time() - img_start
-                            print(f"Training successful - took {img_time:.2f}s")
-                        else:
-                            failed_trainings += 1
-                            print("WARNING: Device not ready for next training")
+                    if uart.wait_for_message("TRAINING DONE"):
+                        correct_trainings += 1
+                        img_time = time.time() - img_start
+                        print(f"Training successful - took {img_time:.2f}s")
                     else:
                         failed_trainings += 1
                         print(f"WARNING: No training confirmation for image {idx + 1}")
@@ -326,16 +332,36 @@ def main(epochs: int = 3, max_examples_per_class: Optional[int] = None, random_s
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description='Run automated training with customizable parameters')
-    parser.add_argument('--epochs', '-e', type=int, default=3, help='Number of training epochs')
-    parser.add_argument('--max-examples', '-m', type=int, default=None, 
-                       help='Maximum number of examples to use per class')
-    parser.add_argument('--seed', '-s', type=int, default=None,
-                       help='Random seed for reproducibility')
-    
+    parser = argparse.ArgumentParser(
+        description="Run automated training with customizable parameters"
+    )
+    parser.add_argument(
+        "--epochs", "-e", type=int, default=3, help="Number of training epochs"
+    )
+    parser.add_argument(
+        "--max-examples",
+        "-m",
+        type=int,
+        default=None,
+        help="Maximum number of examples to use per class",
+    )
+    parser.add_argument(
+        "--seed", "-s", type=int, default=None, help="Random seed for reproducibility"
+    )
+    parser.add_argument(
+        "--clean",
+        "-c",
+        default=False,
+        action="store_true",
+        help="Clean the project before building",
+    )
+
     args = parser.parse_args()
-    exit(main(
-        epochs=args.epochs,
-        max_examples_per_class=args.max_examples,
-        random_seed=args.seed
-    ))
+    exit(
+        main(
+            epochs=args.epochs,
+            max_examples_per_class=args.max_examples,
+            random_seed=args.seed,
+            clean=args.clean,
+        )
+    )

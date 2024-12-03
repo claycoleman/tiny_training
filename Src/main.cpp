@@ -72,11 +72,6 @@ void invoke_new_weights_givenimg(signed char *out_int8) {
     out_int8[i] = output[i];
 }
 
-#define BUTTON1_Pin GPIO_PIN_0
-#define BUTTON1_GPIO_Port GPIOA
-#define BUTTON2_Pin GPIO_PIN_10
-#define BUTTON2_GPIO_Port GPIOF
-
 #define RES_W 128
 #define RES_H 120
 
@@ -140,8 +135,6 @@ int main(void) {
 
   MX_GPIO_Init();
 
-  BSP_PB_Init(BUTTON_KEY, BUTTON_MODE_GPIO);
-
   lcdsetup();
 
   int camErr = initCamera();
@@ -161,10 +154,6 @@ int main(void) {
     readCameraInputsIntoMemory(input, RGBbuf);
     displayCameraInputOnLCD(input, RGBbuf);
     endi = HAL_GetTick();
-
-    uint8_t button0 = BSP_PB_GetState(BUTTON_KEY) == GPIO_PIN_SET;
-    uint8_t button1 = !HAL_GPIO_ReadPin(BUTTON1_GPIO_Port, BUTTON1_Pin);
-    uint8_t button2 = !HAL_GPIO_ReadPin(BUTTON2_GPIO_Port, BUTTON2_Pin);
 
     char s[1] = {DEFAULT_CMD_CHAR};
     /**
@@ -202,26 +191,16 @@ int main(void) {
       }
       just_started_training_mode = false;
       bool is_valid_class_number = s[0] >= '0' && s[0] <= '0' + OUTPUT_CH - 1;
-      if (is_valid_class_number || button1 || button2) {
-        int true_class_from_user_input = 0;
-        
-        if (is_valid_class_number) {
-          true_class_from_user_input = s[0] - '0';
-          // assert true_class_from_user_input is now between 0 and OUTPUT_CH - 1
-          if (true_class_from_user_input < 0 || true_class_from_user_input >= OUTPUT_CH) {
-            char logbuf[150];
-            sprintf(logbuf, "Invalid class number %d\r\n", true_class_from_user_input);
-            printLog(logbuf);
-            continue;
-          }
-          sprintf(showbuf, "Train cls %d", true_class_from_user_input);
-        } else if (button2) {
-          true_class_from_user_input = 1;
-          sprintf(showbuf, "Train cls 1");
-        } else if (button1) {
-          true_class_from_user_input = 0;
-          sprintf(showbuf, "Train cls 0");
+      if (is_valid_class_number) {
+        int true_class_from_user_input = s[0] - '0';
+        // assert true_class_from_user_input is now between 0 and OUTPUT_CH - 1
+        if (true_class_from_user_input < 0 || true_class_from_user_input >= OUTPUT_CH) {
+          char logbuf[150];
+          sprintf(logbuf, "Invalid class number %d\r\n", true_class_from_user_input);
+          printLog(logbuf);
+          continue;
         }
+        sprintf(showbuf, "Train cls %d", true_class_from_user_input);
 
         // log with string interpolation
         char logbuf[150];
@@ -249,11 +228,6 @@ int main(void) {
         printLog("TRAINING DONE\r\n");
         displaystring(showbuf, 273, 10);
         displayMs(end - start);
-
-        // TODO: determine if this is the best way to do this
-        readCameraInputsIntoMemory(input, RGBbuf);
-        // KEY COORDINATION LOG
-        printLog("READY FOR NEXT TRAINING\r\n");
       } 
     } else {
       // inference mode or validation mode
@@ -523,16 +497,6 @@ static void MX_GPIO_Init(void) {
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = BUTTON1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(BUTTON1_GPIO_Port, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = BUTTON2_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(BUTTON2_GPIO_Port, &GPIO_InitStruct);
 }
 
 #ifdef USE_FULL_ASSERT
