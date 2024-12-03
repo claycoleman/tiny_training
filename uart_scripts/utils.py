@@ -4,7 +4,7 @@ import time
 import tty
 import serial
 import serial.tools.list_ports
-from typing import Optional
+from typing import Optional, Dict, List, Tuple
 import os
 import subprocess
 from pathlib import Path
@@ -216,3 +216,75 @@ def deploy_binary(
         print(f"Error during deployment: {e}")
         print(f"Error output: {e.stdout}\n{e.stderr}")
         raise
+
+
+def load_datasets(base_path: str) -> Dict[str, List[str]]:
+    """Load datasets from the datasets folder"""
+    datasets = {}
+    base = Path(base_path)
+
+    # List all directories in datasets folder
+    for dataset_dir in base.iterdir():
+        if dataset_dir.is_dir():
+            datasets[dataset_dir.name] = [
+                d.name for d in dataset_dir.iterdir() if d.is_dir()
+            ]
+
+    if not datasets:
+        raise RuntimeError("No datasets found")
+
+    return datasets
+
+
+def update_output_ch_file(class_names: List[str], file_path: str):
+    """Update the OUTPUT_CH and labels in the specified file"""
+    class_names_str = ",\n".join([f'"{class_name}"' for class_name in class_names])
+    with open(file_path, "w") as file:
+        file.write(
+f"""// GENERATED FILE FROM AUTOMATED TRAINING SCRIPT
+
+#ifndef OUTPUT_CH_H
+#define OUTPUT_CH_H
+                   
+#define OUTPUT_CH {len(class_names)}
+
+static const char *const OUTPUT_LABELS[] = {{
+{class_names_str}
+}};
+
+#endif // OUTPUT_CH_H                
+""")
+
+
+def select_dataset() -> Tuple[str, List[str]]:
+    """Interactive dataset selection, returns (dataset_path, class_names)"""
+    datasets = load_datasets(str(PROJECT_ROOT / "datasets/ten_class_data"))
+    if not datasets:
+        raise RuntimeError("No datasets found")
+
+    print("\nAvailable datasets:")
+    for idx, name in enumerate(datasets.keys()):
+        print(f"{idx + 1}: {name}")
+    print()
+
+    while True:
+        dataset_input = input("Select dataset number: ")
+        try:
+            dataset_idx = int(dataset_input) - 1
+        except ValueError:
+            print("Invalid input")
+            continue
+
+        if dataset_idx < 0 or dataset_idx >= len(datasets):
+            print("Invalid dataset number")
+            continue
+
+        break
+
+    dataset_name = list(datasets.keys())[dataset_idx]
+    dataset_path = str(PROJECT_ROOT / "datasets/ten_class_data" / dataset_name)
+    print(f"\nSelected dataset: {dataset_name}")
+    
+    class_names = datasets[dataset_name]
+    
+    return dataset_path, class_names

@@ -25,19 +25,15 @@
 #include "string.h"
 #include "testing_data/golden_data.h"
 #include "testing_data/images.h"
+#include "OUTPUT_CH.h"
+
 extern "C" {
 #include "genNN.h"
-#include "OUTPUT_CH.h"
 #include "tinyengine_function.h"
 }
 #define SHOWIMG
 
 #include "stm32746g_discovery.h"
-
-const char *output_labels[OUTPUT_CH] = {
-    "Yoni", "Laptop", "Couch", "Chair", "Book", 
-    "Lamp", "Flower", "Picture", "Ceiling", "Pitcher"
-};
 
 static void SystemClock_Config(void);
 static void Error_Handler(void);
@@ -56,6 +52,7 @@ signed char out_int[OUTPUT_CH];
 
 float labels[] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 void train(int cls) {
+  // TODO find a way to throw if cls is not in the range of 0 to OUTPUT_CH - 1
   char cbuf[20];
   // Current model architecture has 10 output classes, and isn't dependent on OUTPUT_CH
   for (int i = 0; i < 10; i++) {
@@ -64,6 +61,7 @@ void train(int cls) {
     } else
       labels[i] = 0.0f;
   }
+  // this line actually runs backprop on the loaded image
   invoke(labels);
 }
 
@@ -173,29 +171,29 @@ int main(void) {
       just_started_training_mode = false;
       bool is_valid_class_number = s[0] >= '0' && s[0] <= '0' + OUTPUT_CH - 1;
       if (is_valid_class_number || button1 || button2) {
-        int label = 0;
+        int true_class_from_user_input = 0;
         
         if (is_valid_class_number) {
-          label = s[0] - '0';
-          // assert label is now between 0 and OUTPUT_CH - 1
-          if (label < 0 || label >= OUTPUT_CH) {
+          true_class_from_user_input = s[0] - '0';
+          // assert true_class_from_user_input is now between 0 and OUTPUT_CH - 1
+          if (true_class_from_user_input < 0 || true_class_from_user_input >= OUTPUT_CH) {
             char logbuf[150];
-            sprintf(logbuf, "Invalid class number %d\r\n", label);
+            sprintf(logbuf, "Invalid class number %d\r\n", true_class_from_user_input);
             printLog(logbuf);
             continue;
           }
-          sprintf(showbuf, "Train cls %d", label);
+          sprintf(showbuf, "Train cls %d", true_class_from_user_input);
         } else if (button2) {
-          label = 1;
+          true_class_from_user_input = 1;
           sprintf(showbuf, "Train cls 1");
         } else if (button1) {
-          label = 0;
+          true_class_from_user_input = 0;
           sprintf(showbuf, "Train cls 0");
         }
 
         // log with string interpolation
         char logbuf[150];
-        sprintf(logbuf, "Training: Train cls %d\r\n", label);
+        sprintf(logbuf, "Training: Train cls %d\r\n", true_class_from_user_input);
         printLog(logbuf);
 
         start = HAL_GetTick();
@@ -207,7 +205,7 @@ int main(void) {
         }
 
         end = HAL_GetTick();
-        detectResponse(0, training_mode, predicted_class, label);
+        detectResponse(0, training_mode, predicted_class, true_class_from_user_input);
 
         // about to read next frame
         ReadCapture();
@@ -215,13 +213,13 @@ int main(void) {
         DecodeandProcessAndRGB(RES_W, RES_H, input, RGBbuf, 1);
         displaystring(showbuf, 273, 10);
         start = HAL_GetTick();
-        train(label);
+        train(true_class_from_user_input);
         end = HAL_GetTick();
         sprintf(showbuf, "Train done ");
         // KEY COORDINATION LOG
         printLog("TRAINING DONE\r\n");
         displaystring(showbuf, 273, 10);
-        detectResponse(end - start, training_mode, predicted_class, label);
+        detectResponse(end - start, training_mode, predicted_class, true_class_from_user_input);
 
         // TODO: determine if this is the best way to do this
         ReadCapture();

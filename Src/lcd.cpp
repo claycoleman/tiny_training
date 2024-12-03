@@ -103,7 +103,7 @@ void detectResponse(float ms, int training_mode, int pred, int label) {
     BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
   } else {
     // strangely enough, the model is trained to output 0 for person and 1 for no person
-    const char *output_label = output_labels[pred];
+    const char *output_label = OUTPUT_LABELS[pred];
 
     // // if (pred == 0) {
     //   drawBlueBackground(270, 480, 40, 100);
@@ -116,8 +116,14 @@ void detectResponse(float ms, int training_mode, int pred, int label) {
       drawBlackBackground(270, 480, 125, 180);
       drawBlackBackground(270, 480, 205, 250);
       BSP_LCD_SetTextColor(LCD_COLOR_RED);
+      // display the predicted label, the label index, and the confidence score
       sprintf(buf, "%-13s", output_label);
       BSP_LCD_DisplayStringAt(273, 100, buf, LEFT_MODE);
+      sprintf(buf, "  class %d  ", pred);
+      BSP_LCD_DisplayStringAt(273, 120, buf, LEFT_MODE);
+      // TODO: consider displaying the confidence score
+      // sprintf(buf, "  conf: %.2f", conf);
+      // BSP_LCD_DisplayStringAt(273, 140, buf, LEFT_MODE);
     //}
 
     if (ms == 0)
