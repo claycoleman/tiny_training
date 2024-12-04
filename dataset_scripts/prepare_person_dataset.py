@@ -125,16 +125,28 @@ def prepare_person_classes():
                     if not face_locations:  # Skip if no face detected
                         continue
                 
-                # Resize to 640x640 while maintaining aspect ratio
-                img.thumbnail((640, 640))
-                # Create 640x640 black background
-                new_img = Image.new('RGB', (640, 640), (0, 0, 0))
-                # Paste resized image in center
-                x = (640 - img.width) // 2
-                y = (640 - img.height) // 2
-                new_img.paste(img, (x, y))
+                # Calculate dimensions for center crop
+                width, height = img.size
+                # Take the larger dimension and use it to resize while maintaining aspect ratio
+                if width > height:
+                    new_height = 640
+                    new_width = int(width * (640 / height))
+                else:
+                    new_width = 640
+                    new_height = int(height * (640 / width))
+                
+                # Resize image
+                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+                
+                # Center crop to 640x640
+                left = (new_width - 640) // 2
+                top = (new_height - 640) // 2
+                right = left + 640
+                bottom = top + 640
+                img = img.crop((left, top, right, bottom))
+                
                 # Save with high quality
-                new_img.save(target_file, "JPEG", quality=95)
+                img.save(target_file, "JPEG", quality=95)
                 processed_count += 1
                 
             except Exception as e:
