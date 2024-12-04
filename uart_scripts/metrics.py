@@ -21,7 +21,7 @@ class MetricsTracker:
         """
         if not os.path.exists(metrics_path):
             os.makedirs(metrics_path)
-
+    
         self.num_classes = num_classes
         self.metrics_path = metrics_path
         self.examples_per_class = examples_per_class

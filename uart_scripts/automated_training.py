@@ -291,7 +291,7 @@ def run_validation(
 def run_training_epoch(
     uart: UARTHandler, train_data: List[Tuple[str, int]], epoch: int, epochs: int,
     metrics_tracker: metrics.MetricsTracker,
-    record_every: int = 5, 
+    record_every: int = 10, 
 ) -> dict:
     """Run a single training epoch and return metrics
 
@@ -338,7 +338,6 @@ def run_training_epoch(
                 metrics_tracker.update(predicted_class, true_class)
                 img_time = time.time() - img_start
                 print(f"Training successful - took {img_time:.2f}s")
-                metrics_tracker.print_summary()
             else:
                 print(f"WARNING: No prediction received for image {idx + 1}")
         else:
@@ -346,6 +345,7 @@ def run_training_epoch(
 
         if record_every > 0 and (idx + 1) % record_every == 0:
             print(f"Saving metrics after {idx + 1} images")
+            metrics_tracker.print_summary()
             metrics_tracker.save_metrics()
 
     # Calculate final metrics
@@ -368,7 +368,7 @@ def main(
     no_align: bool = False,
     preselected_dataset: Optional[str] = None,
     metrics_path: Optional[str] = "metrics",
-    record_every: int = 5,
+    record_every: int = 10,
 ):
     try:
         if random_seed is not None:
@@ -378,6 +378,8 @@ def main(
 
         # Select dataset and get class names
         dataset_path, class_names = select_dataset(preselected_dataset)
+        print(f"\nSelected dataset: {dataset_path}")
+        print(f"Class names: {class_names}")
 
         # Update OUTPUT_CH.h file
         output_ch_file = str(PROJECT_ROOT / "Src/TinyEngine/include/OUTPUT_CH.h")
@@ -521,6 +523,10 @@ if __name__ == "__main__":
         "--dataset", "-d", type=str, default=None, help="Preselect dataset"
     )
 
+    parser.add_argument(
+        "--metrics-path", "-mp", type=str, default="metrics", help="Metrics path"
+    )
+    
     args = parser.parse_args()
     exit(
         main(
