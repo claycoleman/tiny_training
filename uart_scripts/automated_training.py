@@ -1,8 +1,9 @@
 from pathlib import Path
 import random
+import sys
 import threading
 import time
-from typing import List, Optional, Tuple
+from typing import List, Optional, Set, Tuple
 
 import cv2
 import numpy as np
@@ -177,7 +178,7 @@ def random_split_dataset(
     dataset_path: str,
     class_names: List[str],
     max_examples_per_class: Optional[int] = None,
-    exclude_class_0: bool = False,
+    exclude_classes: Optional[Set[int]] = None,
 ) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
     class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     all_data = []
@@ -189,8 +190,8 @@ def random_split_dataset(
         all_data.extend([(img, class_to_idx[class_name]) for img in images])
         print(f"Loaded {len(images)} images for class '{class_name}'")
 
-    if exclude_class_0:
-        all_data = [data for data in all_data if data[1] != 0]
+    if exclude_classes:
+        all_data = [data for data in all_data if data[1] not in exclude_classes]
 
     # Split data
     random.shuffle(all_data)
@@ -204,7 +205,7 @@ def sequential_split_dataset(
     dataset_path: str,
     class_names: List[str],
     max_examples_per_class: Optional[int] = None,
-    exclude_class_0: bool = False,
+    exclude_classes: Optional[Set[int]] = None,
 ) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
     """Prepare and split dataset into training and validation sets"""
     class_to_idx = {name: idx for idx, name in enumerate(class_names)}
@@ -220,12 +221,12 @@ def sequential_split_dataset(
         print(f"Loaded {len(images)} images for class '{class_name}'")
         min_labels_per_class = min(min_labels_per_class, len(images))
 
-    if exclude_class_0:
-        # filter out class 0 to test gradient problems
+    if exclude_classes:
+        # filter out classes to test gradient problems
         all_class_labels = [
             class_labels_array
             for class_labels_array in all_class_labels
-            if class_labels_array[0][1] != 0
+            if class_labels_array[0][1] not in exclude_classes
         ]
 
     training_data: List[Tuple[str, int]] = []
@@ -418,7 +419,7 @@ def main(
     random_seed: Optional[int] = None,
     clean: bool = False,
     split_method: str = "sequential",
-    exclude_class_0: bool = False,
+    exclude_classes: Optional[Set[int]] = None,
     no_align: bool = False,
     preselected_dataset: Optional[str] = None,
 ):
@@ -450,14 +451,14 @@ def main(
                 dataset_path,
                 class_names,
                 max_examples_per_class,
-                exclude_class_0,
+                exclude_classes,
             )
             if split_method == "random"
             else sequential_split_dataset(
                 dataset_path,
                 class_names,
                 max_examples_per_class,
-                exclude_class_0,
+                exclude_classes,
             )
         )
         print(
@@ -563,13 +564,15 @@ if __name__ == "__main__":
         default="sequential",
         choices=["sequential", "random"],
     )
-    # exclude class 0 or not
+    # enter the classes to exclude from training, should be a list of class numbers
+    # note that this doesn't exclude them from the binary, it only excludes their images
+    # from being included in the training and test set
     parser.add_argument(
-        "--exclude-class-0",
-        "-ec0",
-        default=False,
-        action="store_true",
-        help="Exclude class 0 from training",
+        "--exclude-classes",
+        "-ec",
+        default=[],
+        nargs="+",
+        help="Exclude classes from training",
     )
     # skip asking for camera alignment
     parser.add_argument(
@@ -592,7 +595,9 @@ if __name__ == "__main__":
             random_seed=args.seed,
             clean=args.clean,
             split_method=args.split,
-            exclude_class_0=args.exclude_class_0,
+            exclude_classes=set([int(cls) for cls in args.exclude_classes])
+            if args.exclude_classes
+            else None,
             no_align=args.no_align,
             preselected_dataset=args.dataset,
         )
