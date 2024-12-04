@@ -6,6 +6,8 @@ from tqdm import tqdm
 from PIL import Image
 import urllib.request
 import zipfile
+import face_recognition
+import numpy as np
 
 base_path = Path(__file__).parent.parent / "datasets"
 source_path = base_path / "raw_data" / "coco"
@@ -49,7 +51,7 @@ def prepare_person_classes():
     """Prepare person and no-person classes from COCO dataset"""
     # Define our target classes
     target_classes = {
-        "person": 1,      # Images containing people
+        "person": 1,      # Images containing people's faces
         "without_person": 0    # Images without people
     }
     
@@ -96,21 +98,33 @@ def prepare_person_classes():
         
         # Select source images
         source_images = list(person_images if class_name == "person" else no_person_images)
-        source_images = source_images[:images_per_class]
         
         # Process images
         print(f"Processing {class_name}...")
+        processed_count = 0
         for idx, img_id in enumerate(tqdm(source_images)):
+            if processed_count >= images_per_class:
+                break
+                
             try:
                 # Source and target paths
                 src_file = source_path / "val2017" / id_to_file[img_id]
-                target_file = class_dir / f"{class_name}_{idx:04d}.jpg"
+                target_file = class_dir / f"{class_name}_{processed_count:04d}.jpg"
                 
-                # Open and save image at higher resolution (640x640)
+                # Open and convert image
                 img = Image.open(src_file)
-                # Convert to RGB if needed
                 if img.mode != 'RGB':
                     img = img.convert('RGB')
+                
+                # For person class, check if image contains a face
+                if class_name == "person":
+                    # Convert PIL image to numpy array for face_recognition
+                    img_array = np.array(img)
+                    # Detect faces in the image
+                    face_locations = face_recognition.face_locations(img_array)
+                    if not face_locations:  # Skip if no face detected
+                        continue
+                
                 # Resize to 640x640 while maintaining aspect ratio
                 img.thumbnail((640, 640))
                 # Create 640x640 black background
@@ -121,6 +135,8 @@ def prepare_person_classes():
                 new_img.paste(img, (x, y))
                 # Save with high quality
                 new_img.save(target_file, "JPEG", quality=95)
+                processed_count += 1
+                
             except Exception as e:
                 print(f"Error processing {src_file}: {e}")
 
