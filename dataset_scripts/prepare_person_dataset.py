@@ -50,7 +50,7 @@ def prepare_person_classes():
     # Define our target classes
     target_classes = {
         "person": 1,      # Images containing people
-        "no_person": 0    # Images without people
+        "without_person": 0    # Images without people
     }
     
     # Number of images to use per class
