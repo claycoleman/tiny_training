@@ -6,6 +6,7 @@ import serial
 import serial.tools.list_ports
 from typing import Optional, Dict, List, Tuple
 import os
+import glob
 import subprocess
 from pathlib import Path
 
@@ -80,11 +81,19 @@ def read_serial_line(ser: serial.Serial) -> Optional[str]:
             print(f"Error reading serial: {e}")
     return None
 
+def get_versioned_path(path_pattern):
+    """
+    Resolves a path containing a wildcard version component.
+    Returns the most recent matching path or None if no match found.
+    """
+    matches = glob.glob(path_pattern)
+    return max(matches) if matches else None
+
 
 # STM32CubeIDE toolchain paths for macOS
 CUBE_IDE_PATHS = [
-    "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.macos64_1.0.200.202406191456/tools/bin",
-    "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.make.macos64_2.1.100.202310310804/tools/bin",
+    get_versioned_path("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.12.3.rel1.*/tools/bin"),
+    get_versioned_path("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.make.*/tools/bin"),
 ]
 
 
@@ -197,7 +206,8 @@ def build_project(
 def get_programmer_path() -> str:
     """Get the path to the STM32 programmer CLI"""
     if is_macos():
-        path = "/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.macos64_2.1.400.202404281720/tools/bin/STM32_Programmer_CLI"
+        path = get_versioned_path("/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.*/tools/bin/STM32_Programmer_CLI")
+
     elif is_windows():
         path = "STM32_Programmer_CLI"  # TODO: Add proper Windows path
     else:
