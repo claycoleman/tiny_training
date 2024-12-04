@@ -308,7 +308,7 @@ static const char *const OUTPUT_LABELS[] = {{
             file.write(new_contents)
 
 
-def select_dataset() -> Tuple[str, List[str]]:
+def select_dataset(preselected: Optional[str] = None) -> Tuple[str, List[str]]:
     """Interactive dataset selection, returns (dataset_path, class_names)"""
     datasets = load_datasets(str(PROJECT_ROOT / "datasets/data"))
     if not datasets:
@@ -319,19 +319,25 @@ def select_dataset() -> Tuple[str, List[str]]:
         print(f"{idx + 1}: {name}")
     print()
 
-    while True:
-        dataset_input = input("Select dataset number: ")
-        try:
-            dataset_idx = int(dataset_input) - 1
-        except ValueError:
-            print("Invalid input")
-            continue
+    if preselected:
+        # throw if not in datasets
+        if preselected not in datasets:
+            raise ValueError(f"Dataset {preselected} not found")
+        dataset_idx = list(datasets.keys()).index(preselected)
+    else:
+        while True:
+            dataset_input = input("Select dataset number: ")
+            try:
+                dataset_idx = int(dataset_input) - 1
+            except ValueError:
+                print("Invalid input")
+                continue
 
-        if dataset_idx < 0 or dataset_idx >= len(datasets):
-            print("Invalid dataset number")
-            continue
+            if dataset_idx < 0 or dataset_idx >= len(datasets):
+                print("Invalid dataset number")
+                continue
 
-        break
+            break
 
     dataset_name = list(datasets.keys())[dataset_idx]
     dataset_path = str(PROJECT_ROOT / "datasets/data" / dataset_name)

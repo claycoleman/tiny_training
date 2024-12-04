@@ -7,10 +7,10 @@
 
 static const char *const OUTPUT_LABELS[] = {
 "backpack",
-"desk",
 "dining_table",
 "keyboard",
-"remote"
+"remote",
+"sock"
 };
 
 #endif // OUTPUT_CH_H                

@@ -419,6 +419,8 @@ def main(
     clean: bool = False,
     split_method: str = "sequential",
     exclude_class_0: bool = False,
+    no_align: bool = False,
+    preselected_dataset: Optional[str] = None,
 ):
     try:
         if random_seed is not None:
@@ -427,7 +429,7 @@ def main(
             print(f"\nUsing random seed: {random_seed}")
 
         # Select dataset and get class names
-        dataset_path, class_names = select_dataset()
+        dataset_path, class_names = select_dataset(preselected_dataset)
 
         # Update OUTPUT_CH.h file
         output_ch_file = str(PROJECT_ROOT / "Src/TinyEngine/include/OUTPUT_CH.h")
@@ -465,9 +467,12 @@ def main(
         training_start_time = time.time()
         uart = UARTHandler()
         try:
-            # Display blank frame and wait for alignment
-            display_blank_frame()
-            input("Position camera and press Enter to start training...")
+            # TODO maybe this should be the first image to better determine camera focus
+            # than just black text on white frame
+            if not no_align:
+                # Display blank frame and wait for alignment
+                display_blank_frame()
+                input("Position camera and press Enter to start training...")
 
             # Initial validation
             initial_accuracy, initial_class_accuracies = run_validation(
@@ -566,6 +571,18 @@ if __name__ == "__main__":
         action="store_true",
         help="Exclude class 0 from training",
     )
+    # skip asking for camera alignment
+    parser.add_argument(
+        "--no-align",
+        "-na",
+        default=False,
+        action="store_true",
+        help="Skip asking for camera alignment",
+    )
+    # preselect dataset
+    parser.add_argument(
+        "--dataset", "-d", type=str, default=None, help="Preselect dataset"
+    )
 
     args = parser.parse_args()
     exit(
@@ -576,5 +593,7 @@ if __name__ == "__main__":
             clean=args.clean,
             split_method=args.split,
             exclude_class_0=args.exclude_class_0,
+            no_align=args.no_align,
+            preselected_dataset=args.dataset,
         )
     )
