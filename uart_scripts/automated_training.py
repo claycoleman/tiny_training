@@ -16,6 +16,7 @@ from utils import (
     PROJECT_ROOT,
     select_dataset,
     update_output_ch_file,
+    smart_build_and_deploy,
 )
 
 
@@ -29,7 +30,7 @@ def load_class_images(dataset_path: str, class_name: str) -> List[str]:
     ]
 
 
-def display_image(image_path: str, window_name: str = "Training Image"):
+def display_image(image_path: str, window_name: str = "Training Image", delay: float = 0.5):
     """Display image centered on black background"""
     img = cv2.imread(image_path)
     if img is None:
@@ -56,6 +57,8 @@ def display_image(image_path: str, window_name: str = "Training Image"):
 
     cv2.imshow(window_name, background)
     cv2.waitKey(1)
+
+    time.sleep(delay)  # Small delay to ensure display is complete
 
 
 def display_blank_frame(window_name: str = "Training Image"):
@@ -200,7 +203,7 @@ def main(
     epochs: int = 3,
     max_examples_per_class: Optional[int] = None,
     random_seed: Optional[int] = None,
-    clean=False,
+    clean: bool = False,
 ):
     try:
         if random_seed is not None:
@@ -219,8 +222,10 @@ def main(
         # Build and deploy
         if clean:
             clean_project()
-        build_project()
-        deploy_binary()
+            build_project()
+            deploy_binary()
+        else:
+            smart_build_and_deploy()  # Use smart build instead
 
         # Prepare dataset with max examples limit and random seed
         train_data, val_data = prepare_dataset(
@@ -240,7 +245,6 @@ def main(
             # Display blank frame and wait for alignment
             display_blank_frame()
             input("Position camera and press Enter to start training...")
-            time.sleep(0.5)  # Additional delay after alignment
 
             for epoch in range(epochs):
                 epoch_start = time.time()
@@ -262,7 +266,6 @@ def main(
                         f"\nTraining image {idx + 1}/{len(train_data)} (Class: {class_num})"
                     )
                     display_image(image_path)
-                    time.sleep(0.2)  # Small delay to ensure display is complete
 
                     # in theory, we need to wait to make sure the microcontroller has received the image
                     # but since we display the image for 0.2s, we can assume it has received it

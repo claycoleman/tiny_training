@@ -81,12 +81,21 @@ def main() -> None:
         print("i: Inference mode")
         print("v: Validation mode")
         print("t: Training mode")
+        valid_commands = ["i", "v", "t"]
+
+        # print("\nCamera Controls:")
+        # print("+/=: Increase contrast")
+        # print("_/-: Decrease contrast")
+        # print("]: Increase brightness")
+        # print("[: Decrease brightness")
+        # valid_commands += ["+", "=", "_", "-", "[", "]"]
+
         for i, label in enumerate(labels):
             print(f"{i}: Set ground truth to class {label} ({i})")
         print("q: Quit")
 
         valid_classes = [str(i) for i in range(output_channel)]
-        valid_commands = valid_classes + ["t", "v", "i"]
+        valid_commands += valid_classes
 
         while True:
             key = get_key()

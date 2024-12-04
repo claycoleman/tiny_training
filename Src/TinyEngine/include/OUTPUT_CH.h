@@ -6,8 +6,8 @@
 #define OUTPUT_CH 2
 
 static const char *const OUTPUT_LABELS[] = {
-"no_person",
-"person"
+"person",
+"without_person"
 };
 
 #endif // OUTPUT_CH_H                

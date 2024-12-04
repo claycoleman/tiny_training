@@ -34,6 +34,7 @@ extern "C" {
 #define SHOWIMG
 
 #include "stm32746g_discovery.h"
+#include "../Drivers/BSP/Components/s5k5cag/s5k5cag.h"
 
 static void SystemClock_Config(void);
 static void Error_Handler(void);
@@ -44,6 +45,14 @@ static void MX_GPIO_Init(void);
 #define IMAGE_W 80
 #define INPUT_CH 160
 #define IMAGES 6
+
+#define MIN_CONTRAST 0x20
+#define MAX_CONTRAST 0x60
+#define MIN_BRIGHTNESS 0x20
+#define MAX_BRIGHTNESS 0x60
+
+uint16_t current_contrast = S5K5CAG_CONTRAST_LEVEL2;
+uint16_t current_brightness = S5K5CAG_BRIGHTNESS_LEVEL2;
 
 void SystemClock_Config(void);
 void StartDefaultTask(void const *argument);
@@ -124,6 +133,73 @@ void displayCameraInputOnLCD(signed char *input, uint16_t *RGBbuf) {
 
 const char DEFAULT_CMD_CHAR = 'c';
 
+// Define adjustment types and directions
+enum AdjustmentType {
+    CONTRAST,
+    BRIGHTNESS
+};
+
+enum AdjustmentDirection {
+    DOWN,
+    UP
+};
+
+struct CameraLevel {
+    uint16_t level0;
+    uint16_t level1;
+    uint16_t level2;
+    uint16_t level3;
+    uint16_t level4;
+};
+
+const CameraLevel CONTRAST_LEVELS = {
+    .level0 = S5K5CAG_CONTRAST_LEVEL0,
+    .level1 = S5K5CAG_CONTRAST_LEVEL1,
+    .level2 = S5K5CAG_CONTRAST_LEVEL2,
+    .level3 = S5K5CAG_CONTRAST_LEVEL3,
+    .level4 = S5K5CAG_CONTRAST_LEVEL4
+};
+
+const CameraLevel BRIGHTNESS_LEVELS = {
+    .level0 = S5K5CAG_BRIGHTNESS_LEVEL0,
+    .level1 = S5K5CAG_BRIGHTNESS_LEVEL1,
+    .level2 = S5K5CAG_BRIGHTNESS_LEVEL2,
+    .level3 = S5K5CAG_BRIGHTNESS_LEVEL3,
+    .level4 = S5K5CAG_BRIGHTNESS_LEVEL4
+};
+
+void adjustCameraSetting(AdjustmentType type, AdjustmentDirection direction) {
+    uint16_t* current_value = (type == CONTRAST) ? &current_contrast : &current_brightness;
+    const CameraLevel* levels = (type == CONTRAST) ? &CONTRAST_LEVELS : &BRIGHTNESS_LEVELS;
+    const char* setting_name = (type == CONTRAST) ? "Contrast" : "Brightness";
+    
+    uint16_t new_value = *current_value;
+    if (direction == UP) {
+        if (*current_value == levels->level0) new_value = levels->level1;
+        else if (*current_value == levels->level1) new_value = levels->level2;
+        else if (*current_value == levels->level2) new_value = levels->level3;
+        else if (*current_value == levels->level3) new_value = levels->level4;
+    } else {  // direction == DOWN
+        if (*current_value == levels->level4) new_value = levels->level3;
+        else if (*current_value == levels->level3) new_value = levels->level2;
+        else if (*current_value == levels->level2) new_value = levels->level1;
+        else if (*current_value == levels->level1) new_value = levels->level0;
+    }
+    
+    if (new_value != *current_value) {
+        *current_value = new_value;
+        s5k5cag_Config(CAMERA_I2C_ADDRESS, CAMERA_CONTRAST_BRIGHTNESS, 
+                      current_contrast, current_brightness);
+        
+        char cmdLog[150];
+        sprintf(cmdLog, "%s %s to: %d\r\n", 
+                setting_name, 
+                direction == UP ? "increased" : "decreased", 
+                new_value);
+        printLog(cmdLog);
+    }
+}
+
 int main(void) {
   char buf[150];
   char showbuf[150];
@@ -138,6 +214,8 @@ int main(void) {
   lcdsetup();
 
   int camErr = initCamera();
+  // s5k5cag_Config(CAMERA_I2C_ADDRESS, CAMERA_CONTRAST_BRIGHTNESS, 
+  //                     current_contrast, current_brightness);
 
   uint32_t start, end, starti, endi;
   StartCapture();
@@ -168,19 +246,41 @@ int main(void) {
       // KEY COORDINATION LOG
       sprintf(cmdLog, "COMMAND RECEIVED: %c\r\n", s[0]);
       printLog(cmdLog);
-    }
-    if (s[0] == 't') {
-      just_started_training_mode = training_mode != 1;
-      training_mode = true;
-      printLog("Switching to training mode\r\n");
-    } else if (s[0] == 'i') {
-      training_mode = false;
-      validation_mode = false;
-      printLog("Switching to inference mode\r\n");
-    } else if (s[0] == 'v') {
-      training_mode = false;
-      validation_mode = true;
-      printLog("Switching to validation mode\r\n");
+      
+      // Handle camera controls
+      switch(s[0]) {
+        // TODO calling these totally warps the image, shows partial screen with red and blue 
+        // duplicates... yikes
+        // case '+':
+        // case '=':
+        //     adjustCameraSetting(CONTRAST, UP);
+        //     break;
+        // case '-':
+        // case '_':
+        //     adjustCameraSetting(CONTRAST, DOWN);
+        //     break;
+        // case ']':
+        //     adjustCameraSetting(BRIGHTNESS, UP);
+        //     break;
+        // case '[':
+        //     adjustCameraSetting(BRIGHTNESS, DOWN);
+        //     break;
+        case 't':
+          just_started_training_mode = training_mode != 1;
+          training_mode = true;
+          printLog("Switching to training mode\r\n");
+          break;
+        case 'i': 
+          training_mode = false;
+          validation_mode = false;
+          printLog("Switching to inference mode\r\n");
+          break;
+        case 'v':
+          training_mode = false;
+          validation_mode = true;
+          printLog("Switching to validation mode\r\n");
+          break;
+      }
     }
     
     if (training_mode) {

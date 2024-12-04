@@ -139,26 +139,54 @@ def clean_project(
 
 
 def build_project(
-    build_dir: str = str(PROJECT_ROOT / "Debug"), verbose: bool = False
-) -> None:
-    """Build the project
+    build_dir: str = str(PROJECT_ROOT / "Debug"),
+    verbose: bool = False,
+    force_rebuild: bool = False,
+) -> bool:
+    """Build the project incrementally
 
     Args:
         build_dir (str): Directory containing the Makefile
         verbose (bool): Whether to print the output of the command
+        force_rebuild (bool): Whether to force a full rebuild
+
+    Returns:
+        bool: True if any files were rebuilt, False if nothing changed
     """
     try:
         print("Building project...")
+        cmd = ["make", "-j7"]
+        if force_rebuild:
+            cmd.append("clean")
+            cmd.append("all")
+        else:
+            cmd.append("all")
+
         result = subprocess.run(
-            ["make", "-j7", "all"],
+            cmd,
             cwd=build_dir,
             env=get_build_env(),
             check=True,
             capture_output=True,
             text=True,
         )
+
         if verbose:
             print(result.stdout)
+
+        # Check if any files were rebuilt by looking for compiler commands in output
+        was_rebuilt = any(
+            line.startswith("arm-none-eabi-g++") or line.startswith("arm-none-eabi-gcc")
+            for line in result.stdout.splitlines()
+        )
+
+        if was_rebuilt:
+            print("Files were rebuilt")
+        else:
+            print("No rebuilding needed - all files up to date")
+
+        return was_rebuilt
+
     except subprocess.CalledProcessError as e:
         print(f"Error during build: {e}")
         if e.output:
@@ -218,6 +246,24 @@ def deploy_binary(
         raise
 
 
+def reset_device(verbose: bool = False) -> None:
+    """Reset the microcontroller without reflashing"""
+    try:
+        programmer = get_programmer_path()
+        cmd = [programmer, "--connect", "port=SWD", "-rst"]
+
+        print("Resetting device...")
+        result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+        if verbose:
+            print(result.stdout)
+        time.sleep(5)  # Allow device to reboot
+        print("Reset complete")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during reset: {e}")
+        print(f"Error output: {e.stdout}\n{e.stderr}")
+        raise
+
+
 def load_datasets(base_path: str) -> Dict[str, List[str]]:
     """Load datasets from the datasets folder"""
     datasets = {}
@@ -240,9 +286,7 @@ def load_datasets(base_path: str) -> Dict[str, List[str]]:
 def update_output_ch_file(class_names: List[str], file_path: str):
     """Update the OUTPUT_CH and labels in the specified file"""
     class_names_str = ",\n".join([f'"{class_name}"' for class_name in class_names])
-    with open(file_path, "w") as file:
-        file.write(
-f"""// GENERATED FILE FROM AUTOMATED TRAINING SCRIPT
+    new_contents = f"""// GENERATED FILE FROM AUTOMATED TRAINING SCRIPT
 
 #ifndef OUTPUT_CH_H
 #define OUTPUT_CH_H
@@ -254,7 +298,14 @@ static const char *const OUTPUT_LABELS[] = {{
 }};
 
 #endif // OUTPUT_CH_H                
-""")
+"""
+    # only write if contents have changed
+    with open(file_path, "r") as file:
+        current_contents = file.read()
+
+    if current_contents != new_contents:
+        with open(file_path, "w") as file:
+            file.write(new_contents)
 
 
 def select_dataset() -> Tuple[str, List[str]]:
@@ -285,7 +336,25 @@ def select_dataset() -> Tuple[str, List[str]]:
     dataset_name = list(datasets.keys())[dataset_idx]
     dataset_path = str(PROJECT_ROOT / "datasets/data" / dataset_name)
     print(f"\nSelected dataset: {dataset_name}")
-    
+
     class_names = datasets[dataset_name]
-    
+
     return dataset_path, class_names
+
+
+def smart_build_and_deploy(
+    build_dir: str = str(PROJECT_ROOT / "Debug"),
+    binary_path: str = str(PROJECT_ROOT / "Debug" / "TTE_demo_mcunet.elf"),
+    verbose: bool = False,
+) -> None:
+    """Smart build and deploy - uses Make's incremental build"""
+
+    # Run incremental build
+    was_rebuilt = build_project(build_dir, verbose)
+
+    if was_rebuilt:
+        print("Changes detected, deploying new binary...")
+        deploy_binary(binary_path, verbose)
+    else:
+        print("No changes detected, just resetting device...")
+        reset_device(verbose)

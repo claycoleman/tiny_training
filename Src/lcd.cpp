@@ -118,13 +118,9 @@ void displayTrainingResponse(int pred, int label) {
   
   // Set backgrounds and color as before
   if (pred == label) {
-    drawGreenBackground(270, 480, 40, 100);
-    drawGreenBackground(270, 480, 125, 180);
-    drawGreenBackground(270, 480, 205, 250);
+    drawGreenBackground(270, 480, 40, 250);
   } else {
-    drawRedBackground(270, 480, 40, 100);
-    drawRedBackground(270, 480, 125, 180);
-    drawRedBackground(270, 480, 205, 250);
+    drawRedBackground(270, 480, 40, 250);
   }
   BSP_LCD_SetTextColor(LCD_COLOR_RED);
   
@@ -181,9 +177,7 @@ void displayInferenceResponse(int pred) {
   
   const char *output_label = OUTPUT_LABELS[pred];
   
-  drawBlackBackground(270, 480, 40, 100);
-  drawBlackBackground(270, 480, 125, 180);
-  drawBlackBackground(270, 480, 205, 250);
+  drawBlackBackground(270, 480, 40, 250);
   BSP_LCD_SetTextColor(LCD_COLOR_RED);
   
   lines[numLines++] = "Prediction:";
