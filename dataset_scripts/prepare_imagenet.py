@@ -10,7 +10,7 @@ import urllib.request
 base_path = Path(__file__).parent.parent / "datasets"
 zip_path = base_path / "tiny-imagenet-200.zip"
 source_path = base_path / "raw_data" / "tiny_imagenet"
-data_path = base_path / "ten_class_data" / "tiny_imagenet"
+data_path = base_path / "data" / "tiny_imagenet"
 
 
 def download_tiny_imagenet():

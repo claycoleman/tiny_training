@@ -3,14 +3,11 @@
 #ifndef OUTPUT_CH_H
 #define OUTPUT_CH_H
                    
-#define OUTPUT_CH 5
+#define OUTPUT_CH 2
 
 static const char *const OUTPUT_LABELS[] = {
-"desk",
-"backpack",
-"dining_table",
-"keyboard",
-"remote"
+"no_person",
+"person"
 };
 
 #endif // OUTPUT_CH_H                

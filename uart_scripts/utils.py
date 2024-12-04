@@ -259,7 +259,7 @@ static const char *const OUTPUT_LABELS[] = {{
 
 def select_dataset() -> Tuple[str, List[str]]:
     """Interactive dataset selection, returns (dataset_path, class_names)"""
-    datasets = load_datasets(str(PROJECT_ROOT / "datasets/ten_class_data"))
+    datasets = load_datasets(str(PROJECT_ROOT / "datasets/data"))
     if not datasets:
         raise RuntimeError("No datasets found")
 
@@ -283,7 +283,7 @@ def select_dataset() -> Tuple[str, List[str]]:
         break
 
     dataset_name = list(datasets.keys())[dataset_idx]
-    dataset_path = str(PROJECT_ROOT / "datasets/ten_class_data" / dataset_name)
+    dataset_path = str(PROJECT_ROOT / "datasets/data" / dataset_name)
     print(f"\nSelected dataset: {dataset_name}")
     
     class_names = datasets[dataset_name]
