@@ -367,7 +367,7 @@ def main(
     exclude_classes: Optional[Set[int]] = None,
     no_align: bool = False,
     preselected_dataset: Optional[str] = None,
-    metrics_path: Optional[str] = "metrics",
+    run_name: Optional[str] = "run",
     record_every: int = 10,
 ):
     try:
@@ -417,9 +417,10 @@ def main(
         metrics_tracker = metrics.MetricsTracker(num_classes=len(class_names), 
                                                  mode="train",
                                                  model="base",
-                                                 metrics_path=metrics_path,
+                                                 run_name=run_name,
                                                  track_predictions=True,
-                                                 examples_per_class=max_examples_per_class)
+                                                 examples_per_class=max_examples_per_class,
+                                                 random_seed=random_seed)
         training_start_time = time.time()
         uart = UARTHandler()
         try:
@@ -524,9 +525,9 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--metrics-path", "-mp", type=str, default="metrics", help="Metrics path"
+        "--run-name", "-rn", type=str, default="run", help="Metrics will be saved in a subdirectory with this name"
     )
-    
+
     args = parser.parse_args()
     exit(
         main(
@@ -540,5 +541,6 @@ if __name__ == "__main__":
             else None,
             no_align=args.no_align,
             preselected_dataset=args.dataset,
+            run_name=args.run_name,
         )
     )

@@ -3,27 +3,30 @@ import os
 import numpy as np
 
 class MetricsTracker:
-    def __init__(self, num_classes: int, metrics_path: str, 
+    def __init__(self, num_classes: int, run_name: str, 
                  mode: str = "val", 
                  model: str = "base",
                  track_predictions: bool = False,
                  examples_per_class: int = 100,
+                 random_seed: int = 42,
                  ):
         """ Initialize metrics tracker
 
             Args:
                 num_classes: Number of classes in the dataset
-                metrics_path: Path to save metrics to
+                run_name: Path to save metrics to
                 mode: Mode of the metrics (train, val, test)
                 model: Model name
                 track_predictions: Whether to track predictions
                 examples_per_class: Number of examples per class to track
         """
+        metrics_path = os.path.join("metrics", run_name)
+        self.metrics_path = metrics_path
         if not os.path.exists(metrics_path):
             os.makedirs(metrics_path)
-    
+
+        self.run_name = run_name
         self.num_classes = num_classes
-        self.metrics_path = metrics_path
         self.examples_per_class = examples_per_class
         self.metrics = {
             "true_positives": 0,
@@ -36,6 +39,7 @@ class MetricsTracker:
         self.model = model
         self.epoch = 0
         self.step = 0
+        self.random_seed = random_seed
         self.track_predictions = track_predictions
 
         if track_predictions:
@@ -93,6 +97,8 @@ class MetricsTracker:
         metrics["step"] = step
         metrics["model"] = model
         metrics["mode"] = mode
+        metrics["run_name"] = self.run_name
+        metrics["random_seed"] = self.random_seed
         metrics["examples_per_class"] = self.examples_per_class
         if self.track_predictions:
             metrics["predicted_classes"] = self.predicted_classes
