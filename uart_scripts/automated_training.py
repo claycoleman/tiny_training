@@ -3,8 +3,9 @@ import random
 import sys
 import threading
 import time
+import json
 from typing import List, Optional, Set, Tuple
-
+import metrics
 import cv2
 import numpy as np
 
@@ -20,6 +21,7 @@ from utils import (
     smart_build_and_deploy,
 )
 
+SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
 
 def load_class_images(dataset_path: str, class_name: str) -> List[str]:
     """Load all images for a specific class"""
@@ -40,7 +42,7 @@ def display_image(
         raise ValueError(f"Could not load image: {image_path}")
 
     # Create black background
-    screen_width, screen_height = 1024, 768  # Adjustable
+    screen_width, screen_height = SCREEN_WIDTH, SCREEN_HEIGHT  # Adjustable
     background = np.zeros((screen_height, screen_width, 3), dtype=np.uint8)
 
     # Resize image while maintaining aspect ratio
@@ -66,7 +68,7 @@ def display_image(
 
 def display_blank_frame(window_name: str = "Training Image"):
     """Display blank white frame for camera alignment"""
-    screen_width, screen_height = 1024, 768  # Same as in display_image
+    screen_width, screen_height = SCREEN_WIDTH, SCREEN_HEIGHT  # Same as in display_image
     # Create white background
     background = np.ones((screen_height, screen_width, 3), dtype=np.uint8) * 255
 
@@ -247,7 +249,9 @@ def sequential_split_dataset(
 
 
 def run_validation(
-    uart: UARTHandler, val_data: List[Tuple[str, int]], phase: str = "Validation"
+    uart: UARTHandler, val_data: List[Tuple[str, int]], 
+    metrics_tracker: metrics.MetricsTracker,
+    phase: str = "Validation",
 ) -> Tuple[float, dict]:
     """Run validation and print detailed metrics
 
@@ -255,94 +259,61 @@ def run_validation(
         uart: UART handler for device communication
         val_data: List of (image_path, class) tuples
         phase: Description of validation phase (e.g., "Initial", "Final", etc.)
+
+    Returns:
+        metrics: Dictionary containing validation metrics (class accuracies, image paths, predictions, etc.)
     """
     print(f"\n=== Running {phase} Validation ===")
     uart.send_command("v")  # Enter validation mode
 
-    class_metrics = {}  # Track per-class metrics
-    correct = 0
-    total = 0
     val_start = time.time()
+    metrics_tracker.val_mode()
 
     for idx, (image_path, true_class) in enumerate(val_data):
-        # Initialize class metrics if not exists
-        if true_class not in class_metrics:
-            class_metrics[true_class] = {"correct": 0, "total": 0}
-
         # clear uart messages
         uart.last_messages = []
         print(f"\nValidating image {idx + 1}/{len(val_data)}")
         display_image(image_path, delay=1.0)
         try:
             predicted_class = uart.wait_for_consecutive_inference(num_consecutive=3)
-            is_correct = predicted_class == true_class
-            correct += is_correct
-            total += 1
-
-            # Update class-specific metrics
-            class_metrics[true_class]["total"] += 1
-            if is_correct:
-                class_metrics[true_class]["correct"] += 1
-
-            accuracy = correct / total
-            print(f"True class: {true_class}, Predicted: {predicted_class}")
-            print(f"Current accuracy: {accuracy:.2%} ({correct}/{total})")
+            metrics_tracker.update(predicted_class, true_class)
         except TimeoutError:
             print(f"ERROR: Failed to get consistent prediction for {image_path}")
 
     val_time = time.time() - val_start
-    final_accuracy = correct / total if total > 0 else 0
+    metrics_tracker.metrics["run_time"] = val_time
+    metrics_tracker.print_summary()
+    metrics_tracker.save_metrics()
 
-    # Calculate per-class accuracies
-    class_accuracies = {
-        cls: {
-            "accuracy": metrics["correct"] / metrics["total"]
-            if metrics["total"] > 0
-            else 0,
-            "correct": metrics["correct"],
-            "total": metrics["total"],
-        }
-        for cls, metrics in class_metrics.items()
-    }
-
-    # Print validation summary
-    print(f"\n{phase} Validation Results:")
-    print(f"Time: {val_time:.2f}s")
-    print(f"Overall accuracy: {final_accuracy:.2%} ({correct}/{total})")
-    print("\nPer-class accuracies:")
-    for cls, metrics in sorted(class_accuracies.items()):
-        print(
-            f"Class {cls}: {metrics['accuracy']:.2%} ({metrics['correct']}/{metrics['total']})"
-        )
-
-    return final_accuracy, class_accuracies
+    return metrics_tracker.metrics
 
 
 def run_training_epoch(
-    uart: UARTHandler, train_data: List[Tuple[str, int]], epoch: int, epochs: int
+    uart: UARTHandler, train_data: List[Tuple[str, int]], epoch: int, epochs: int,
+    metrics_tracker: metrics.MetricsTracker,
+    record_every: int = 5, 
 ) -> dict:
-    """Run a single training epoch and return metrics"""
+    """Run a single training epoch and return metrics
+
+    Args:
+        uart: UART handler for device communication
+        train_data: List of (image_path, class) tuples
+        epoch: Current epoch number
+        epochs: Total number of epochs
+        record_every: If > 0, save metrics every N steps
+
+    Returns:
+        metrics: Dictionary containing training metrics (class accuracies, image paths, predictions, etc.)
+    """
 
     uart.send_command("t")  # Enter training mode
 
     epoch_start = time.time()
     print(f"\nEpoch {epoch + 1}/{epochs}")
-
-    # TODO other interesting metrics to track:
-    # number of times a class is predicted, and the accuracy for that class
-    metrics = {
-        "completed_trainings": 0,
-        "failed_trainings": 0,
-        "correct_predictions": 0,
-        "training_time": 0,
-        "class_metrics": {},  # Track per-class metrics
-    }
+    metrics_tracker.train_mode()
 
     for idx, (image_path, true_class) in enumerate(train_data):
         # Initialize class metrics if not exists
-        if true_class not in metrics["class_metrics"]:
-            metrics["class_metrics"][true_class] = {"correct": 0, "total": 0}
-
         img_start = time.time()
         print(f"\nTraining image {idx + 1}/{len(train_data)} (Class: {true_class})")
         display_image(image_path)
@@ -364,53 +335,27 @@ def run_training_epoch(
 
             if predicted_class is not None:
                 # Update metrics
-                metrics["completed_trainings"] += 1
-                metrics["class_metrics"][true_class]["total"] += 1
-                if predicted_class == true_class:
-                    metrics["correct_predictions"] += 1
-                    metrics["class_metrics"][true_class]["correct"] += 1
-
+                metrics_tracker.update(predicted_class, true_class)
                 img_time = time.time() - img_start
-                accuracy = (
-                    metrics["class_metrics"][true_class]["correct"]
-                    / metrics["class_metrics"][true_class]["total"]
-                )
                 print(f"Training successful - took {img_time:.2f}s")
-                print(f"Prediction: {predicted_class}, True: {true_class}")
-                print(f"Class {true_class} accuracy: {accuracy:.2%}")
+                metrics_tracker.print_summary()
             else:
-                metrics["failed_trainings"] += 1
                 print(f"WARNING: No prediction received for image {idx + 1}")
         else:
-            metrics["failed_trainings"] += 1
             print(f"WARNING: Training timeout for image {idx + 1}")
 
+        if record_every > 0 and (idx + 1) % record_every == 0:
+            print(f"Saving metrics after {idx + 1} images")
+            metrics_tracker.save_metrics()
+
     # Calculate final metrics
-    metrics["training_time"] = time.time() - epoch_start
-    total_accuracy = sum(m["correct"] for m in metrics["class_metrics"].values()) / sum(
-        m["total"] for m in metrics["class_metrics"].values()
-    )
+    training_time = time.time() - epoch_start
+    metrics_tracker.metrics["run_time"] = training_time
 
-    # Print epoch summary
-    print(f"\nEpoch {epoch + 1} Summary:")
-    print(f"Time: {metrics['training_time']:.2f}s")
-    print(f"Overall accuracy: {total_accuracy:.2%}")
-    print(
-        f"Training: {metrics['completed_trainings']} successful, {metrics['failed_trainings']} failed"
-    )
-    print(
-        f"Predictions: {metrics['correct_predictions']}/{metrics['completed_trainings']} "
-        f"({(metrics['correct_predictions']/metrics['completed_trainings']*100):.1f}%)"
-    )
-    print("\nPer-class accuracies:")
-    for class_id, class_metric in sorted(metrics["class_metrics"].items()):
-        if class_metric["total"] > 0:
-            class_accuracy = class_metric["correct"] / class_metric["total"]
-            print(
-                f"Class {class_id}: {class_accuracy:.2%} ({class_metric['correct']}/{class_metric['total']})"
-            )
+    metrics_tracker.print_summary()
+    metrics_tracker.save_metrics()
 
-    return metrics
+    return metrics_tracker.metrics
 
 
 def main(
@@ -422,6 +367,8 @@ def main(
     exclude_classes: Optional[Set[int]] = None,
     no_align: bool = False,
     preselected_dataset: Optional[str] = None,
+    metrics_path: Optional[str] = "metrics",
+    record_every: int = 5,
 ):
     try:
         if random_seed is not None:
@@ -465,6 +412,12 @@ def main(
             f"\nData split: {len(train_data)} training samples, {len(val_data)} validation samples"
         )
 
+        metrics_tracker = metrics.MetricsTracker(num_classes=len(class_names), 
+                                                 mode="train",
+                                                 model="base",
+                                                 metrics_path=metrics_path,
+                                                 track_predictions=True,
+                                                 examples_per_class=max_examples_per_class)
         training_start_time = time.time()
         uart = UARTHandler()
         try:
@@ -476,45 +429,26 @@ def main(
                 input("Position camera and press Enter to start training...")
 
             # Initial validation
-            initial_accuracy, initial_class_accuracies = run_validation(
-                uart, val_data, "Initial"
+            initial_metrics = run_validation(
+                uart, val_data, metrics_tracker, "Initial"
             )
-
             # Training phase
             print("\n=== Starting Training Phase ===")
 
             for epoch in range(epochs):
-                metrics = run_training_epoch(uart, train_data, epoch, epochs)
+                output_metrics = run_training_epoch(uart, train_data, epoch, epochs, metrics_tracker, record_every)
 
                 print(f"\nEpoch {epoch + 1} Stats:")
-                print(f"Time: {metrics['training_time']:.2f}s")
-                print(
-                    f"Training: {metrics['completed_trainings']} successful, {metrics['failed_trainings']} failed"
-                )
-
-                if metrics["completed_trainings"] > 0:
-                    print("\nTraining Accuracies:")
-                    print(
-                        f"Overall: {metrics['correct_predictions']}/{metrics['completed_trainings']} "
-                        f"({(metrics['correct_predictions']/metrics['completed_trainings']*100):.1f}%)"
-                    )
-                    print("\nPer-class accuracies:")
-                    for cls, class_metrics in sorted(metrics["class_metrics"].items()):
-                        if class_metrics["total"] > 0:
-                            acc = class_metrics["correct"] / class_metrics["total"]
-                            print(
-                                f"Class {cls}: {class_metrics['correct']}/{class_metrics['total']} ({acc*100:.1f}%)"
-                            )
-
+                print(f"Time: {output_metrics['run_time']:.2f}s")
                 if epoch != epochs - 1:
                     # Mid-training validation
-                    validation_accuracy, class_accuracies = run_validation(
-                        uart, val_data, f"Epoch {epoch + 1}"
+                    val_metrics = run_validation(
+                        uart, val_data, metrics_tracker, f"Epoch {epoch + 1}"
                     )
 
             # Final validation
-            final_accuracy, final_class_accuracies = run_validation(
-                uart, val_data, "Final"
+            final_metrics = run_validation(
+                uart, val_data, metrics_tracker, "Final"
             )
 
             total_time = time.time() - training_start_time
