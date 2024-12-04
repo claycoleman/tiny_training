@@ -30,7 +30,9 @@ def load_class_images(dataset_path: str, class_name: str) -> List[str]:
     ]
 
 
-def display_image(image_path: str, window_name: str = "Training Image", delay: float = 0.5):
+def display_image(
+    image_path: str, window_name: str = "Training Image", delay: float = 0.5
+):
     """Display image centered on black background"""
     img = cv2.imread(image_path)
     if img is None:
@@ -171,16 +173,12 @@ class UARTHandler:
         self.ser.close()
 
 
-def prepare_dataset(
+def random_split_dataset(
     dataset_path: str,
     class_names: List[str],
     max_examples_per_class: Optional[int] = None,
-    random_seed: Optional[int] = None,
+    exclude_class_0: bool = False,
 ) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
-    """Prepare and split dataset into training and validation sets"""
-    if random_seed is not None:
-        random.seed(random_seed)
-
     class_to_idx = {name: idx for idx, name in enumerate(class_names)}
     all_data = []
 
@@ -191,6 +189,9 @@ def prepare_dataset(
         all_data.extend([(img, class_to_idx[class_name]) for img in images])
         print(f"Loaded {len(images)} images for class '{class_name}'")
 
+    if exclude_class_0:
+        all_data = [data for data in all_data if data[1] != 0]
+
     # Split data
     random.shuffle(all_data)
     train_split = 0.7
@@ -199,11 +200,225 @@ def prepare_dataset(
     return all_data[:train_size], all_data[train_size:]
 
 
+def sequential_split_dataset(
+    dataset_path: str,
+    class_names: List[str],
+    max_examples_per_class: Optional[int] = None,
+    exclude_class_0: bool = False,
+) -> Tuple[List[Tuple[str, int]], List[Tuple[str, int]]]:
+    """Prepare and split dataset into training and validation sets"""
+    class_to_idx = {name: idx for idx, name in enumerate(class_names)}
+    all_class_labels: List[List[Tuple[str, int]]] = []
+    min_labels_per_class = 1_000_000
+
+    for class_name in class_names:
+        images = load_class_images(dataset_path, class_name)
+        random.shuffle(images)
+        if max_examples_per_class:
+            images = images[:max_examples_per_class]
+        all_class_labels.append([(img, class_to_idx[class_name]) for img in images])
+        print(f"Loaded {len(images)} images for class '{class_name}'")
+        min_labels_per_class = min(min_labels_per_class, len(images))
+
+    if exclude_class_0:
+        # filter out class 0 to test gradient problems
+        all_class_labels = [
+            class_labels_array
+            for class_labels_array in all_class_labels
+            if class_labels_array[0][1] != 0
+        ]
+
+    training_data: List[Tuple[str, int]] = []
+    test_data: List[Tuple[str, int]] = []
+
+    train_split = 0.7
+    num_training_samples = int(min_labels_per_class * train_split)
+
+    for i in range(min_labels_per_class):
+        for class_labels_array in all_class_labels:
+            # Add to training data if index is less than number of training samples
+            if i < num_training_samples:
+                training_data.append(class_labels_array.pop(0))
+            else:
+                test_data.append(class_labels_array.pop(0))
+
+    return training_data, test_data
+
+
+def run_validation(
+    uart: UARTHandler, val_data: List[Tuple[str, int]], phase: str = "Validation"
+) -> Tuple[float, dict]:
+    """Run validation and print detailed metrics
+
+    Args:
+        uart: UART handler for device communication
+        val_data: List of (image_path, class) tuples
+        phase: Description of validation phase (e.g., "Initial", "Final", etc.)
+    """
+    print(f"\n=== Running {phase} Validation ===")
+    uart.send_command("v")  # Enter validation mode
+
+    class_metrics = {}  # Track per-class metrics
+    correct = 0
+    total = 0
+    val_start = time.time()
+
+    for idx, (image_path, true_class) in enumerate(val_data):
+        # Initialize class metrics if not exists
+        if true_class not in class_metrics:
+            class_metrics[true_class] = {"correct": 0, "total": 0}
+
+        # clear uart messages
+        uart.last_messages = []
+        print(f"\nValidating image {idx + 1}/{len(val_data)}")
+        display_image(image_path, delay=1.0)
+        try:
+            predicted_class = uart.wait_for_consecutive_inference(num_consecutive=3)
+            is_correct = predicted_class == true_class
+            correct += is_correct
+            total += 1
+
+            # Update class-specific metrics
+            class_metrics[true_class]["total"] += 1
+            if is_correct:
+                class_metrics[true_class]["correct"] += 1
+
+            accuracy = correct / total
+            print(f"True class: {true_class}, Predicted: {predicted_class}")
+            print(f"Current accuracy: {accuracy:.2%} ({correct}/{total})")
+        except TimeoutError:
+            print(f"ERROR: Failed to get consistent prediction for {image_path}")
+
+    val_time = time.time() - val_start
+    final_accuracy = correct / total if total > 0 else 0
+
+    # Calculate per-class accuracies
+    class_accuracies = {
+        cls: {
+            "accuracy": metrics["correct"] / metrics["total"]
+            if metrics["total"] > 0
+            else 0,
+            "correct": metrics["correct"],
+            "total": metrics["total"],
+        }
+        for cls, metrics in class_metrics.items()
+    }
+
+    # Print validation summary
+    print(f"\n{phase} Validation Results:")
+    print(f"Time: {val_time:.2f}s")
+    print(f"Overall accuracy: {final_accuracy:.2%} ({correct}/{total})")
+    print("\nPer-class accuracies:")
+    for cls, metrics in sorted(class_accuracies.items()):
+        print(
+            f"Class {cls}: {metrics['accuracy']:.2%} ({metrics['correct']}/{metrics['total']})"
+        )
+
+    return final_accuracy, class_accuracies
+
+
+def run_training_epoch(
+    uart: UARTHandler, train_data: List[Tuple[str, int]], epoch: int, epochs: int
+) -> dict:
+    """Run a single training epoch and return metrics"""
+
+    uart.send_command("t")  # Enter training mode
+
+    epoch_start = time.time()
+    print(f"\nEpoch {epoch + 1}/{epochs}")
+
+    # TODO other interesting metrics to track:
+    # number of times a class is predicted, and the accuracy for that class
+    metrics = {
+        "completed_trainings": 0,
+        "failed_trainings": 0,
+        "correct_predictions": 0,
+        "training_time": 0,
+        "class_metrics": {},  # Track per-class metrics
+    }
+
+    for idx, (image_path, true_class) in enumerate(train_data):
+        # Initialize class metrics if not exists
+        if true_class not in metrics["class_metrics"]:
+            metrics["class_metrics"][true_class] = {"correct": 0, "total": 0}
+
+        img_start = time.time()
+        print(f"\nTraining image {idx + 1}/{len(train_data)} (Class: {true_class})")
+        display_image(image_path)
+
+        # Send class number and wait for training completion
+        uart.send_command(str(true_class))
+
+        # Wait for training completion and prediction
+        if uart.wait_for_message("TRAINING DONE", timeout=5.0):
+            # Look for prediction in messages
+            predicted_class = None
+            for msg in uart.last_messages:
+                if "TRAINING PREDICTION:" in msg:
+                    try:
+                        predicted_class = int(msg.split(":")[-1].strip())
+                        break
+                    except ValueError:
+                        continue
+
+            if predicted_class is not None:
+                # Update metrics
+                metrics["completed_trainings"] += 1
+                metrics["class_metrics"][true_class]["total"] += 1
+                if predicted_class == true_class:
+                    metrics["correct_predictions"] += 1
+                    metrics["class_metrics"][true_class]["correct"] += 1
+
+                img_time = time.time() - img_start
+                accuracy = (
+                    metrics["class_metrics"][true_class]["correct"]
+                    / metrics["class_metrics"][true_class]["total"]
+                )
+                print(f"Training successful - took {img_time:.2f}s")
+                print(f"Prediction: {predicted_class}, True: {true_class}")
+                print(f"Class {true_class} accuracy: {accuracy:.2%}")
+            else:
+                metrics["failed_trainings"] += 1
+                print(f"WARNING: No prediction received for image {idx + 1}")
+        else:
+            metrics["failed_trainings"] += 1
+            print(f"WARNING: Training timeout for image {idx + 1}")
+
+    # Calculate final metrics
+    metrics["training_time"] = time.time() - epoch_start
+    total_accuracy = sum(m["correct"] for m in metrics["class_metrics"].values()) / sum(
+        m["total"] for m in metrics["class_metrics"].values()
+    )
+
+    # Print epoch summary
+    print(f"\nEpoch {epoch + 1} Summary:")
+    print(f"Time: {metrics['training_time']:.2f}s")
+    print(f"Overall accuracy: {total_accuracy:.2%}")
+    print(
+        f"Training: {metrics['completed_trainings']} successful, {metrics['failed_trainings']} failed"
+    )
+    print(
+        f"Predictions: {metrics['correct_predictions']}/{metrics['completed_trainings']} "
+        f"({(metrics['correct_predictions']/metrics['completed_trainings']*100):.1f}%)"
+    )
+    print("\nPer-class accuracies:")
+    for class_id, class_metric in sorted(metrics["class_metrics"].items()):
+        if class_metric["total"] > 0:
+            class_accuracy = class_metric["correct"] / class_metric["total"]
+            print(
+                f"Class {class_id}: {class_accuracy:.2%} ({class_metric['correct']}/{class_metric['total']})"
+            )
+
+    return metrics
+
+
 def main(
     epochs: int = 3,
     max_examples_per_class: Optional[int] = None,
     random_seed: Optional[int] = None,
     clean: bool = False,
+    split_method: str = "sequential",
+    exclude_class_0: bool = False,
 ):
     try:
         if random_seed is not None:
@@ -228,8 +443,20 @@ def main(
             smart_build_and_deploy()  # Use smart build instead
 
         # Prepare dataset with max examples limit and random seed
-        train_data, val_data = prepare_dataset(
-            dataset_path, class_names, max_examples_per_class, random_seed
+        train_data, val_data = (
+            random_split_dataset(
+                dataset_path,
+                class_names,
+                max_examples_per_class,
+                exclude_class_0,
+            )
+            if split_method == "random"
+            else sequential_split_dataset(
+                dataset_path,
+                class_names,
+                max_examples_per_class,
+                exclude_class_0,
+            )
         )
         print(
             f"\nData split: {len(train_data)} training samples, {len(val_data)} validation samples"
@@ -238,85 +465,51 @@ def main(
         training_start_time = time.time()
         uart = UARTHandler()
         try:
-            # Training phase
-            print("\n=== Starting Training Phase ===")
-            uart.send_command("t")  # Enter training mode
-
             # Display blank frame and wait for alignment
             display_blank_frame()
             input("Position camera and press Enter to start training...")
 
+            # Initial validation
+            initial_accuracy, initial_class_accuracies = run_validation(
+                uart, val_data, "Initial"
+            )
+
+            # Training phase
+            print("\n=== Starting Training Phase ===")
+
             for epoch in range(epochs):
-                epoch_start = time.time()
-                print(f"\nEpoch {epoch + 1}/{epochs}")
-                correct_trainings = 0
-                failed_trainings = 0
+                metrics = run_training_epoch(uart, train_data, epoch, epochs)
 
-                for idx, (image_path, class_num) in enumerate(train_data):
-                    """
-                    For each image that we train on, here is the process:
-                    1. Display the image on the screen for 0.2s (hopefully long enough for the microcontroller camera to capture it)
-                    # this is the gap that we can't really control, since there is no feedback from the microcontroller for seeing if it has received the image
-                    2. Send the class number to the microcontroller (all send commands wait for "COMMAND RECEIVED" before returning as a success)
-                    3. Microcontroller processes the image and trains on it
-                    4. Wait for the microcontroller to finish training (wait for "TRAINING DONE")
-                    """
-                    img_start = time.time()
-                    print(
-                        f"\nTraining image {idx + 1}/{len(train_data)} (Class: {class_num})"
-                    )
-                    display_image(image_path)
-
-                    # in theory, we need to wait to make sure the microcontroller has received the image
-                    # but since we display the image for 0.2s, we can assume it has received it
-
-                    # Send class number and wait for training completion
-                    uart.send_command(str(class_num))
-
-                    # If this is a training command (a number), wait for training completion and ready signal
-                    if uart.wait_for_message("TRAINING DONE"):
-                        correct_trainings += 1
-                        img_time = time.time() - img_start
-                        print(f"Training successful - took {img_time:.2f}s")
-                    else:
-                        failed_trainings += 1
-                        print(f"WARNING: No training confirmation for image {idx + 1}")
-
-                epoch_time = time.time() - epoch_start
-                print(f"\nEpoch {epoch + 1} completed in {epoch_time:.2f}s")
+                print(f"\nEpoch {epoch + 1} Stats:")
+                print(f"Time: {metrics['training_time']:.2f}s")
                 print(
-                    f"Training stats: {correct_trainings} successful, {failed_trainings} failed"
+                    f"Training: {metrics['completed_trainings']} successful, {metrics['failed_trainings']} failed"
                 )
 
-            # Validation phase
-            print("\n=== Starting Validation Phase ===")
-            uart.send_command("v")  # Enter validation mode
-
-            correct = 0
-            total = 0
-            val_start = time.time()
-
-            for idx, (image_path, true_class) in enumerate(val_data):
-                print(f"\nValidating image {idx + 1}/{len(val_data)}")
-                display_image(image_path)
-                try:
-                    predicted_class = uart.wait_for_consecutive_inference(
-                        num_consecutive=3
-                    )
-                    correct += predicted_class == true_class
-                    total += 1
-                    accuracy = correct / total
-                    print(f"True class: {true_class}, Predicted: {predicted_class}")
-                    print(f"Current accuracy: {accuracy:.2%} ({correct}/{total})")
-                except TimeoutError:
+                if metrics["completed_trainings"] > 0:
+                    print("\nTraining Accuracies:")
                     print(
-                        f"ERROR: Failed to get consistent prediction for {image_path}"
+                        f"Overall: {metrics['correct_predictions']}/{metrics['completed_trainings']} "
+                        f"({(metrics['correct_predictions']/metrics['completed_trainings']*100):.1f}%)"
+                    )
+                    print("\nPer-class accuracies:")
+                    for cls, class_metrics in sorted(metrics["class_metrics"].items()):
+                        if class_metrics["total"] > 0:
+                            acc = class_metrics["correct"] / class_metrics["total"]
+                            print(
+                                f"Class {cls}: {class_metrics['correct']}/{class_metrics['total']} ({acc*100:.1f}%)"
+                            )
+
+                if epoch != epochs - 1:
+                    # Mid-training validation
+                    validation_accuracy, class_accuracies = run_validation(
+                        uart, val_data, f"Epoch {epoch + 1}"
                     )
 
-            val_time = time.time() - val_start
-            final_accuracy = correct / total
-            print(f"\nValidation completed in {val_time:.2f}s")
-            print(f"Final validation accuracy: {final_accuracy:.2%}")
+            # Final validation
+            final_accuracy, final_class_accuracies = run_validation(
+                uart, val_data, "Final"
+            )
 
             total_time = time.time() - training_start_time
             print(f"\n=== Training Session Completed in {total_time:.2f}s ===")
@@ -358,6 +551,21 @@ if __name__ == "__main__":
         action="store_true",
         help="Clean the project before building",
     )
+    # either random split or sequential split
+    parser.add_argument(
+        "--split",
+        "-sp",
+        default="sequential",
+        choices=["sequential", "random"],
+    )
+    # exclude class 0 or not
+    parser.add_argument(
+        "--exclude-class-0",
+        "-ec0",
+        default=False,
+        action="store_true",
+        help="Exclude class 0 from training",
+    )
 
     args = parser.parse_args()
     exit(
@@ -366,5 +574,7 @@ if __name__ == "__main__":
             max_examples_per_class=args.max_examples,
             random_seed=args.seed,
             clean=args.clean,
+            split_method=args.split,
+            exclude_class_0=args.exclude_class_0,
         )
     )

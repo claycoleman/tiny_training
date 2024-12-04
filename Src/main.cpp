@@ -81,6 +81,16 @@ void invoke_new_weights_givenimg(signed char *out_int8) {
     out_int8[i] = output[i];
 }
 
+int run_model_inference(signed char *out_int8) {
+  invoke_new_weights_givenimg(out_int8);
+  int predicted_class = 0;
+  // Get output class with highest confidence
+  for (int i = 0; i < OUTPUT_CH; i++) {
+    predicted_class = out_int8[i] > out_int8[predicted_class] ? i : predicted_class;
+  }
+  return predicted_class;
+}
+
 #define RES_W 128
 #define RES_H 120
 
@@ -307,12 +317,11 @@ int main(void) {
         sprintf(logbuf, "Training: Train cls %d\r\n", true_class_from_user_input);
         printLog(logbuf);
 
-        invoke_new_weights_givenimg(out_int);
-        int predicted_class = 0;
-        // Get max output class
-        for (int i = 0; i < OUTPUT_CH; i++) {
-          predicted_class = out_int[i] > out_int[predicted_class] ? i : predicted_class;
-        }
+        int predicted_class = run_model_inference(out_int);
+
+        char predLog[150];
+        sprintf(predLog, "TRAINING PREDICTION: %d\r\n", predicted_class);
+        printLog(predLog);
 
         displayTrainingResponse(predicted_class, true_class_from_user_input);
 
@@ -333,12 +342,7 @@ int main(void) {
       // inference mode or validation mode
       // we run inference on the image loaded at the start of the loop
       start = HAL_GetTick();
-      invoke_new_weights_givenimg(out_int);
-      // Max predicted label
-      int predicted_class = 0;
-      for (int i = 0; i < OUTPUT_CH; i++) {
-        predicted_class = out_int[i] > out_int[predicted_class] ? i : predicted_class;
-      }  
+      int predicted_class = run_model_inference(out_int);
       end = HAL_GetTick();
       if (validation_mode) {
         sprintf(showbuf, " Validation ");
