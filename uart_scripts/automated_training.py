@@ -8,6 +8,7 @@ from typing import List, Optional, Set, Tuple
 import metrics
 import cv2
 import numpy as np
+import tqdm
 
 from utils import (
     clean_project,
@@ -21,7 +22,7 @@ from utils import (
     smart_build_and_deploy,
 )
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 1024, 768
+SCREEN_WIDTH, SCREEN_HEIGHT = 469, 387
 
 def load_class_images(dataset_path: str, class_name: str) -> List[str]:
     """Load all images for a specific class"""
@@ -175,7 +176,6 @@ class UARTHandler:
             self.read_thread.join()
         self.ser.close()
 
-
 def random_split_dataset(
     dataset_path: str,
     class_names: List[str],
@@ -269,11 +269,11 @@ def run_validation(
     val_start = time.time()
     metrics_tracker.val_mode()
 
-    for idx, (image_path, true_class) in enumerate(val_data):
+    for idx, (image_path, true_class) in tqdm.tqdm(enumerate(val_data), total=len(val_data), ascii=" ▖▘▝▗▚▞█"):
         # clear uart messages
         uart.last_messages = []
-        print(f"\nValidating image {idx + 1}/{len(val_data)}")
         display_image(image_path, delay=1.0)
+        #uart.send_image(image_path)
         try:
             predicted_class = uart.wait_for_consecutive_inference(num_consecutive=3)
             metrics_tracker.update(predicted_class, true_class)
@@ -312,12 +312,15 @@ def run_training_epoch(
     print(f"\nEpoch {epoch + 1}/{epochs}")
     metrics_tracker.train_mode()
 
-    for idx, (image_path, true_class) in enumerate(train_data):
+    # Shuffle training data
+    random.shuffle(train_data)
+
+    for idx, (image_path, true_class) in tqdm.tqdm(enumerate(train_data), total=len(train_data), ascii=" ▖▘▝▗▚▞█"):
         # Initialize class metrics if not exists
         img_start = time.time()
         print(f"\nTraining image {idx + 1}/{len(train_data)} (Class: {true_class})")
         display_image(image_path)
-
+        #uart.send_image(image_path)
         # Send class number and wait for training completion
         uart.send_command(str(true_class))
 
@@ -336,8 +339,6 @@ def run_training_epoch(
             if predicted_class is not None:
                 # Update metrics
                 metrics_tracker.update(predicted_class, true_class)
-                img_time = time.time() - img_start
-                print(f"Training successful - took {img_time:.2f}s")
             else:
                 print(f"WARNING: No prediction received for image {idx + 1}")
         else:

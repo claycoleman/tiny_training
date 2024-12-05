@@ -99,6 +99,7 @@ class MetricsTracker:
         metrics["mode"] = mode
         metrics["run_name"] = self.run_name
         metrics["random_seed"] = self.random_seed
+        metrics["num_classes"] = self.num_classes
         metrics["examples_per_class"] = self.examples_per_class
         if self.track_predictions:
             metrics["predicted_classes"] = self.predicted_classes
