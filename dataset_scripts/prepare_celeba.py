@@ -3,30 +3,31 @@ from pathlib import Path
 import zipfile
 import gdown
 from torchvision import transforms
-from PIL import Image
+import cv2
+import numpy as np
 from tqdm import tqdm
 
 base_path = Path(__file__).parent.parent / "datasets"
-data_path = base_path / "data" / "img_align_celeba"
+data_path = base_path / "data" / "celeba_hq"
 raw_path = base_path / "raw_data"
-source_path = raw_path / "img_align_celeba"
+source_path = raw_path / "celeba_hq"
 txt_path = base_path / "identity_CelebA.txt"
-zip_path = base_path / "img_align_celeba.zip"
+zip_path = base_path / "celeba_hq.zip"
 
 
 def download_celeba():
-    """Download CelebA dataset using gdown"""
+    """Download CelebA-HQ dataset using gdown"""
     if not zip_path.exists():
-        print("Downloading CelebA dataset...")
+        print("Downloading CelebA-HQ dataset...")
         print("If download fails, please manually:")
         print(
             "1. Visit: https://drive.google.com/drive/folders/0B7EVK8r0v71pWEZsZE9oNnFzTm8"
         )
-        print("2. Download 'img_align_celeba.zip'")
+        print("2. Download 'celeba_hq.zip'")
         print(f"3. Place it at: {zip_path}")
 
         # Try automatic download first
-        url = "https://drive.google.com/uc?id=0B7EVK8r0v71pZjFTYXZWM3FlRnM"
+        url = "https://drive.google.com/uc?id=1badu11NqxGf6qM3PTTooQDJvQbejgbTv"
         try:
             gdown.download(url, str(zip_path), quiet=False)
         except Exception as e:
@@ -51,7 +52,7 @@ def download_identity_mapping():
 
 
 def extract_dataset():
-    """Extract the CelebA dataset"""
+    """Extract the CelebA-HQ dataset"""
     if not zip_path.exists():
         print("Dataset zip file not found!")
         return False
@@ -65,7 +66,7 @@ def extract_dataset():
 
 
 def prepare_dataset():
-    """Prepare CelebA dataset"""
+    """Prepare CelebA-HQ dataset"""
     if (
         not download_celeba()
         or not extract_dataset()
@@ -123,14 +124,14 @@ def prepare_dataset():
             for person_name, target_id in selected_individuals.items():
                 if identity_id == target_id:
                     # Open, resize and save image
-                    img = Image.open(img_path)
-                    img = img.resize((528, 528), Image.LANCZOS)
+                    img = cv2.imread(str(img_path))
+                    img = cv2.resize(img, (528, 528), interpolation=cv2.INTER_LANCZOS4)
                     save_path = (
                         data_path
                         / person_name
                         / f"{person_name}_{processed_counts[person_name]:04d}.jpg"
                     )
-                    img.save(save_path, "JPEG")
+                    cv2.imwrite(str(save_path), img)
                     processed_counts[person_name] += 1
                     break
 
