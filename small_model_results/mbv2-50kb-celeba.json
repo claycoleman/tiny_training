@@ -1,0 +1,198 @@
+[
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 26.851852416992188,
+        "loss": 1.5497559309005737
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 25.925926208496094,
+        "loss": 1.4860291481018066
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 25.0,
+        "loss": 1.4988465309143066
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 34.25925827026367,
+        "loss": 1.3365286588668823
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 37.96296310424805,
+        "loss": 1.3097738027572632
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 47.22222137451172,
+        "loss": 1.2544708251953125
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 49.074073791503906,
+        "loss": 1.1562179327011108
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 52.77777862548828,
+        "loss": 1.1138958930969238
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 63.88888931274414,
+        "loss": 1.0343562364578247
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 62.96296310424805,
+        "loss": 1.0320162773132324
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 60.71428680419922,
+        "loss": 1.0228339433670044
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 68.51851654052734,
+        "loss": 0.9623585939407349
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 58.33333206176758,
+        "loss": 0.9825165867805481
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 60.185184478759766,
+        "loss": 0.9803425669670105
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 72.22222137451172,
+        "loss": 0.9167686700820923
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 62.96296310424805,
+        "loss": 0.963741660118103
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 67.59259033203125,
+        "loss": 0.8911653161048889
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 67.59259033203125,
+        "loss": 0.899101197719574
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 69.44444274902344,
+        "loss": 0.8630221486091614
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 73.14814758300781,
+        "loss": 0.8200811743736267
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 73.14814758300781,
+        "loss": 0.8129420876502991
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 60.71428680419922,
+        "loss": 0.9545596837997437
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 68.51851654052734,
+        "loss": 0.9054780602455139
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 68.51851654052734,
+        "loss": 0.8563933372497559
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 68.51851654052734,
+        "loss": 0.898381769657135
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 65.74073791503906,
+        "loss": 0.9160186648368835
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 66.66666412353516,
+        "loss": 0.8694058060646057
+    },
+    {
+        "model": "celeba/mbv2-w0.35/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 24,
+        "accuracy": 60.71428680419922,
+        "loss": 0.9519330263137817
+    }
+]
