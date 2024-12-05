@@ -1,0 +1,198 @@
+[
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 65.32662963867188,
+        "loss": 0.6564666628837585
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 67.83919525146484,
+        "loss": 0.6130733489990234
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 71.35678100585938,
+        "loss": 0.5365543961524963
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 78.39196014404297,
+        "loss": 0.42757871747016907
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 85.42713928222656,
+        "loss": 0.38037019968032837
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 85.92964935302734,
+        "loss": 0.33421945571899414
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 90.95477294921875,
+        "loss": 0.2767184376716614
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 90.45226287841797,
+        "loss": 0.28002503514289856
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 88.9447250366211,
+        "loss": 0.26618146896362305
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 89.44723510742188,
+        "loss": 0.26015689969062805
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 93.87754821777344,
+        "loss": 0.23135927319526672
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 93.9698486328125,
+        "loss": 0.21889132261276245
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 93.46733856201172,
+        "loss": 0.2110525220632553
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 89.94974517822266,
+        "loss": 0.24990703165531158
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 92.46231079101562,
+        "loss": 0.21850213408470154
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 92.46231079101562,
+        "loss": 0.22394265234470367
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.45728302001953,
+        "loss": 0.22454075515270233
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 90.95477294921875,
+        "loss": 0.20598052442073822
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 91.45728302001953,
+        "loss": 0.22880886495113373
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 89.94974517822266,
+        "loss": 0.2508161664009094
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 91.45728302001953,
+        "loss": 0.1964612603187561
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 96.93877410888672,
+        "loss": 0.17895899713039398
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 92.46231079101562,
+        "loss": 0.20253238081932068
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 91.45728302001953,
+        "loss": 0.22184103727340698
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 93.9698486328125,
+        "loss": 0.16602933406829834
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 92.9648208618164,
+        "loss": 0.183256596326828
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 93.46733856201172,
+        "loss": 0.19394034147262573
+    },
+    {
+        "model": "mini-person/mcunet-5fps/sparse_50kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 24,
+        "accuracy": 96.93877410888672,
+        "loss": 0.1769980937242508
+    }
+]
