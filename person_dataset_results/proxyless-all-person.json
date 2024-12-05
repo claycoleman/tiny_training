@@ -1,0 +1,2137 @@
+[
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 54.296875,
+        "loss": 0.8292732238769531
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 86.328125,
+        "loss": 0.3149701952934265
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 91.40625,
+        "loss": 0.2557573616504669
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 92.70833587646484,
+        "loss": 0.23700179159641266
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 92.05728912353516,
+        "loss": 0.21342724561691284
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 90.36458587646484,
+        "loss": 0.2454451322555542
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 91.66666412353516,
+        "loss": 0.23643915355205536
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 91.66666412353516,
+        "loss": 0.22352151572704315
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21795980632305145
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 92.70833587646484,
+        "loss": 0.231720432639122
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 92.5,
+        "loss": 0.2539619207382202
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 90.49478912353516,
+        "loss": 0.25005903840065
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 91.66666412353516,
+        "loss": 0.23280192911624908
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 90.625,
+        "loss": 0.21362946927547455
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 90.49478912353516,
+        "loss": 0.2620972692966461
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 91.66666412353516,
+        "loss": 0.20466963946819305
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.40625,
+        "loss": 0.22000928223133087
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 90.88541412353516,
+        "loss": 0.2297748327255249
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 90.75521087646484,
+        "loss": 0.22560662031173706
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 91.40625,
+        "loss": 0.22030143439769745
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 91.66666412353516,
+        "loss": 0.24185867607593536
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 92.0,
+        "loss": 0.23186606168746948
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 92.05728912353516,
+        "loss": 0.20715166628360748
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 92.578125,
+        "loss": 0.1914747804403305
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 91.66666412353516,
+        "loss": 0.2135983258485794
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 90.75521087646484,
+        "loss": 0.2200278788805008
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 93.75,
+        "loss": 0.17795561254024506
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 25,
+        "accuracy": 92.31771087646484,
+        "loss": 0.17452256381511688
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 26,
+        "accuracy": 93.75,
+        "loss": 0.20376992225646973
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 27,
+        "accuracy": 94.01041412353516,
+        "loss": 0.18081144988536835
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 28,
+        "accuracy": 91.66666412353516,
+        "loss": 0.22427012026309967
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 29,
+        "accuracy": 92.96875,
+        "loss": 0.18957485258579254
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 29,
+        "accuracy": 94.0,
+        "loss": 0.18018756806850433
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 30,
+        "accuracy": 91.53646087646484,
+        "loss": 0.2030339390039444
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 31,
+        "accuracy": 92.83853912353516,
+        "loss": 0.2059236615896225
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 32,
+        "accuracy": 92.44791412353516,
+        "loss": 0.21000011265277863
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 33,
+        "accuracy": 90.75521087646484,
+        "loss": 0.24076706171035767
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 34,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19554711878299713
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 35,
+        "accuracy": 92.70833587646484,
+        "loss": 0.19483967125415802
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 36,
+        "accuracy": 91.92708587646484,
+        "loss": 0.19271276891231537
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 37,
+        "accuracy": 92.83853912353516,
+        "loss": 0.20642352104187012
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 38,
+        "accuracy": 92.70833587646484,
+        "loss": 0.20475690066814423
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 39,
+        "accuracy": 92.96875,
+        "loss": 0.18854011595249176
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 39,
+        "accuracy": 93.5,
+        "loss": 0.16694635152816772
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 40,
+        "accuracy": 92.578125,
+        "loss": 0.18118594586849213
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 41,
+        "accuracy": 93.61978912353516,
+        "loss": 0.1840624213218689
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 42,
+        "accuracy": 93.61978912353516,
+        "loss": 0.19409401714801788
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 43,
+        "accuracy": 92.1875,
+        "loss": 0.2041364461183548
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 44,
+        "accuracy": 94.53125,
+        "loss": 0.16536781191825867
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 45,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18580804765224457
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 46,
+        "accuracy": 92.578125,
+        "loss": 0.18511192500591278
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 47,
+        "accuracy": 93.09896087646484,
+        "loss": 0.18634814023971558
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 48,
+        "accuracy": 92.96875,
+        "loss": 0.18964068591594696
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 49,
+        "accuracy": 90.49478912353516,
+        "loss": 0.2314755916595459
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 49,
+        "accuracy": 93.5,
+        "loss": 0.17652012407779694
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 50,
+        "accuracy": 93.61978912353516,
+        "loss": 0.1662365049123764
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 51,
+        "accuracy": 91.27603912353516,
+        "loss": 0.1918567419052124
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 52,
+        "accuracy": 92.05728912353516,
+        "loss": 0.1983364075422287
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 53,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18163907527923584
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "train",
+        "epoch": 54,
+        "accuracy": 92.83853912353516,
+        "loss": 0.16960085928440094
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd",
+        "mode": "val",
+        "epoch": 54,
+        "accuracy": 93.5,
+        "loss": 0.17591926455497742
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 51.5625,
+        "loss": 0.8697905540466309
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 85.28646087646484,
+        "loss": 0.3265153169631958
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 91.14583587646484,
+        "loss": 0.2478720098733902
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 92.31771087646484,
+        "loss": 0.22749972343444824
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 92.96875,
+        "loss": 0.20224584639072418
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 90.88541412353516,
+        "loss": 0.2297007292509079
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 92.1875,
+        "loss": 0.2246532291173935
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 92.44791412353516,
+        "loss": 0.21108658611774445
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 91.53646087646484,
+        "loss": 0.21234329044818878
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 92.44791412353516,
+        "loss": 0.21870338916778564
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 92.5,
+        "loss": 0.22481368482112885
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 90.625,
+        "loss": 0.23256683349609375
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 92.05728912353516,
+        "loss": 0.2204621285200119
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 90.49478912353516,
+        "loss": 0.21014238893985748
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 90.10416412353516,
+        "loss": 0.246018648147583
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 91.92708587646484,
+        "loss": 0.19204561412334442
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.92708587646484,
+        "loss": 0.20694400370121002
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 91.40625,
+        "loss": 0.21703971922397614
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 90.75521087646484,
+        "loss": 0.21780085563659668
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 91.14583587646484,
+        "loss": 0.21894408762454987
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 91.53646087646484,
+        "loss": 0.23078018426895142
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 91.5,
+        "loss": 0.2194424867630005
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 91.66666412353516,
+        "loss": 0.20204965770244598
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 92.83853912353516,
+        "loss": 0.18467313051223755
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 91.66666412353516,
+        "loss": 0.20887984335422516
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 91.53646087646484,
+        "loss": 0.21025370061397552
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 93.75,
+        "loss": 0.17679034173488617
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 25,
+        "accuracy": 92.83853912353516,
+        "loss": 0.17059123516082764
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 26,
+        "accuracy": 93.48958587646484,
+        "loss": 0.19608056545257568
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 27,
+        "accuracy": 94.01041412353516,
+        "loss": 0.17334334552288055
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 28,
+        "accuracy": 91.40625,
+        "loss": 0.21822500228881836
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 29,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18492086231708527
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 29,
+        "accuracy": 94.0,
+        "loss": 0.1745895892381668
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 30,
+        "accuracy": 92.05728912353516,
+        "loss": 0.19542177021503448
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 31,
+        "accuracy": 92.578125,
+        "loss": 0.20124505460262299
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 32,
+        "accuracy": 92.96875,
+        "loss": 0.20555247366428375
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 33,
+        "accuracy": 91.27603912353516,
+        "loss": 0.23810619115829468
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 34,
+        "accuracy": 93.61978912353516,
+        "loss": 0.19144023954868317
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 35,
+        "accuracy": 92.83853912353516,
+        "loss": 0.19269587099552155
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 36,
+        "accuracy": 92.44791412353516,
+        "loss": 0.19030849635601044
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 37,
+        "accuracy": 92.96875,
+        "loss": 0.2037859708070755
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 38,
+        "accuracy": 92.578125,
+        "loss": 0.20129771530628204
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 39,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18695133924484253
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 39,
+        "accuracy": 93.5,
+        "loss": 0.16797186434268951
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 40,
+        "accuracy": 92.70833587646484,
+        "loss": 0.17931561172008514
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 41,
+        "accuracy": 93.48958587646484,
+        "loss": 0.18282277882099152
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 42,
+        "accuracy": 93.09896087646484,
+        "loss": 0.19317185878753662
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 43,
+        "accuracy": 92.1875,
+        "loss": 0.2036835104227066
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 44,
+        "accuracy": 94.140625,
+        "loss": 0.16523343324661255
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 45,
+        "accuracy": 93.359375,
+        "loss": 0.18492913246154785
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 46,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18435728549957275
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 47,
+        "accuracy": 92.96875,
+        "loss": 0.18640761077404022
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 48,
+        "accuracy": 93.09896087646484,
+        "loss": 0.19073021411895752
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 49,
+        "accuracy": 89.97396087646484,
+        "loss": 0.23035895824432373
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 49,
+        "accuracy": 93.5,
+        "loss": 0.1755465567111969
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 50,
+        "accuracy": 93.359375,
+        "loss": 0.16776181757450104
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 51,
+        "accuracy": 91.27603912353516,
+        "loss": 0.19190138578414917
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 52,
+        "accuracy": 92.31771087646484,
+        "loss": 0.19856376945972443
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 53,
+        "accuracy": 93.359375,
+        "loss": 0.18130992352962494
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "train",
+        "epoch": 54,
+        "accuracy": 92.578125,
+        "loss": 0.17037878930568695
+    },
+    {
+        "model": "person/proxyless-w0.3/6b+6w/sgd_qas",
+        "mode": "val",
+        "epoch": 54,
+        "accuracy": 93.5,
+        "loss": 0.17506667971611023
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 42.96875,
+        "loss": 1.0125185251235962
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 64.32291412353516,
+        "loss": 0.6410794258117676
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 82.421875,
+        "loss": 0.3997747600078583
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 85.9375,
+        "loss": 0.31554943323135376
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 89.32291412353516,
+        "loss": 0.2691181004047394
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 89.84375,
+        "loss": 0.25567200779914856
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 91.14583587646484,
+        "loss": 0.2254580706357956
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 91.92708587646484,
+        "loss": 0.21556858718395233
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 91.796875,
+        "loss": 0.21344667673110962
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20738738775253296
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 93.5,
+        "loss": 0.17854776978492737
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 91.27603912353516,
+        "loss": 0.22210408747196198
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 91.92708587646484,
+        "loss": 0.2147689312696457
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 91.53646087646484,
+        "loss": 0.20808838307857513
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21567726135253906
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18772917985916138
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.796875,
+        "loss": 0.20667819678783417
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 92.578125,
+        "loss": 0.20736630260944366
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 90.625,
+        "loss": 0.21803130209445953
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 91.53646087646484,
+        "loss": 0.21556423604488373
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 92.31771087646484,
+        "loss": 0.2162533402442932
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 93.0,
+        "loss": 0.18961597979068756
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 92.05728912353516,
+        "loss": 0.2069149762392044
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 91.66666412353516,
+        "loss": 0.18086068332195282
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 91.27603912353516,
+        "loss": 0.20694254338741302
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 91.27603912353516,
+        "loss": 0.2085416465997696
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 92.96875,
+        "loss": 0.17518405616283417
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 25,
+        "accuracy": 93.61978912353516,
+        "loss": 0.170579195022583
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 26,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19607490301132202
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 27,
+        "accuracy": 93.61978912353516,
+        "loss": 0.1711609810590744
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 28,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21368886530399323
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 29,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18200062215328217
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 29,
+        "accuracy": 93.5,
+        "loss": 0.17861609160900116
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 30,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18978364765644073
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 31,
+        "accuracy": 92.578125,
+        "loss": 0.19511426985263824
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 32,
+        "accuracy": 92.05728912353516,
+        "loss": 0.20825600624084473
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 33,
+        "accuracy": 91.92708587646484,
+        "loss": 0.22526125609874725
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 34,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19359147548675537
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 35,
+        "accuracy": 92.578125,
+        "loss": 0.19117824733257294
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 36,
+        "accuracy": 91.796875,
+        "loss": 0.1984940618276596
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 37,
+        "accuracy": 92.578125,
+        "loss": 0.20116527378559113
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 38,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20290517807006836
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 39,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18781007826328278
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 39,
+        "accuracy": 93.5,
+        "loss": 0.17759160697460175
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 40,
+        "accuracy": 92.1875,
+        "loss": 0.1778075098991394
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 41,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18901844322681427
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 42,
+        "accuracy": 92.578125,
+        "loss": 0.2001039981842041
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 43,
+        "accuracy": 92.1875,
+        "loss": 0.21010933816432953
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 44,
+        "accuracy": 94.140625,
+        "loss": 0.17403189837932587
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 45,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18972794711589813
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 46,
+        "accuracy": 92.44791412353516,
+        "loss": 0.18808616697788239
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 47,
+        "accuracy": 92.31771087646484,
+        "loss": 0.1959388703107834
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 48,
+        "accuracy": 91.92708587646484,
+        "loss": 0.20617622137069702
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 49,
+        "accuracy": 89.71353912353516,
+        "loss": 0.23251615464687347
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 49,
+        "accuracy": 93.5,
+        "loss": 0.17934249341487885
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 50,
+        "accuracy": 93.359375,
+        "loss": 0.17895305156707764
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 51,
+        "accuracy": 91.66666412353516,
+        "loss": 0.1993851512670517
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 52,
+        "accuracy": 91.66666412353516,
+        "loss": 0.2037828415632248
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 53,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18594610691070557
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 54,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18025319278240204
+    },
+    {
+        "model": "person/proxyless-w0.3/sparse_100kb/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 54,
+        "accuracy": 93.5,
+        "loss": 0.179254949092865
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 42.96875,
+        "loss": 1.0125185251235962
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 64.32291412353516,
+        "loss": 0.6410794258117676
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 82.421875,
+        "loss": 0.3997747600078583
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 85.9375,
+        "loss": 0.31554943323135376
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 89.32291412353516,
+        "loss": 0.2691181004047394
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 89.84375,
+        "loss": 0.25567200779914856
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 91.14583587646484,
+        "loss": 0.2254580706357956
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 91.92708587646484,
+        "loss": 0.21556858718395233
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 91.796875,
+        "loss": 0.21344667673110962
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20738738775253296
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 93.5,
+        "loss": 0.17854776978492737
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 91.27603912353516,
+        "loss": 0.22210408747196198
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 91.92708587646484,
+        "loss": 0.2147689312696457
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 91.53646087646484,
+        "loss": 0.20808838307857513
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21567726135253906
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18772917985916138
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.796875,
+        "loss": 0.20667819678783417
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 92.578125,
+        "loss": 0.20736630260944366
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 90.625,
+        "loss": 0.21803130209445953
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 91.53646087646484,
+        "loss": 0.21556423604488373
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 92.31771087646484,
+        "loss": 0.2162533402442932
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 93.0,
+        "loss": 0.18961597979068756
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 92.05728912353516,
+        "loss": 0.2069149762392044
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 91.66666412353516,
+        "loss": 0.18086068332195282
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 91.27603912353516,
+        "loss": 0.20694254338741302
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 91.27603912353516,
+        "loss": 0.2085416465997696
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 92.96875,
+        "loss": 0.17518405616283417
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 25,
+        "accuracy": 93.61978912353516,
+        "loss": 0.170579195022583
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 26,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19607490301132202
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 27,
+        "accuracy": 93.61978912353516,
+        "loss": 0.1711609810590744
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 28,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21368886530399323
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 29,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18200062215328217
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 29,
+        "accuracy": 93.5,
+        "loss": 0.17861609160900116
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 30,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18978364765644073
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 31,
+        "accuracy": 92.578125,
+        "loss": 0.19511426985263824
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 32,
+        "accuracy": 92.05728912353516,
+        "loss": 0.20825600624084473
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 33,
+        "accuracy": 91.92708587646484,
+        "loss": 0.22526125609874725
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 34,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19359147548675537
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 35,
+        "accuracy": 92.578125,
+        "loss": 0.19117824733257294
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 36,
+        "accuracy": 91.796875,
+        "loss": 0.1984940618276596
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 37,
+        "accuracy": 92.578125,
+        "loss": 0.20116527378559113
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 38,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20290517807006836
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 39,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18781007826328278
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 39,
+        "accuracy": 93.5,
+        "loss": 0.17759160697460175
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 40,
+        "accuracy": 92.1875,
+        "loss": 0.1778075098991394
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 41,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18901844322681427
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 42,
+        "accuracy": 92.578125,
+        "loss": 0.2001039981842041
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 43,
+        "accuracy": 92.1875,
+        "loss": 0.21010933816432953
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 44,
+        "accuracy": 94.140625,
+        "loss": 0.17403189837932587
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 45,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18972794711589813
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 46,
+        "accuracy": 92.44791412353516,
+        "loss": 0.18808616697788239
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 47,
+        "accuracy": 92.31771087646484,
+        "loss": 0.1959388703107834
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 48,
+        "accuracy": 91.92708587646484,
+        "loss": 0.20617622137069702
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 49,
+        "accuracy": 89.71353912353516,
+        "loss": 0.23251615464687347
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 49,
+        "accuracy": 93.5,
+        "loss": 0.17934249341487885
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 50,
+        "accuracy": 93.359375,
+        "loss": 0.17895305156707764
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 51,
+        "accuracy": 91.66666412353516,
+        "loss": 0.1993851512670517
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 52,
+        "accuracy": 91.66666412353516,
+        "loss": 0.2037828415632248
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 53,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18594610691070557
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 54,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18025319278240204
+    },
+    {
+        "model": "person/proxyless-w0.3/last_12/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 54,
+        "accuracy": 93.5,
+        "loss": 0.179254949092865
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 0,
+        "accuracy": 42.96875,
+        "loss": 1.0125185251235962
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 1,
+        "accuracy": 64.32291412353516,
+        "loss": 0.6410794258117676
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 2,
+        "accuracy": 82.421875,
+        "loss": 0.3997747600078583
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 3,
+        "accuracy": 85.9375,
+        "loss": 0.31554943323135376
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 4,
+        "accuracy": 89.32291412353516,
+        "loss": 0.2691181004047394
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 5,
+        "accuracy": 89.84375,
+        "loss": 0.25567200779914856
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 6,
+        "accuracy": 91.14583587646484,
+        "loss": 0.2254580706357956
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 7,
+        "accuracy": 91.92708587646484,
+        "loss": 0.21556858718395233
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 8,
+        "accuracy": 91.796875,
+        "loss": 0.21344667673110962
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 9,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20738738775253296
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 9,
+        "accuracy": 93.5,
+        "loss": 0.17854776978492737
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 10,
+        "accuracy": 91.27603912353516,
+        "loss": 0.22210408747196198
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 11,
+        "accuracy": 91.92708587646484,
+        "loss": 0.2147689312696457
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 12,
+        "accuracy": 91.53646087646484,
+        "loss": 0.20808838307857513
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 13,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21567726135253906
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 14,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18772917985916138
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 15,
+        "accuracy": 91.796875,
+        "loss": 0.20667819678783417
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 16,
+        "accuracy": 92.578125,
+        "loss": 0.20736630260944366
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 17,
+        "accuracy": 90.625,
+        "loss": 0.21803130209445953
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 18,
+        "accuracy": 91.53646087646484,
+        "loss": 0.21556423604488373
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 19,
+        "accuracy": 92.31771087646484,
+        "loss": 0.2162533402442932
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 19,
+        "accuracy": 93.0,
+        "loss": 0.18961597979068756
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 20,
+        "accuracy": 92.05728912353516,
+        "loss": 0.2069149762392044
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 21,
+        "accuracy": 91.66666412353516,
+        "loss": 0.18086068332195282
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 22,
+        "accuracy": 91.27603912353516,
+        "loss": 0.20694254338741302
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 23,
+        "accuracy": 91.27603912353516,
+        "loss": 0.2085416465997696
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 24,
+        "accuracy": 92.96875,
+        "loss": 0.17518405616283417
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 25,
+        "accuracy": 93.61978912353516,
+        "loss": 0.170579195022583
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 26,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19607490301132202
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 27,
+        "accuracy": 93.61978912353516,
+        "loss": 0.1711609810590744
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 28,
+        "accuracy": 91.27603912353516,
+        "loss": 0.21368886530399323
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 29,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18200062215328217
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 29,
+        "accuracy": 93.5,
+        "loss": 0.17861609160900116
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 30,
+        "accuracy": 92.05728912353516,
+        "loss": 0.18978364765644073
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 31,
+        "accuracy": 92.578125,
+        "loss": 0.19511426985263824
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 32,
+        "accuracy": 92.05728912353516,
+        "loss": 0.20825600624084473
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 33,
+        "accuracy": 91.92708587646484,
+        "loss": 0.22526125609874725
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 34,
+        "accuracy": 93.22916412353516,
+        "loss": 0.19359147548675537
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 35,
+        "accuracy": 92.578125,
+        "loss": 0.19117824733257294
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 36,
+        "accuracy": 91.796875,
+        "loss": 0.1984940618276596
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 37,
+        "accuracy": 92.578125,
+        "loss": 0.20116527378559113
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 38,
+        "accuracy": 92.31771087646484,
+        "loss": 0.20290517807006836
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 39,
+        "accuracy": 93.22916412353516,
+        "loss": 0.18781007826328278
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 39,
+        "accuracy": 93.5,
+        "loss": 0.17759160697460175
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 40,
+        "accuracy": 92.1875,
+        "loss": 0.1778075098991394
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 41,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18901844322681427
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 42,
+        "accuracy": 92.578125,
+        "loss": 0.2001039981842041
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 43,
+        "accuracy": 92.1875,
+        "loss": 0.21010933816432953
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 44,
+        "accuracy": 94.140625,
+        "loss": 0.17403189837932587
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 45,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18972794711589813
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 46,
+        "accuracy": 92.44791412353516,
+        "loss": 0.18808616697788239
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 47,
+        "accuracy": 92.31771087646484,
+        "loss": 0.1959388703107834
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 48,
+        "accuracy": 91.92708587646484,
+        "loss": 0.20617622137069702
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 49,
+        "accuracy": 89.71353912353516,
+        "loss": 0.23251615464687347
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 49,
+        "accuracy": 93.5,
+        "loss": 0.17934249341487885
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 50,
+        "accuracy": 93.359375,
+        "loss": 0.17895305156707764
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 51,
+        "accuracy": 91.66666412353516,
+        "loss": 0.1993851512670517
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 52,
+        "accuracy": 91.66666412353516,
+        "loss": 0.2037828415632248
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 53,
+        "accuracy": 92.70833587646484,
+        "loss": 0.18594610691070557
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "train",
+        "epoch": 54,
+        "accuracy": 92.31771087646484,
+        "loss": 0.18025319278240204
+    },
+    {
+        "model": "person/proxyless-w0.3/full_update/sgd_qas_nomom",
+        "mode": "val",
+        "epoch": 54,
+        "accuracy": 93.5,
+        "loss": 0.179254949092865
+    }
+]
