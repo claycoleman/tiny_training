@@ -1,0 +1,3 @@
+[submodule "tiny-training"]
+	path = tiny-training
+	url = https://github.com/guptaa47/tiny-training.git
